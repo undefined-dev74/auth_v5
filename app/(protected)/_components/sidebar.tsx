@@ -1,18 +1,18 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, LucideIcon } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
-import { ModeToggle } from "@/components/mode-toggle";
 import { buttonVariants } from "@/components/ui/button";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { AccountSwitcher } from "./account-switcher";
+import { WorkspaceHelpSection } from "./sidebar-quick-action";
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -70,12 +70,19 @@ export function Sidebar({ links, isCollapsed, setIsCollapsed }: SidebarProps) {
   return (
     <aside
       data-collapsed={isCollapsed}
-      className="group fixed inset-y-0 left-0 z-10 border-r flex flex-col gap-4 py-2 data-[collapsed=true]:py-2 transition-all duration-300 ease-in-out"
+      className={`fixed inset-y-0 z-20 flex h-full flex-shrink-0 flex-grow-0 flex-col border-r border-custom-sidebar-border-200 bg-custom-sidebar-background-100
+        duration-300 md:relative
+        ${isCollapsed ? "-ml-[280px]" : ""}
+        sm:${isCollapsed ? "-ml-[280px]" : ""}
+        md:ml-0 ${isCollapsed ? "w-[80px]" : "w-[280px]"}
+        lg:ml-0 ${isCollapsed ? "w-[80px]" : "w-[280px]"}
+        ${isCollapsed ? "items-center" : ""}
+      `}
     >
-      <div className="grid justify-center items-center">
+      <div className="grid h-[3.7rem] justify-center items-end pb-2">
         <AccountSwitcher isCollapsed={isCollapsed} accounts={accounts} />
       </div>
-      <nav className="grid gap-1 px-2 sm:py-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2 ">
+      <nav className="grid gap-1 px-2 sm:py-2 group-[[data-collapsed=true]]:justify-center  group-[[data-collapsed=true]]:px-2 ">
         {links.map((link, index) =>
           isCollapsed ? (
             <Tooltip key={index} delayDuration={0}>
@@ -130,12 +137,12 @@ export function Sidebar({ links, isCollapsed, setIsCollapsed }: SidebarProps) {
           )
         )}
       </nav>
-      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-4 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
-        <ModeToggle />
-        <button onClick={handleCollapse} className="ml-2">
-          {isCollapsed ? <ChevronRight /> : <ChevronLeft />}
-        </button>
-      </nav>
+      <div className="flex h-full w-full flex-1 flex-col justify-end">
+        <WorkspaceHelpSection
+          setSidebarActive={handleCollapse}
+          isCollapsed={isCollapsed}
+        />
+      </div>
     </aside>
   );
 }

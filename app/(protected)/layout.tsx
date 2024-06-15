@@ -3,10 +3,10 @@
 import { ThemeProvider } from "@/components/providers";
 import { Archive, ArchiveX, File, Inbox, Send, Trash2 } from "lucide-react";
 
-import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Header from "./_components/header";
 import { Sidebar } from "./_components/sidebar";
+import { SidebarHamburgerToggle } from "./_components/sidebar-hamburger-toggle";
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
@@ -18,6 +18,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   const handleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
+  const ref = useRef<HTMLDivElement>(null);
   return (
     <ThemeProvider
       attribute="class"
@@ -25,80 +26,69 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
       enableSystem
       disableTransitionOnChange
     >
-      <div className="h-full min-h-screen w-full flex-col md:flex bg/muted">
-        <div className="flex h-full max-h-full ">
-          <div
-            className={cn(
-              "flex flex-col",
-              isCollapsed ? "w-[52px]" : "w-[155px]",
-              "transition-all duration-300 ease-in-out"
-            )}
-          >
-            <div
-              className={cn(
-                "flex h-[52px] items-center justify-between px-2",
-                isCollapsed ? "justify-center" : "px-2"
-              )}
-            ></div>
-            {/* <Separator /> */}
-            <Sidebar
-              setIsCollapsed={setIsCollapsed}
-              isCollapsed={isCollapsed}
-              links={[
-                {
-                  title: "Inbox",
-                  label: "128",
-                  icon: Inbox,
-                  variant: "default",
-                },
-                {
-                  title: "Drafts",
-                  label: "9",
-                  icon: File,
-                  variant: "ghost",
-                },
-                {
-                  title: "Sent",
-                  label: "",
-                  icon: Send,
-                  variant: "ghost",
-                },
-                {
-                  title: "Junk",
-                  label: "23",
-                  icon: ArchiveX,
-                  variant: "ghost",
-                },
-                {
-                  title: "Trash",
-                  label: "",
-                  icon: Trash2,
-                  variant: "ghost",
-                },
-                {
-                  title: "Archive",
-                  label: "",
-                  icon: Archive,
-                  variant: "ghost",
-                },
-              ]}
-            />
-
-            {/* <Separator /> */}
+      <div className="relative flex h-screen w-full overflow-hidden">
+        {/* <Separator /> */}
+        <Sidebar
+          setIsCollapsed={setIsCollapsed}
+          isCollapsed={isCollapsed}
+          links={[
+            {
+              title: "Inbox",
+              label: "128",
+              icon: Inbox,
+              variant: "default",
+            },
+            {
+              title: "Drafts",
+              label: "9",
+              icon: File,
+              variant: "ghost",
+            },
+            {
+              title: "Sent",
+              label: "",
+              icon: Send,
+              variant: "ghost",
+            },
+            {
+              title: "Junk",
+              label: "23",
+              icon: ArchiveX,
+              variant: "ghost",
+            },
+            {
+              title: "Trash",
+              label: "",
+              icon: Trash2,
+              variant: "ghost",
+            },
+            {
+              title: "Archive",
+              label: "",
+              icon: Archive,
+              variant: "ghost",
+            },
+          ]}
+        />
+        <main className="relative flex h-full w-full flex-col overflow-hidden bg-custom-background-100">
+          <div className="z-[15]">
+            <div className="z-10 flex w-full items-center border-b border-custom-border-200">
+              <div className="block bg-custom-sidebar-background-100  py-4 pl-5 md:hidden">
+                <SidebarHamburgerToggle toggleSidebar={handleCollapse} />
+              </div>
+              <div className="w-full">
+                <Header isCollapsed={isCollapsed} />
+              </div>
+            </div>
           </div>
-          <Header isCollapsed={isCollapsed} />
-          {/* <div className="flex flex-col sm:gap-4 sm:pl-14">
-        </div> */}
-          {/* <main
-            className={cn(
-              "grid items-start gap-4 p-4 sm:px-4 sm:py:4 md:gap-8 ",
-              isCollapsed ? "w-[calc(100%-52px)]" : ""
-            )}
-          >
-            {children}
-          </main> */}
-        </div>
+          <div className="h-full w-full overflow-hidden bg-muted">
+            <div className="relative h-full w-full overflow-x-hidden overflow-y-scroll">
+              {children}
+            </div>
+          </div>
+        </main>
       </div>
+      {/* {children} */}
     </ThemeProvider>
   );
 };

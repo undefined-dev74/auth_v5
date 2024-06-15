@@ -1,7 +1,12 @@
+import { Metadata } from "next";
+
 import { LoginForm } from "@/components/auth/login-form";
 
-const LoginPage = () => {
-  return <LoginForm />;
+export const metadata: Metadata = {
+  title: "Authentication",
+  description: "Authentication forms built using the components.",
 };
 
-export default LoginPage;
+export default function AuthenticationPage() {
+  return <LoginForm />;
+}

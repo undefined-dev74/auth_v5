@@ -1,7 +1,8 @@
-import { auth } from "@/auth";
+import { auth } from "@/app/api/auth/[...nextauth]";
 
 export const currentUser = async () => {
   const session = await auth();
+  console.log(session);
   return session?.user;
 };
 

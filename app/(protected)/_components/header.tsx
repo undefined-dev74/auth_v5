@@ -1,7 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetTrigger } from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
-import { PanelLeft } from "lucide-react";
+import { Home, Zap } from "lucide-react";
+import { useTheme } from "next-themes";
+import Image from "next/image";
 import ProfileSection from "./ProfileSection";
 
 interface HeaderProps {
@@ -9,22 +8,56 @@ interface HeaderProps {
 }
 
 const Header = ({ isCollapsed }: HeaderProps) => {
+  const resolvedTheme = useTheme();
   return (
-    <div
-      className={cn(
-        "sticky top-0 z-50  flex flex-1 items-center h-14 shadow-md gap-4 border-b border-l border-border/40 bg-background/05 backdrop-blur supports-[backdrop-filter]:bg-background/60 pr-2",
-        isCollapsed ? "w-[calc(100%-52px)]" : "w-full"
-      )}
-    >
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button size="icon" variant="outline" className="sm:hidden">
-            <PanelLeft className="h-5 w-5" />
-            <span className="sr-only">Toggle Menu</span>
-          </Button>
-        </SheetTrigger>
-      </Sheet>
-      <div className="flex ml-2 justify-center items-center gap-2">
+    <div className="relative z-[15] flex h-[3.75rem] w-full flex-shrink-0 flex-row items-center justify-between gap-x-2 gap-y-4 bg-custom-sidebar-background-100 p-4">
+      <div className="flex items-center gap-2 overflow-ellipsis whitespace-nowrap">
+        <div>
+          <Home className="h-4 w-4 text-custom-text-300" />
+        </div>
+      </div>
+      <div className="flex items-center gap-3 px-3">
+        <a
+          // onClick={() =>
+          //   captureEvent(CHANGELOG_REDIRECTED, {
+          //     element: "navbar",
+          //   })
+          // }
+          href="https://plane.so/changelog"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex flex-shrink-0 items-center gap-1.5 rounded bg-custom-background-80 px-3 py-1.5"
+        >
+          <Zap size={14} strokeWidth={2} fill="rgb(var(--color-text-100))" />
+          <span className="hidden text-xs font-medium sm:hidden md:block">
+            {"What's new?"}
+          </span>
+        </a>
+        <a
+          // onClick={() =>
+          //   captureEvent(GITHUB_REDIRECTED, {
+          //     element: "navbar",
+          //   })
+          // }
+          className="flex flex-shrink-0 items-center gap-1.5 rounded bg-custom-background-80 px-3 py-1.5"
+          href="https://github.com/makeplane/plane"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            src={
+              resolvedTheme === "dark"
+                ? "/logo/github-white.png"
+                : "/logo/github-black.png"
+            }
+            height={16}
+            width={16}
+            alt="GitHub Logo"
+          />
+          <span className="hidden text-xs font-medium sm:hidden md:block">
+            Star us on GitHub
+          </span>
+        </a>
         <ProfileSection />
       </div>
     </div>

@@ -65,13 +65,13 @@ export const LoginForm = () => {
   };
   return (
     <CardWrapper
-      headerLabel="Welcome back "
+      headerLabel="Enter your email below to login to your account"
       backButtonLabel="Don't have an account?"
       backButtonHref="/auth/register"
       showSocial
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 ">
           <div className="space-y-4">
             {showTwoFactor ? (
               <>
@@ -127,6 +127,7 @@ export const LoginForm = () => {
                           type="password"
                         />
                       </FormControl>
+                      <FormMessage />
                       <Button
                         size="sm"
                         variant="link"
@@ -135,7 +136,6 @@ export const LoginForm = () => {
                       >
                         <Link href="/auth/reset">Forgot password?</Link>
                       </Button>
-                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -145,7 +145,11 @@ export const LoginForm = () => {
           {}
           <FormError message={error || urlError} />
           <FormSuccess message={success} />
-          <Button disabled={isPending} type="submit" className="w-full">
+          <Button
+            disabled={isPending}
+            type="submit"
+            className="w-full bg-violet-500 text-neutral-50 p-2 rounded-lg hover:bg-violet-400"
+          >
             {showTwoFactor ? "Confirm" : "Login"}
           </Button>
         </form>

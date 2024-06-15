@@ -14,7 +14,7 @@ const ProfileSection = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar>
-          <AvatarImage src="" alt="user@avatar" />
+          <AvatarImage src="/placeholder-user.jpg" alt="user@avatar" />
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
