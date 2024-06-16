@@ -5,8 +5,6 @@ import { db } from "@/lib/db";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { UserRole } from "@prisma/client";
 import NextAuth from "next-auth";
-// import { getTwoFactorConfirmationByUserId } from "./data/two-factor-confirmation";
-// import { getUserById } from "./data/user";
 
 export const {
   handlers: { GET, POST },
@@ -59,7 +57,7 @@ export const {
       if (token.role && session.user)
         session.user.role = token.role as UserRole;
       if (session.user)
-        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as Boolean;
+        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
 
       return session;
     },
