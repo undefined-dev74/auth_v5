@@ -1,3 +1,4 @@
+import { logout } from "@/actions/logout";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -23,8 +24,8 @@ const ProfileSection = () => {
         <DropdownMenuItem>
           <Link href="/settings/profile">Settings</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link href="/settings/profile">Logout</Link>
+        <DropdownMenuItem onClick={logout}>
+          <Link href="#">Logout</Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
