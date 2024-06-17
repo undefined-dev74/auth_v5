@@ -24,7 +24,7 @@ const ProfileSection = () => {
         <DropdownMenuItem>
           <Link href="/settings/profile">Settings</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={logout}>
+        <DropdownMenuItem onClick={() => logout()}>
           <Link href="#">Logout</Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
