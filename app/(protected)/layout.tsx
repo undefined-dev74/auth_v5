@@ -1,7 +1,15 @@
 "use client";
 
 import { ThemeProvider } from "@/components/providers";
-import { Archive, ArchiveX, File, Inbox, Send, Trash2 } from "lucide-react";
+import {
+  Archive,
+  ArchiveX,
+  ArrowRightLeft,
+  BarChart2,
+  BellIcon,
+  HomeIcon,
+  Trash2,
+} from "lucide-react";
 
 import { useRef, useState } from "react";
 import Header from "./_components/header";
@@ -33,21 +41,27 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
           isCollapsed={isCollapsed}
           links={[
             {
-              title: "Inbox",
-              label: "128",
-              icon: Inbox,
+              title: "Home",
+              label: "",
+              icon: HomeIcon,
               variant: "default",
             },
             {
-              title: "Drafts",
-              label: "9",
-              icon: File,
+              title: "Analytics",
+              label: "",
+              icon: BarChart2,
               variant: "ghost",
             },
             {
-              title: "Sent",
+              title: "Transactions",
               label: "",
-              icon: Send,
+              icon: ArrowRightLeft,
+              variant: "ghost",
+            },
+            {
+              title: "Notifications",
+              label: "0",
+              icon: BellIcon,
               variant: "ghost",
             },
             {
@@ -88,7 +102,6 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
           </div>
         </main>
       </div>
-      {/* {children} */}
     </ThemeProvider>
   );
 };

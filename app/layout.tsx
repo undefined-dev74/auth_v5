@@ -1,8 +1,8 @@
-import { auth } from "@/auth";
 import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
+import { auth } from "./api/auth/[...nextauth]";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });

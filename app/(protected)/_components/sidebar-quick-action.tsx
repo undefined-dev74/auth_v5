@@ -1,11 +1,15 @@
 import React, { useRef, useState } from "react";
 
 import { ModeToggle } from "@/components/mode-toggle";
-import { Tooltip, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { usePlatformOS } from "@/hooks/use-plateform-os";
 import { cn } from "@/lib/utils";
 import { Transition } from "@headlessui/react";
-import { FileText, GithubIcon, HelpCircle, MoveLeft } from "lucide-react";
+import { FileText, GithubIcon, MoveLeft, Settings } from "lucide-react";
 import Link from "next/link";
 import { FaDiscord } from "react-icons/fa";
 // ui
@@ -32,12 +36,12 @@ const HELP_OPTIONS = [
   },
 ];
 
-export interface WorkspaceHelpSectionProps {
+export interface SidebarQuickActionProps {
   setSidebarActive?: React.Dispatch<React.SetStateAction<any>>;
   isCollapsed?: boolean;
 }
 
-export const WorkspaceHelpSection: React.FC<WorkspaceHelpSectionProps> = ({
+export const SidebarQuickAction: React.FC<SidebarQuickActionProps> = ({
   isCollapsed,
   setSidebarActive,
 }) => {
@@ -60,11 +64,8 @@ export const WorkspaceHelpSection: React.FC<WorkspaceHelpSectionProps> = ({
         )}
       >
         {!isCollapsed && (
-          <Tooltip>
-            <TooltipTrigger
-              //   tooltipContent={`Version: v${packageJson.version}`}
-              asChild
-            >
+          <Tooltip delayDuration={0}>
+            <TooltipTrigger asChild>
               <div className="w-1/2 cursor-default rounded-md bg-green-500/10 px-2 py-1 text-center text-xs font-medium text-green-500 outline-none leading-6">
                 Community
               </div>
@@ -78,17 +79,11 @@ export const WorkspaceHelpSection: React.FC<WorkspaceHelpSectionProps> = ({
         >
           <Tooltip>
             <TooltipTrigger asChild>
-              {/* <button
-                type="button"
-                className={`grid place-items-center rounded-md p-1.5 text-custom-text-200 outline-none hover:bg-custom-background-90 hover:text-custom-text-100 ${
-                  isCollapsed ? "w-full" : ""
-                }`}
-                onClick={() => setSidebarActive()}
-              > */}
               <ModeToggle />
-              {/* </button> */}
             </TooltipTrigger>
+            <TooltipContent>Toggle Theme</TooltipContent>
           </Tooltip>
+
           <Tooltip>
             <TooltipTrigger asChild>
               <button
@@ -98,29 +93,32 @@ export const WorkspaceHelpSection: React.FC<WorkspaceHelpSectionProps> = ({
                 }`}
                 onClick={() => setIsNeedHelpOpen((prev) => !prev)}
               >
-                <HelpCircle className="h-3.5 w-3.5" />
+                <Settings className="h-3.5 w-3.5" />
               </button>
             </TooltipTrigger>
+            <TooltipContent>Settings</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                className="grid place-items-center rounded-md p-1.5 text-custom-text-200 outline-none hover:bg-custom-background-90 hover:text-custom-text-100 md:hidden"
+                onClick={() => setSidebarActive(false)}
+              >
+                <MoveLeft className="h-3.5 w-3.5" />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>Expand</TooltipContent>
           </Tooltip>
 
-          <button
-            type="button"
-            className="grid place-items-center rounded-md p-1.5 text-custom-text-200 outline-none hover:bg-custom-background-90 hover:text-custom-text-100 md:hidden"
-            onClick={() => setSidebarActive()}
-          >
-            <MoveLeft className="h-3.5 w-3.5" />
-          </button>
-
-          <Tooltip
-          //   tooltipContent={`${isCollapsed ? "Expand" : "Hide"}`}
-          >
+          <Tooltip>
             <TooltipTrigger asChild>
               <button
                 type="button"
                 className={`hidden place-items-center rounded-md p-1.5 text-custom-text-200 outline-none hover:bg-custom-background-90 hover:text-custom-text-100 md:grid ${
                   isCollapsed ? "w-full" : ""
                 }`}
-                onClick={() => setSidebarActive()}
+                onClick={() => setSidebarActive(true)}
               >
                 <MoveLeft
                   className={`h-3.5 w-3.5 duration-300 ${
@@ -129,6 +127,9 @@ export const WorkspaceHelpSection: React.FC<WorkspaceHelpSectionProps> = ({
                 />
               </button>
             </TooltipTrigger>
+            <TooltipContent>
+              {`${isCollapsed ? "Expand" : "Hide"}`}
+            </TooltipContent>
           </Tooltip>
         </div>
 
