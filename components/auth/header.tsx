@@ -13,11 +13,17 @@ interface HeaderProps {
 
 const Header = ({ label }: HeaderProps) => {
   const pathname = usePathname();
+  console.log(pathname);
+  const mapHeaderText: Record<string, string> = {
+    "/auth/reset": "Reset",
+    "/auth/login": "Login",
+    "/auth/register": "Register",
+  };
 
   return (
     <div className="w-full flex flex-col gap-y-4 items-center">
       <h1 className={cn("text-3xl font-semibold", font.className)}>
-        {["/auth/login"].includes(pathname) ? "Login" : "Register"}
+        {mapHeaderText[pathname]}
       </h1>
       <p className="text-muted-foreground text-sm">{label}</p>
     </div>
