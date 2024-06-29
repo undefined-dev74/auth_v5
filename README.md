@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Turborepo Express and Next.js example setup
 
-## Getting Started
+This is an example setup for a full-stack monorepo using [Turborepo](https://turborepo.com) with Next.js and Express
 
-First, run the development server:
+Most other Turborepo examples I've seen using Express take a different approach to bundling shared packages.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Most examples like [Turbo kitchen-sink example](https://github.com/vercel/turbo/blob/main/examples/kitchen-sink/packages/logger/package.json) will have `dev` and `build` scripts for each shared package, which then watch the package for any changes and rebuild on each change. 
+
+I wanted to to find a way to avoid having a `dev` and `build` step for each package, and simply import the package into the app that needs it, and have the app bundle the package during it's `build` step.
+
+This is very simple to do with Next.js 13 using [Transpile packages](https://beta.nextjs.org/docs/api-reference/next.config.js#transpilepackages)
+
+```js
+// next.config.js
+const nextConfig = {
+  transpilePackages: ['@example/**'],
+}
+
+module.exports = nextConfig
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`transpilePackages` will automatically transpile and bundle local shared packages during next's `build` step
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Doing this with Express however was not as straight-forward, but I was able to get it working with a pretty simple setup using [tsup](https://github.com/egoist/tsup)
 
-## Learn More
+Building an app using `tsup` with the following config will automatically transpile and bundle local shared packages during the `build` step
 
-To learn more about Next.js, take a look at the following resources:
+```ts
+// tsup.config.ts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+import { defineConfig } from 'tsup'
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+export default defineConfig({
+  entry: ['./index.ts'],
+  noExternal: ['@example'],
+  splitting: false,
+  bundle: true,
+  outDir: './dist',
+  clean: true,
+  env: { IS_SERVER_BUILD: 'true' },
+  loader: { '.json': 'copy' },
+  minify: true,
+  sourcemap: true,
+})
+```
 
-## Deploy on Vercel
+The magic here is `noExternal: ['@example']`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This one setting allows you to bundle any external shared packages matching `@example` **and** their dependencies into the app's build output.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Example: shared packages named `@example/logger` and `@example/utils` will both be bundled into the app's build output, along with their dependencies.
+
+## Try it out yourself:
+
+Turborepo will run these commands for all packages and apps from the root directory
+
+Install all dependencies for all packages and apps
+```bash
+pnpm i
+``` 
+
+Start dev env for both server and front-end
+```bash
+pnpm dev
+```
+
+Build both server and front-end apps
+```bash
+pnpm build
+```
+
+Run both server and front-end apps
+```bash
+pnpm start
+```
