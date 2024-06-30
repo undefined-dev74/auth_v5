@@ -19,79 +19,113 @@ model User {
   isEmailVerified   Boolean            @default(false)
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
-  Token             Token[]
-  investments       Investment[]
-  transactions      Transaction[]
-  investmentLedgers InvestmentLedger[]
+  
+  Token            Token[]
+  projects          UserProject[]
+  leadProjects      Project[]          @relation("ProjectLead")
+   updatedStatuses IssueStatusHistory[] @relation("IssueStatusUpdatedBy")
+  assignedIssues    Issue[]            @relation("IssueAssignee")
+  reportedIssues    Issue[]            @relation("IssueReporter")
+  watchedIssues     Issue[]            @relation("IssueWatcher")
+  ownedWorkspaces   Workspace[]        @relation("WorkspaceOwner")
+  workspaces        UserWorkspace[]
 
   @@index([email])
 }
 
-model InvestmentPlan {
-  id               Int          @id @default(autoincrement())
-  name             String
-  amount           Float // Required: The total amount for the investment plan
-  durationDays     Int // Required: The duration of the investment plan in days
-  returnPercentage Float        @default(0) // we will calculate the return percentage based on days of invesment plan
-  dailyInterest    Float
-  status           String       @default("pending") // Optional: Status of the plan, default is "pending"
-  startDate        DateTime // Required: The start date of the investment plan
-  endDate          DateTime // Required: The end date of the investment plan
-  createdAt        DateTime     @default(now()) // Automatically set to the current date and time
-  updatedAt        DateTime     @updatedAt // Automatically updated to the current date and time
-  investments      Investment[]
+// New join table
+model UserProject {
+  user      User    @relation(fields: [userId], references: [id])
+  userId    Int
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId Int
+role      ProjectRole @default(MEMBER)
+
+  @@id([userId, projectId])
+}
+// Workspace model
+model Workspace {
+  id          Int       @id @default(autoincrement())
+  name        String
+  slug        String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relationships
+  ownerId     Int
+  owner       User      @relation("WorkspaceOwner", fields: [ownerId], references: [id])
+  projects    Project[]
+  members     UserWorkspace[]
 }
 
-model Investment {
-  id                Int                @id @default(autoincrement())
-  userId            Int
-  user              User               @relation(fields: [userId], references: [id])
-  investmentPlanId  Int
-  investmentPlan    InvestmentPlan     @relation(fields: [investmentPlanId], references: [id])
-  amount            Float
-  balance           Float              @default(0)
-  expectedReturn    Float
-  startDate         DateTime           @default(now())
-  endDate           DateTime
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  transactions      Transaction[] // Add this line to establish the back relation
-  investmentLedgers InvestmentLedger[]
+// You would need to add this model for the many-to-many relationship with users
+model UserWorkspace {
+  user        User      @relation(fields: [userId], references: [id])
+  userId      Int
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  workspaceId Int
+    role        WorkspaceRole @default(MEMBER)   // e.g., "admin", "member", "viewer"
 
-  @@index([userId])
-  @@index([investmentPlanId])
+  @@id([userId, workspaceId])
 }
 
-model Transaction {
-  id              Int               @id @default(autoincrement())
-  userId          Int
-  user            User              @relation(fields: [userId], references: [id])
-  investmentId    Int
-  investment      Investment        @relation(fields: [investmentId], references: [id])
-  transactionType TransactionType // e.g., "withdrawal", "return"
-  amount          Float
-  status          TransactionStatus // e.g., "successful", "pending"
-  date            DateTime          @default(now())
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
-
-  @@index([userId])
-  @@index([investmentId])
+// Project model
+model Project {
+  id            Int       @id @default(autoincrement())
+  title         String
+  key           String?
+  favorite      Boolean   @default(false)
+  description   String?
+  scope         String    @default("public")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  projectLead   User      @relation("ProjectLead", fields: [projectLeadId], references: [id])
+  projectLeadId Int
+  issues        Issue[]
+  workspace     Workspace @relation(fields: [workspaceId], references: [id])
+  workspaceId   Int
+   users         UserProject[]
 }
 
-model InvestmentLedger {
-  id           Int      @id @default(autoincrement())
-  userId       Int
-  investmentId Int
-  dueDate      DateTime
-  status       String   @default("INCOMPLETE") // INCOMPLETE, COMPLETE
-  receivable   Float
-  paid         Float    @default(0)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+// Issue model
+model Issue {
+  id            Int         @id @default(autoincrement())
+  title         String
+  description   String?
+   priority    IssuePriority @default(MEDIUM)
+   currentStatus   IssueStatus @default(TODO) // Current status using the enum
+   statusHistory   IssueStatusHistory[] // History of status changes
+  status      IssueStatus @default(TODO)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  projectId     Int
+  project       Project     @relation(fields: [projectId], references: [id])
+ assigneeId  Int?
+  assignee    User?     @relation("IssueAssignee", fields: [assigneeId], references: [id])
+  
+  reporter      User?       @relation("IssueReporter", fields: [reporterId], references: [id])
+  reporterId    Int?
+  watchers      User[]      @relation("IssueWatcher")
+  labels        Label[]
+}
 
-  user       User       @relation(fields: [userId], references: [id])
-  investment Investment @relation(fields: [investmentId], references: [id])
+model IssueStatusHistory {
+  id          Int       @id @default(autoincrement())
+  status      IssueStatus // Use the enum here
+  updatedBy   User      @relation("IssueStatusUpdatedBy", fields: [updatedById], references: [id])
+  updatedById Int
+  updatedAt   DateTime  @default(now())
+  issue       Issue     @relation(fields: [issueId], references: [id])
+  issueId     Int
+}
+
+model Label {
+  id     Int     @id @default(autoincrement())
+  name   String
+  color  String
+  issues Issue[]
 }
 
 model Token {
@@ -104,6 +138,35 @@ model Token {
   user        User      @relation(fields: [userId], references: [id])
   userId      Int
 }
+
+
+enum WorkspaceRole {
+  OWNER
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+enum ProjectRole {
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+enum IssueStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+  CANCELED
+}
+
+enum IssuePriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
 
 enum Role {
   USER
