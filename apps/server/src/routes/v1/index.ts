@@ -4,6 +4,7 @@ import authRoute from './auth.route';
 import docsRoute from './docs.route';
 
 import userRoute from './user.route';
+import workspaceRoute from './workspace.route';
 import webhookRoute from './webhook.route';
 
 const router = express.Router();
@@ -20,6 +21,10 @@ const defaultRoutes = [
   {
     path: '/api',
     route: webhookRoute
+  },
+  {
+    path: '/workspace',
+    route: workspaceRoute
   }
 ];
 

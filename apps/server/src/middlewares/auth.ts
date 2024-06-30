@@ -16,8 +16,9 @@ const verifyCallback =
     if (err || info || !user) {
       return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Unauthorized'));
     }
-    req.user = user;
+    req.user = user as any;
     console.log(user);
+
     if (requiredRights.length) {
       const userRights = roleRights.get(user.role) ?? [];
       const hasRequiredRights = requiredRights.every((requiredRight) =>

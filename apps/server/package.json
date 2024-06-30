@@ -96,6 +96,7 @@
     "@example/tsconfig": "workspace:*",
     "@example/utils": "workspace:*",
     "@types/bcryptjs": "^2.4.2",
+    "@types/express-serve-static-core": "^4.19.5",
     "@types/nodemailer": "^6.4.7",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",

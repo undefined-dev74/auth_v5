@@ -11,113 +11,114 @@ datasource db {
 }
 
 model User {
-  id                Int                @id @default(autoincrement())
-  email             String             @unique
-  name              String?
-  password          String
-  role              Role               @default(USER)
-  isEmailVerified   Boolean            @default(false)
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  
-  Token            Token[]
-  projects          UserProject[]
-  leadProjects      Project[]          @relation("ProjectLead")
-   updatedStatuses IssueStatusHistory[] @relation("IssueStatusUpdatedBy")
-  assignedIssues    Issue[]            @relation("IssueAssignee")
-  reportedIssues    Issue[]            @relation("IssueReporter")
-  watchedIssues     Issue[]            @relation("IssueWatcher")
-  ownedWorkspaces   Workspace[]        @relation("WorkspaceOwner")
-  workspaces        UserWorkspace[]
+  id              Int      @id @default(autoincrement())
+  email           String   @unique
+  name            String?
+  password        String
+  role            Role     @default(USER)
+  isEmailVerified Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  Token           Token[]
+  projects        UserProject[]
+  leadProjects    Project[]            @relation("ProjectLead")
+  updatedStatuses IssueStatusHistory[] @relation("IssueStatusUpdatedBy")
+  assignedIssues  Issue[]              @relation("IssueAssignee")
+  reportedIssues  Issue[]              @relation("IssueReporter")
+  watchedIssues   Issue[]              @relation("IssueWatcher")
+  ownedWorkspaces Workspace[]          @relation("WorkspaceOwner")
+  workspaces      UserWorkspace[]
 
   @@index([email])
 }
 
 // New join table
 model UserProject {
-  user      User    @relation(fields: [userId], references: [id])
+  user      User        @relation(fields: [userId], references: [id])
   userId    Int
-  project   Project @relation(fields: [projectId], references: [id])
+  project   Project     @relation(fields: [projectId], references: [id])
   projectId Int
-role      ProjectRole @default(MEMBER)
+  role      ProjectRole @default(MEMBER)
 
   @@id([userId, projectId])
 }
+
 // Workspace model
 model Workspace {
-  id          Int       @id @default(autoincrement())
-  name        String
-  slug        String    @unique
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  slug        String   @unique
   description String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
   // Relationships
-  ownerId     Int
-  owner       User      @relation("WorkspaceOwner", fields: [ownerId], references: [id])
-  projects    Project[]
-  members     UserWorkspace[]
+  ownerId  Int
+  owner    User            @relation("WorkspaceOwner", fields: [ownerId], references: [id])
+  projects Project[]
+  members  UserWorkspace[]
 }
 
 // You would need to add this model for the many-to-many relationship with users
 model UserWorkspace {
-  user        User      @relation(fields: [userId], references: [id])
+  user        User          @relation(fields: [userId], references: [id])
   userId      Int
-  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id])
   workspaceId Int
-    role        WorkspaceRole @default(MEMBER)   // e.g., "admin", "member", "viewer"
+  role        WorkspaceRole @default(MEMBER) // e.g., "admin", "member", "viewer"
 
   @@id([userId, workspaceId])
 }
 
 // Project model
 model Project {
-  id            Int       @id @default(autoincrement())
+  id            Int           @id @default(autoincrement())
   title         String
   key           String?
-  favorite      Boolean   @default(false)
+  favorite      Boolean       @default(false)
   description   String?
-  scope         String    @default("public")
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  projectLead   User      @relation("ProjectLead", fields: [projectLeadId], references: [id])
+  scope         String        @default("public")
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  projectLead   User          @relation("ProjectLead", fields: [projectLeadId], references: [id])
   projectLeadId Int
   issues        Issue[]
-  workspace     Workspace @relation(fields: [workspaceId], references: [id])
+  workspace     Workspace     @relation(fields: [workspaceId], references: [id])
   workspaceId   Int
-   users         UserProject[]
+  users         UserProject[]
 }
 
 // Issue model
 model Issue {
-  id            Int         @id @default(autoincrement())
+  id            Int                  @id @default(autoincrement())
   title         String
   description   String?
-   priority    IssuePriority @default(MEDIUM)
-   currentStatus   IssueStatus @default(TODO) // Current status using the enum
-   statusHistory   IssueStatusHistory[] // History of status changes
-  status      IssueStatus @default(TODO)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  
-  projectId     Int
-  project       Project     @relation(fields: [projectId], references: [id])
- assigneeId  Int?
-  assignee    User?     @relation("IssueAssignee", fields: [assigneeId], references: [id])
-  
-  reporter      User?       @relation("IssueReporter", fields: [reporterId], references: [id])
-  reporterId    Int?
-  watchers      User[]      @relation("IssueWatcher")
-  labels        Label[]
+  priority      IssuePriority        @default(MEDIUM)
+  currentStatus IssueStatus          @default(TODO) // Current status using the enum
+  statusHistory IssueStatusHistory[] // History of status changes
+  status        IssueStatus          @default(TODO)
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+
+  projectId  Int
+  project    Project @relation(fields: [projectId], references: [id])
+  assigneeId Int?
+  assignee   User?   @relation("IssueAssignee", fields: [assigneeId], references: [id])
+
+  reporter   User?   @relation("IssueReporter", fields: [reporterId], references: [id])
+  reporterId Int?
+  watchers   User[]  @relation("IssueWatcher")
+  labels     Label[]
 }
 
 model IssueStatusHistory {
-  id          Int       @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   status      IssueStatus // Use the enum here
-  updatedBy   User      @relation("IssueStatusUpdatedBy", fields: [updatedById], references: [id])
+  updatedBy   User        @relation("IssueStatusUpdatedBy", fields: [updatedById], references: [id])
   updatedById Int
-  updatedAt   DateTime  @default(now())
-  issue       Issue     @relation(fields: [issueId], references: [id])
+  updatedAt   DateTime    @default(now())
+  issue       Issue       @relation(fields: [issueId], references: [id])
   issueId     Int
 }
 
@@ -138,7 +139,6 @@ model Token {
   user        User      @relation(fields: [userId], references: [id])
   userId      Int
 }
-
 
 enum WorkspaceRole {
   OWNER
@@ -167,7 +167,6 @@ enum IssuePriority {
   URGENT
 }
 
-
 enum Role {
   USER
   ADMIN
@@ -178,21 +177,4 @@ enum TokenType {
   REFRESH
   RESET_PASSWORD
   VERIFY_EMAIL
-}
-
-enum TransactionType {
-  INVESTMENT
-  WITHDRAWAL
-  DIVIDEND
-  BONUS
-  CREDIT
-  DEBIT
-  // Add other types as needed
-}
-
-enum TransactionStatus {
-  PENDING
-  SUCCESSFUL
-  FAILED
-  // Add other statuses as needed
 }
