@@ -6,9 +6,10 @@ const allRoles = {
     'MANAGE_USERS',
     'GET_WORKSPACE',
     'UPDATE_WORKSPACE',
-    'DELETE_WORKSPACE'
+    'DELETE_WORKSPACE',
+    'CREATE_ISSUE'
   ],
-  [Role.ADMIN]: ['getUsers', 'MANAGE_USERS']
+  [Role.ADMIN]: ['getUsers', 'MANAGE_USERS', 'CREATE_ISSUE']
 };
 
 export const roles = Object.keys(allRoles);
