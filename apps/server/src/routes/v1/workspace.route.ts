@@ -17,8 +17,8 @@ router
 
 router
   .route('/:workspaceId')
-  .get(auth(), workspaceController.getWorkspace)
-  .patch(auth(), workspaceController.updateWorkspace)
-  .delete(auth(), workspaceController.deleteWorkspace);
+  .get(auth('GET_WORKSPACE'), workspaceController.getWorkspace)
+  .patch(auth('UPDATE_WORKSPACE'), workspaceController.updateWorkspace)
+  .delete(auth('DELETE_WORKSPACE'), workspaceController.deleteWorkspace);
 
 export default router;
