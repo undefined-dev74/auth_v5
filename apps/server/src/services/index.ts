@@ -4,3 +4,4 @@ export { default as tokenService } from './token.service';
 export { default as userService } from './user.service';
 export { default as workspaceService } from './workspace.service';
 export { default as issueService } from './issue.service';
+export { default as projectService } from './project.service';
