@@ -6,6 +6,7 @@ import docsRoute from './docs.route';
 import userRoute from './user.route';
 import workspaceRoute from './workspace.route';
 import issueRoute from './issue.route';
+import projectRoute from './project.route';
 import webhookRoute from './webhook.route';
 
 const router = express.Router();
@@ -28,8 +29,12 @@ const defaultRoutes = [
     route: workspaceRoute
   },
   {
-    path: '/projects',
+    path: '/issues',
     route: issueRoute
+  },
+  {
+    path: '/projects',
+    route: projectRoute
   }
 ];
 
