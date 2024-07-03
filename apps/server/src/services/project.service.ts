@@ -2,7 +2,8 @@ import { PrismaClient, Project, Workspace, User, ProjectRole } from '@prisma/cli
 import {
   CreateProjectServiceInput,
   CreateProjectServiceOutput,
-  WorkspaceWithMembers
+  WorkspaceWithMembers,
+  SafeUser
 } from '../types/project';
 
 const prisma = new PrismaClient();
@@ -33,7 +34,7 @@ class ProjectService {
           create: [
             {
               user: { connect: { id: userId } },
-              role: 'ADMIN' as ProjectRole
+              role: 'MEMBER' as ProjectRole // Set to MEMBER by default
             }
           ]
         }
@@ -49,7 +50,17 @@ class ProjectService {
       }
     });
 
-    return newProject as CreateProjectServiceOutput;
+    // Filter out sensitive information
+    const safeProject: CreateProjectServiceOutput = {
+      ...newProject,
+      projectLead: this.getSafeUser(newProject.projectLead),
+      users: newProject.users.map((u) => ({
+        ...u,
+        user: this.getSafeUser(u.user)
+      }))
+    };
+
+    return safeProject;
   }
 
   async getWorkspace(workspaceId: number): Promise<WorkspaceWithMembers | null> {
@@ -64,6 +75,11 @@ class ProjectService {
     if (!userWorkspace || !['OWNER', 'ADMIN'].includes(userWorkspace.role)) {
       throw new Error('You do not have permission to create projects in this workspace');
     }
+  }
+
+  getSafeUser(user: User): SafeUser {
+    const { password, ...safeUser } = user;
+    return safeUser;
   }
 }
 

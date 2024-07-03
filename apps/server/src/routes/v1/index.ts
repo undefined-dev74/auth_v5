@@ -29,11 +29,11 @@ const defaultRoutes = [
     route: workspaceRoute
   },
   {
-    path: '/issues',
+    path: '/issue',
     route: issueRoute
   },
   {
-    path: '/projects',
+    path: '/project',
     route: projectRoute
   }
 ];

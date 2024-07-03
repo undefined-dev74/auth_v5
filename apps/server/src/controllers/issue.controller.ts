@@ -2,6 +2,12 @@ import { Request, Response } from 'express';
 import { issueService } from '../services';
 import { CreateIssuePayload, IssueRouteParams } from '../types/issue';
 import catchAsync from '../utils/catchAsync';
+import {
+  ForbiddenResponse,
+  InternalErrorResponse,
+  NotFoundResponse,
+  SuccessResponse
+} from '../core/ApiResponse';
 
 const createIssue = catchAsync(async (req: any, res: Response) => {
   try {
@@ -11,18 +17,22 @@ const createIssue = catchAsync(async (req: any, res: Response) => {
       issueData: req.body,
       userId: req.user.id
     });
-    res.status(201).json(newIssue);
+
+    new SuccessResponse('Issue created successfully.!', newIssue).send(res);
   } catch (error) {
     console.error(error);
     if (error instanceof Error) {
       if (error.message === 'Project not found') {
-        return res.status(404).json({ message: error.message });
+        new NotFoundResponse(error.message).send(res);
+        // return res.status(404).json({ message: error.message });
       }
       if (error.message === 'You do not have permission to create issues in this project') {
-        return res.status(403).json({ message: error.message });
+        new ForbiddenResponse(error.message).send(res);
+        // return res.status(403).json({ message: error.message });
       }
     }
-    res.status(500).json({ message: 'Server error' });
+    new InternalErrorResponse('Server error').send(res);
+    // res.status(500).json({ message: 'Server error' });
   }
 });
 
