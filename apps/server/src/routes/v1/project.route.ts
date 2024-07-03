@@ -7,7 +7,7 @@ import { projectController } from '../../controllers';
 const router = express.Router();
 
 router
-  .route('/:workspaceId/projects')
+  .route('/:workspaceId/create')
   .post(
     auth('CREATE_PROJECT'),
     validate(projectValidation.createProjectSchema),

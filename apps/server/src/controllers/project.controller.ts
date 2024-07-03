@@ -2,6 +2,12 @@ import { Request } from 'express';
 import catchAsync from '../utils/catchAsync';
 import { CreateProjectPayload, ProjectRouteParams } from 'src/types/project';
 import { projectService } from '../services';
+import {
+  ForbiddenResponse,
+  InternalErrorResponse,
+  NotFoundResponse,
+  SuccessResponse
+} from '../core/ApiResponse';
 
 const createProject = catchAsync(async (req: any, res) => {
   try {
@@ -11,18 +17,19 @@ const createProject = catchAsync(async (req: any, res) => {
       projectData: req.body,
       userId: req.user.id
     });
-    res.status(201).json(newProject);
+
+    new SuccessResponse('Project created successfully!', newProject).send(res);
   } catch (error) {
     console.error(error);
     if (error instanceof Error) {
       if (error.message === 'Workspace not found') {
-        return res.status(404).json({ message: error.message });
+        new NotFoundResponse(error.message).send(res);
       }
       if (error.message === 'You do not have permission to create projects in this workspace') {
-        return res.status(403).json({ message: error.message });
+        new ForbiddenResponse(error.message).send(res);
       }
     }
-    res.status(500).json({ message: 'Server error' });
+    new InternalErrorResponse('Server error').send(res);
   }
 });
 

@@ -1,6 +1,6 @@
 import { Project, Workspace, User, WorkspaceRole, ProjectRole } from '@prisma/client';
 
-// ... (keep existing types)
+export type SafeUser = Omit<User, 'password'>;
 
 export interface CreateProjectPayload {
   title: string;
@@ -21,12 +21,12 @@ export interface CreateProjectServiceInput {
 
 export interface CreateProjectServiceOutput extends Project {
   workspace: Workspace;
-  projectLead: User;
+  projectLead: SafeUser;
   users: {
     userId: number;
     projectId: number;
     role: ProjectRole;
-    user: User;
+    user: SafeUser;
   }[];
 }
 
