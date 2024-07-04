@@ -14,6 +14,7 @@ import {
 import { useSession } from "next-auth/react";
 import { AccountSwitcher } from "./account-switcher";
 import { SidebarQuickAction } from "./sidebar-quick-action";
+import { WorkspaceSidebarDropdown } from "./workspace/sidebar-dropdown";
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -35,7 +36,7 @@ export function Sidebar({ links, isCollapsed, setIsCollapsed }: SidebarProps) {
   return (
     <aside
       data-collapsed={isCollapsed}
-      className={`fixed inset-y-0 z-20 flex h-full flex-shrink-0 flex-grow-0 flex-col border-r border-custom-sidebar-border-200 bg-custom-sidebar-background-100
+      className={`fixed inset-y-0 z-20 flex h-full flex-shrink-0 flex-grow-0 flex-col border-r border-custom-sidebar-border-200 bg-[#191919]
         duration-300 md:relative
         ${isCollapsed ? "-ml-[280px]" : ""}
         sm:${isCollapsed ? "-ml-[280px]" : ""}
@@ -45,7 +46,7 @@ export function Sidebar({ links, isCollapsed, setIsCollapsed }: SidebarProps) {
       `}
     >
       <div className="grid h-[3.7rem] justify-center items-end pb-2">
-        <AccountSwitcher
+        {/* <AccountSwitcher
           isCollapsed={isCollapsed}
           accounts={[
             {
@@ -66,7 +67,8 @@ export function Sidebar({ links, isCollapsed, setIsCollapsed }: SidebarProps) {
               ),
             },
           ]}
-        />
+        /> */}
+        <WorkspaceSidebarDropdown sidebarCollapsed={isCollapsed} />
       </div>
       <nav className="grid gap-1 px-2 sm:py-2 group-[[data-collapsed=true]]:justify-center  group-[[data-collapsed=true]]:px-2 ">
         {links.map((link, index) =>
@@ -127,7 +129,7 @@ export function Sidebar({ links, isCollapsed, setIsCollapsed }: SidebarProps) {
         <SidebarQuickAction
           setSidebarActive={handleCollapse}
           isCollapsed={isCollapsed}
-        />
+        />  
       </div>
     </aside>
   );

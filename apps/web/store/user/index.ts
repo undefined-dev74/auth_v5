@@ -15,6 +15,7 @@ export interface IUserRootStore {
   currentUserLoader: boolean;
   // observables
   isUserLoggedIn: boolean | null;
+  updateCurrentUser: (data: Partial<IUser>) => Promise<IUser>;
   currentUser: IUser | null;
 
   signOut: () => Promise<void>;

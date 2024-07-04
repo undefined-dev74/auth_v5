@@ -2,7 +2,7 @@
 
 import { ILoginTokenResponse, IPasswordSignInData } from "@/types/auth";
 import { API_BASE_URL } from "@/utils/helpers";
-import APIService from "./api.service";
+import {APIService} from "@/services/api.service";
 // helpers
 
 // types

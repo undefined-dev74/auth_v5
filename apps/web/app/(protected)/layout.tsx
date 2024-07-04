@@ -84,7 +84,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
             },
           ]}
         />
-        <main className="relative flex h-full w-full flex-col overflow-hidden bg-custom-background-100">
+        <main className="relative flex h-full w-full flex-col overflow-hidden bg-[#191919]">
           <div className="z-[15]">
             <div className="z-10 flex w-full items-center border-b border-custom-border-200">
               <div className="block bg-custom-sidebar-background-100  py-4 pl-5 md:hidden">
@@ -95,7 +95,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
               </div>
             </div>
           </div>
-          <div className="h-full w-full overflow-hidden bg-muted">
+          <div className="h-full w-full overflow-hidden bg-[#202020]">
             <div className="relative h-full w-full overflow-x-hidden overflow-y-scroll">
               {children}
             </div>
