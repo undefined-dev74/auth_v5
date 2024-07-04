@@ -3,7 +3,7 @@ import axios from "axios";
 // js cookie
 import Cookies from "js-cookie";
 
-abstract class APIService {
+export abstract class APIService {
   protected baseURL: string;
   protected headers: any = {};
 
@@ -107,4 +107,3 @@ abstract class APIService {
   }
 }
 
-export default APIService;

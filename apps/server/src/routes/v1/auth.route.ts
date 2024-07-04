@@ -24,7 +24,7 @@ router.post(
   validate(authValidation.resetPassword),
   authController.resetPassword
 );
-router.post('/send-verification-email', auth(), authController.sendVerificationEmail);
+router.post('/send-verification-email', auth('VERIFY_EMAIL'), authController.sendVerificationEmail);
 router.post('/verify-email', validate(authValidation.verifyEmail), authController.verifyEmail);
 
 export default router;

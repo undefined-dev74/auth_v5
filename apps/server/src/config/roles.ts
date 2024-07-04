@@ -8,7 +8,8 @@ const allRoles = {
     'UPDATE_WORKSPACE',
     'DELETE_WORKSPACE',
     'CREATE_ISSUE',
-    'CREATE_PROJECT'
+    'CREATE_PROJECT',
+    'VERIFY_EMAIL'
   ],
   [Role.ADMIN]: ['getUsers', 'MANAGE_USERS', 'CREATE_ISSUE']
 };

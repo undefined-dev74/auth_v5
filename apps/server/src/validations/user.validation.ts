@@ -29,13 +29,11 @@ const getUser = {
 
 const updateUser = {
   params: Joi.object().keys({
-    userId: Joi.number().integer()
+    userId: Joi.number().integer().positive()
   }),
   body: Joi.object()
     .keys({
-      email: Joi.string().email(),
-      password: Joi.string().custom(password),
-      name: Joi.string()
+      name: Joi.string().required().max(21)
     })
     .min(1)
 };
