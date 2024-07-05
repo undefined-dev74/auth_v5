@@ -123,7 +123,7 @@ export const WorkspaceSidebarDropdown = observer(({sidebarCollapsed}: any) => {
       <Menu as="div" className="relative h-full flex-grow truncate text-left">
         {({ open }) => (
           <>
-            <Menu.Button className="group/menu-button h-full w-full truncate rounded-md text-sm font-medium text-custom-sidebar-text-200 hover:bg-black-80 focus:outline-none">
+            <Menu.Button className="group/menu-button h-full w-full truncate rounded-md text-sm font-medium text-custom-sidebar-text-200 hover:bg-[#2c2c2c] focus:outline-none">
               <div
                 className={`flex items-center  gap-x-2 truncate rounded p-1 ${
                   sidebarCollapsed ? "justify-center" : "justify-between"
@@ -138,17 +138,22 @@ export const WorkspaceSidebarDropdown = observer(({sidebarCollapsed}: any) => {
                   >
                     {activeWorkspace?.logo && activeWorkspace.logo !== "" ? (
                       <img
-                        src={activeWorkspace.logo}
+                        src={"https://www.flaticon.com/free-icons/letter-n"}
                         className="absolute left-0 top-0 h-full w-full rounded object-cover"
                         alt="Workspace Logo"
                       />
                     ) : (
-                      activeWorkspace?.name?.charAt(0) ?? "..."
+                      // activeWorkspace?.name?.charAt(0) ?? ""
+                      <img
+                        src={"/letter-n.png"}
+                        className="absolute left-0 top-0 h-full w-full rounded object-cover"
+                        alt="Workspace Logo"
+                      />
                     )}
                   </div>
                   {!sidebarCollapsed && (
                     <h4 className="truncate text-base font-medium text-custom-text-100">
-                      {activeWorkspace?.name ? activeWorkspace.name : ""}
+                      {activeWorkspace?.name ? activeWorkspace.name : "Natours"}
                     </h4>
                   )}
                 </div>
@@ -172,7 +177,7 @@ export const WorkspaceSidebarDropdown = observer(({sidebarCollapsed}: any) => {
             >
               <Menu.Items as={Fragment}>
                 <div className="fixed left-4 z-20 mt-1 flex w-full max-w-[19rem] origin-top-left flex-col rounded-md border-[0.5px] border-custom-sidebar-border-300 bg-[#191919] shadow-custom-shadow-rg divide-y divide-custom-border-100 outline-none">
-                  <div className="flex max-h-96 flex-col items-start justify-start gap-2 overflow-y-scroll mb-2 px-4">
+                  <div className="flex max-h-96 flex-col items-start justify-start gap-2 mb-2 px-4">
                     <h6 className="sticky top-0 z-10 h-full w-full bg-custom-background-100 pt-3 text-sm font-medium text-custom-sidebar-text-400">
                       {/* {currentUser?.email} */}
                       Aman@gmail.com
@@ -192,13 +197,13 @@ export const WorkspaceSidebarDropdown = observer(({sidebarCollapsed}: any) => {
                             >
                               <Menu.Item
                                 as="div"
-                                className="flex items-center justify-between gap-1 rounded p-1 text-sm text-custom-sidebar-text-100 hover:bg-custom-sidebar-background-80"
+                                className="flex items-center justify-between gap-1 rounded p-1 text-sm text-custom-sidebar-text-100 hover:bg-gray-80"
                               >
                                 <div className="flex items-center justify-start gap-2.5 truncate">
                                   <span
                                     className={`relative flex h-6 w-6 flex-shrink-0 items-center  justify-center p-2 text-xs uppercase ${
                                       !workspace?.logo &&
-                                      "rounded bg-custom-primary-500 text-white"
+                                      "rounded bg-blue-500 text-white"
                                     }`}
                                   >
                                     {workspace?.logo &&
@@ -219,7 +224,8 @@ export const WorkspaceSidebarDropdown = observer(({sidebarCollapsed}: any) => {
                                         : "text-custom-text-200"
                                     }`}
                                   >
-                                    {workspace.name}
+                                    {/* {workspace.name} */}
+                                    Natours
                                   </h5>
                                 </div>
                                 {workspace.id === activeWorkspace?.id && (
@@ -298,7 +304,7 @@ export const WorkspaceSidebarDropdown = observer(({sidebarCollapsed}: any) => {
             className="grid place-items-center outline-none"
             ref={setReferenceElement}
           >
-            <Avatar className="!text-base">
+            <Avatar className="!text-base h-8 w-8 rounded-md">
               <AvatarImage src={"https://github.com/shadcn.png"} />
               <AvatarFallback>A</AvatarFallback>
               {/* <AvatarFallback>{currentUser?.display_name}</AvatarFallback> */}
@@ -315,13 +321,13 @@ export const WorkspaceSidebarDropdown = observer(({sidebarCollapsed}: any) => {
           >
             <Menu.Items
               className="absolute left-0 z-20 mt-1 flex w-52 origin-top-left  flex-col divide-y
-          divide-custom-sidebar-border-200 rounded-md border border-custom-sidebar-border-200 bg-custom-sidebar-background-100 px-1 py-2 text-xs shadow-lg outline-none"
+          divide-custom-sidebar-border-200 rounded-md border border-custom-sidebar-border-200 bg-[#191919] px-1 py-2 text-xs shadow-lg outline-none"
               ref={setPopperElement}
               style={styles.popper}
               {...attributes.popper}
             >
               <div className="flex flex-col gap-2.5 pb-2">
-                <span className="px-2 text-custom-sidebar-text-200">
+                <span className="px-2 text-[#a3a3a3]">
                   {/* {currentUser?.email} */}
                   john.doe@gmail.com
                 </span>
