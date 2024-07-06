@@ -1,10 +1,11 @@
 "use client";
+
+import { FC, ReactNode } from "react";
 import { observer } from "mobx-react-lite";
-import { ThemeProvider } from "next-themes";
+
 import dynamic from "next/dynamic";
 import Router from "next/router";
 import NProgress from "nprogress";
-import { FC, ReactNode } from "react";
 // hooks
 import { useUser } from "@/hooks/store";
 
@@ -12,6 +13,7 @@ import { SWRConfig } from "swr";
 // constants
 import { SWR_CONFIG } from "@/constants/swr-config";
 import { THEMES } from "@/constants/themes";
+import { ThemeProvider } from "@/context/providers";
 // dynamic imports
 const StoreWrapper = dynamic(() => import("@/lib/wrappers/store-wrapper"), {
   ssr: false,
@@ -33,7 +35,13 @@ export const AppProvider: FC<IAppProvider> = observer((props) => {
   const { currentUser } = useUser();
 
   return (
-    <ThemeProvider themes={THEMES} defaultTheme="system">
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="dark"
+      enableSystem
+      disableTransitionOnChange
+      themes={THEMES}
+    >
       <StoreWrapper>
         <SWRConfig value={SWR_CONFIG}>{children}</SWRConfig>
       </StoreWrapper>
