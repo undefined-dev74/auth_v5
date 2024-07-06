@@ -17,6 +17,10 @@ router
   .patch(auth('MANAGE_USERS'), validate(userValidation.updateUser), userController.updateUser)
   .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
 
+router
+  .route('/me/instance-admin')
+  .get(auth('getUsers'), userController.getCurrentUserInstanceAdminStatus);
+
 export default router;
 
 /**

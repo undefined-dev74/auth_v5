@@ -164,11 +164,32 @@ const deleteUserById = async (userId: number): Promise<User> => {
   return user;
 };
 
+/**
+ * Fetches the current user instance admin status
+ * @param {ObjectId} userId
+ * @returns Promise<boolean>
+ */
+const currentUserInstanceAdminStatus = async (
+  userId: number
+): Promise<{ is_instance_admin: boolean }> => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { role: true }
+  });
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  return { is_instance_admin: user.role === 'ADMIN' };
+};
+
 export default {
   createUser,
   queryUsers,
   getUserById,
   getUserByEmail,
   updateUserById,
-  deleteUserById
+  deleteUserById,
+  currentUserInstanceAdminStatus
 };

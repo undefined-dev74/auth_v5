@@ -3,6 +3,7 @@ import { userService } from '../services';
 import ApiError from '../utils/ApiError';
 import catchAsync from '../utils/catchAsync';
 import pick from '../utils/pick';
+import { InternalErrorResponse, SuccessResponse } from '../core/ApiResponse';
 
 const createUser = catchAsync(async (req, res) => {
   const { email, password, name, role } = req.body;
@@ -35,10 +36,26 @@ const deleteUser = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const getCurrentUserInstanceAdminStatus = catchAsync(async (req: any, res: any) => {
+  try {
+    const userId = req.user.id;
+    const { is_instance_admin } = await userService.currentUserInstanceAdminStatus(userId);
+
+    new SuccessResponse('User instance admin status fetched successfully', {
+      is_instance_admin
+    }).send(res);
+  } catch (error) {
+    console.error(error);
+
+    new InternalErrorResponse('Server error').send(res);
+  }
+});
+
 export default {
   createUser,
   getUsers,
   getUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getCurrentUserInstanceAdminStatus
 };
