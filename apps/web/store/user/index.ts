@@ -17,7 +17,9 @@ export interface IUserRootStore {
   isUserLoggedIn: boolean | null;
   updateCurrentUser: (data: Partial<IUser>) => Promise<IUser>;
   currentUser: IUser | null;
-
+  // fetch actions
+  fetchCurrentUser: () => Promise<IUser>;
+  fetchCurrentUserInstanceAdminStatus: () => Promise<boolean>;
   signOut: () => Promise<void>;
 }
 
@@ -32,7 +34,6 @@ export class UserRootStore implements IUserRootStore {
   currentUserSettings: IUserSettings | null = null;
 
   dashboardInfo: any = null;
-
   // root store
   rootStore;
   // services
@@ -52,9 +53,8 @@ export class UserRootStore implements IUserRootStore {
       // action
       fetchCurrentUser: action,
       fetchCurrentUserSettings: action,
-
+      fetchCurrentUserInstanceAdminStatus: action,
       updateCurrentUser: action,
-
       signOut: action,
     });
     this.rootStore = _rootStore;
@@ -85,6 +85,18 @@ export class UserRootStore implements IUserRootStore {
       throw error;
     }
   };
+
+  /**
+   * Fetches the current user instance admin status
+   * @returns Promise<boolean>
+   */
+  fetchCurrentUserInstanceAdminStatus = async () =>
+    await this.userService.currentUserInstanceAdminStatus().then((response) => {
+      runInAction(() => {
+        this.isUserInstanceAdmin = response.is_instance_admin;
+      });
+      return response.is_instance_admin;
+    });
 
   /**
    * Fetches the current user settings

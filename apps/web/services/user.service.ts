@@ -4,7 +4,7 @@ import {APIService} from "@/services/api.service";
 import { API_BASE_URL } from "@/utils/helpers";
 
 // types
-import { IUser, IUserProfileData, IUserSettings } from "@/types/user";
+import { IInstanceAdminStatus, IUser, IUserProfileData, IUserSettings } from "@/types/user";
 
 export class UserService extends APIService {
   constructor() {
@@ -13,6 +13,14 @@ export class UserService extends APIService {
 
   async currentUser(): Promise<IUser> {
     return this.get("/api/users/me/")
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response;
+      });
+  }
+
+  async currentUserInstanceAdminStatus(): Promise<IInstanceAdminStatus> {
+    return this.get("/api/users/me/instance-admin/")
       .then((response) => response?.data)
       .catch((error) => {
         throw error?.response;

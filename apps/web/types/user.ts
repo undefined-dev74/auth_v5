@@ -41,3 +41,7 @@ export interface IUserProfileData {
   pending_issues: number;
   subscribed_issues: number;
 }
+
+export interface IInstanceAdminStatus {
+  is_instance_admin: boolean;
+}
