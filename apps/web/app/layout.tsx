@@ -1,11 +1,12 @@
-import { Toaster } from "@/components/ui/sonner";
-import { StoreProvider } from "@/context/store-context";
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
+import { StoreProvider } from "@/context/store-context";
 import { auth } from "./api/auth/[...nextauth]";
-import "./globals.css";
+import { AppProvider } from "@/lib/app-provider";
 
+import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,17 +21,17 @@ export default async function RootLayout({
 }) {
   const session = await auth();
   return (
-    <StoreProvider>
-      {/* <AppProvider> */}
-      <SessionProvider session={session}>
-        <html lang="en">
-          <body className={inter.className}>
-            <Toaster />
-            {children}
-          </body>
-        </html>
-      </SessionProvider>
-      {/* </AppProvider> */}
-    </StoreProvider>
+    <html lang="en">
+      <body className={inter.className}>
+        <SessionProvider session={session}>
+          <StoreProvider>
+            <AppProvider>
+              <Toaster />
+              {children}
+            </AppProvider>
+          </StoreProvider>
+        </SessionProvider>
+      </body>
+    </html>
   );
 }

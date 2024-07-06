@@ -1,5 +1,10 @@
-const HomePage = () => {
-  return <div>HomePage</div>;
-};
+"use client"
+import React from 'react'
 
-export default HomePage;
+const Page = () => {
+  return (
+    <div>Page</div>
+  )
+}
+
+export default Page

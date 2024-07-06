@@ -1,7 +1,7 @@
 import { useUser } from "@/hooks/store/use-user";
 import { observer } from "mobx-react-lite";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { FC, ReactNode, useEffect, useState } from "react";
 // hooks
 
@@ -56,9 +56,9 @@ const StoreWrapper: FC<IStoreWrapper> = observer((props) => {
       );
   }, [currentUser, setTheme, dom]);
 
-  useEffect(() => {
-    if (!router.query) return;
-  }, [router.query]);
+  // useEffect(() => {
+  //   if (!router.query) return;
+  // }, [router.query]);
 
   return <>{children}</>;
 });

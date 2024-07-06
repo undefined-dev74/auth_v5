@@ -1,13 +1,13 @@
 import { Home, Zap } from "lucide-react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
-import ProfileSection from "./ProfileSection";
+import ProfileSection from "@/components/profile/ProfileSection";
 
 interface HeaderProps {
   isCollapsed: boolean;
 }
 
-const Header = ({ isCollapsed }: HeaderProps) => {
+export const Header = ({ isCollapsed }: HeaderProps) => {
   const resolvedTheme = useTheme();
   return (
     <div className="relative z-[15] flex h-[3.75rem] w-full flex-shrink-0 flex-row items-center justify-between gap-x-2 gap-y-4 bg-custom-sidebar-background-100 p-4">
@@ -64,4 +64,4 @@ const Header = ({ isCollapsed }: HeaderProps) => {
   );
 };
 
-export default Header;
+
