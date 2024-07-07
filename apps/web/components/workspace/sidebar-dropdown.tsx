@@ -63,15 +63,15 @@ const profileLinks = (workspaceSlug: string, userId: string) => [
     link: "/profile",
   },
 ];
-export const WorkspaceSidebarDropdown = observer(({sidebarCollapsed}: any) => {
+export const WorkspaceSidebarDropdown = observer(() => {
   // router
-  const query = useSearchParams()
+  const query = useSearchParams();
 
-  const router = useRouter()
-  const workspaceSlug  = query.get("workspaceSlug");
+  const router = useRouter();
+  const workspaceSlug = query.get("workspaceSlug");
   // store hooks
   const {
-    theme: {  toggleMobileSidebar },
+    theme: { toggleMobileSidebar, sidebarCollapsed },
   } = useApplication();
 
   const { currentUser, updateCurrentUser, signOut } = useUser();
@@ -115,7 +115,7 @@ export const WorkspaceSidebarDropdown = observer(({sidebarCollapsed}: any) => {
       toggleMobileSidebar();
     }
   };
-  console.log(sidebarCollapsed)
+ 
   const workspacesList = Object.values(workspaces ?? {});
   // TODO: fix workspaces list scroll
   return (

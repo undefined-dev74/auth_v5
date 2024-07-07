@@ -1,173 +1,170 @@
-import React, { useRef, useState } from "react";
-
-import { ModeToggle } from "@/components/mode-toggle";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { usePlatformOS } from "@/hooks/use-plateform-os";
-import { cn } from "@/lib/utils";
-import { Transition } from "@headlessui/react";
-import { FileText, GithubIcon, MoveLeft, Settings } from "lucide-react";
-import Link from "next/link";
-import { FaDiscord } from "react-icons/fa";
-// ui
-
-// helpers
-
+import { useRef, useState } from "react";
+import { observer } from "mobx-react-lite";
+import { ChevronUp, PenSquare, Search } from "lucide-react";
 // hooks
+import {
+  useApplication,
 
-const HELP_OPTIONS = [
-  {
-    name: "Documentation",
-    href: "https://docs.plane.so/",
-    Icon: FileText,
-  },
-  {
-    name: "Join our Discord",
-    href: "https://discord.com/invite/A92xrEGCge",
-    Icon: FaDiscord,
-  },
-  {
-    name: "Report a bug",
-    href: "https://github.com/makeplane/plane/issues/new/choose",
-    Icon: GithubIcon,
-  },
-];
+  useUser,
+} from "@/hooks/store";
+import useLocalStorage from "@/hooks/use-local-storage";
+// components
+// import { CreateUpdateDraftIssueModal } from "components/issues";
+// constants
+import { EUserWorkspaceRoles } from "@/constants/workspace";
+// import { EIssuesStoreType } from "constants/issue";
 
-export interface SidebarQuickActionProps {
-  setSidebarActive?: React.Dispatch<React.SetStateAction<any>>;
-  isCollapsed?: boolean;
-}
-
-export const SidebarQuickAction: React.FC<SidebarQuickActionProps> = ({
-  isCollapsed,
-  setSidebarActive,
-}) => {
-  // store hooks
-
-  const { isMobile } = usePlatformOS();
+export const WorkspaceSidebarQuickAction = observer(() => {
   // states
-  const [isNeedHelpOpen, setIsNeedHelpOpen] = useState(false);
-  // refs
-  const helpOptionsRef = useRef<HTMLDivElement | null>(null);
+  const [isDraftIssueModalOpen, setIsDraftIssueModalOpen] = useState(false);
 
+  const { theme: themeStore } =
+    useApplication();
+//   const { setTrackElement } = useEventTracker();
+//   const { joinedProjectIds } = useProject();
+//   const {
+//     membership: { currentWorkspaceRole },
+//   } = useUser();
+
+  const { storedValue, clearValue } = useLocalStorage<any>(
+    "draftedIssue",
+    JSON.stringify({})
+  );
+
+  //useState control for displaying draft issue button instead of group hover
+  const [isDraftButtonOpen, setIsDraftButtonOpen] = useState(false);
+
+  const timeoutRef = useRef<any>();
+
+  const isSidebarCollapsed = themeStore.sidebarCollapsed;
+
+  const isAuthorizedUser =
+    true ;
+    // currentWorkspaceRole >= EUserWorkspaceRoles.MEMBER;
+
+//   const disabled = joinedProjectIds.length === 0;
+  const disabled = false;
+
+  const onMouseEnter = () => {
+    //if renet before timout clear the timeout
+    timeoutRef?.current && clearTimeout(timeoutRef.current);
+    setIsDraftButtonOpen(true);
+  };
+
+  const onMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setIsDraftButtonOpen(false);
+    }, 300);
+  };
   return (
     <>
+      {/* <CreateUpdateDraftIssueModal
+        isOpen={isDraftIssueModalOpen}
+        handleClose={() => setIsDraftIssueModalOpen(false)}
+        prePopulateData={storedValue ? JSON.parse(storedValue) : {}}
+        onSubmit={() => {
+          localStorage.removeItem("draftedIssue");
+          clearValue();
+        }}
+        fieldsToShow={["all"]}
+      /> */}
       <div
-        className={cn(
-          "flex w-full items-center justify-between gap-1 self-baseline border-t border-custom-border-200 bg-custom-sidebar-background-100 px-4 h-14 flex-shrink-0",
-          {
-            "flex-col h-auto py-1.5": isCollapsed,
-          }
-        )}
+        className={`mt-4 flex w-full cursor-pointer items-center justify-between px-4 ${
+          isSidebarCollapsed ? "flex-col gap-1" : "gap-2"
+        }`}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
       >
-        {!isCollapsed && (
-          <Tooltip delayDuration={0}>
-            <TooltipTrigger asChild>
-              <div className="w-1/2 cursor-default rounded-md bg-green-500/10 px-2 py-1 text-center text-xs font-medium text-green-500 outline-none leading-6">
-                Community
-              </div>
-            </TooltipTrigger>
-          </Tooltip>
-        )}
-        <div
-          className={`flex items-center gap-1 ${
-            isCollapsed ? "flex-col justify-center" : "w-1/2 justify-evenly"
-          }`}
-        >
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <ModeToggle />
-            </TooltipTrigger>
-            <TooltipContent>Toggle Theme</TooltipContent>
-          </Tooltip>
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                type="button"
-                className={`grid place-items-center rounded-md p-1.5 text-custom-text-200 outline-none hover:bg-custom-background-90 hover:text-custom-text-100 ${
-                  isCollapsed ? "w-full" : ""
-                }`}
-                onClick={() => setIsNeedHelpOpen((prev) => !prev)}
-              >
-                <Settings className="h-3.5 w-3.5" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent>Settings</TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                type="button"
-                className="grid place-items-center rounded-md p-1.5 text-custom-text-200 outline-none hover:bg-custom-background-90 hover:text-custom-text-100 md:hidden"
-                onClick={() => setSidebarActive(false)}
-              >
-                <MoveLeft className="h-3.5 w-3.5" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent>Expand</TooltipContent>
-          </Tooltip>
-
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                type="button"
-                className={`hidden place-items-center rounded-md p-1.5 text-custom-text-200 outline-none hover:bg-custom-background-90 hover:text-custom-text-100 md:grid ${
-                  isCollapsed ? "w-full" : ""
-                }`}
-                onClick={() => setSidebarActive(true)}
-              >
-                <MoveLeft
-                  className={`h-3.5 w-3.5 duration-300 ${
-                    isCollapsed ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent>
-              {`${isCollapsed ? "Expand" : "Hide"}`}
-            </TooltipContent>
-          </Tooltip>
-        </div>
-
-        <div className="relative">
-          <Transition
-            show={isNeedHelpOpen}
-            enter="transition ease-out duration-100"
-            enterFrom="transform opacity-0 scale-95"
-            enterTo="transform opacity-100 scale-100"
-            leave="transition ease-in duration-75"
-            leaveFrom="transform opacity-100 scale-100"
-            leaveTo="transform opacity-0 scale-95"
+        {isAuthorizedUser && (
+          <div
+            className={`relative flex w-full cursor-pointer items-center justify-between gap-1 rounded px-2 ${
+              isSidebarCollapsed
+                ? "px-2 hover:bg-custom-sidebar-background-80"
+                : "border-[0.5px] border-custom-border-200 px-3 shadow-custom-sidebar-shadow-2xs"
+            }`}
           >
-            <div
-              className={`absolute bottom-2 min-w-[10rem] ${
-                isCollapsed ? "left-full" : "-left-[75px]"
-              } divide-y divide-custom-border-200 whitespace-nowrap rounded bg-custom-background-100 p-1 shadow-custom-shadow-xs`}
-              ref={helpOptionsRef}
+            <button
+              type="button"
+              className={`relative flex flex-shrink-0 flex-grow items-center gap-2 rounded py-1.5 outline-none ${
+                isSidebarCollapsed ? "justify-center" : ""
+              } ${disabled ? "cursor-not-allowed opacity-50" : ""}`}
+              onClick={() => {
+                // setTrackElement("APP_SIDEBAR_QUICK_ACTIONS");
+                // commandPaletteStore.toggleCreateIssueModal(
+                //   true,
+                //   EIssuesStoreType.PROJECT
+                // );
+              }}
+              disabled={disabled}
             >
-              <div className="space-y-1 pb-2">
-                {HELP_OPTIONS.map(({ name, Icon, href }) => (
-                  <Link href={href} key={name} target="_blank">
-                    <span className="flex items-center gap-x-2 rounded px-2 py-1 text-xs hover:bg-custom-background-80">
-                      <div className="grid flex-shrink-0 place-items-center">
-                        <Icon
-                          className="h-3.5 w-3.5 text-custom-text-200"
-                          size={14}
+              <PenSquare className="h-4 w-4 text-custom-sidebar-text-300" />
+              {!isSidebarCollapsed && (
+                <span className="text-sm font-medium">New Issue</span>
+              )}
+            </button>
+
+            {!disabled &&
+              storedValue &&
+              Object.keys(JSON.parse(storedValue)).length > 0 && (
+                <>
+                  <div
+                    className={`h-8 w-0.5 bg-custom-sidebar-background-80 ${
+                      isSidebarCollapsed ? "hidden" : "block"
+                    }`}
+                  />
+
+                  <button
+                    type="button"
+                    className={`ml-1.5 flex flex-shrink-0 items-center justify-center rounded py-1.5 ${
+                      isSidebarCollapsed ? "hidden" : "block"
+                    }`}
+                  >
+                    <ChevronUp
+                      className={`h-4 w-4 rotate-180 transform !text-custom-sidebar-text-300 transition-transform duration-300 ${
+                        isDraftButtonOpen ? "rotate-0" : ""
+                      }`}
+                    />
+                  </button>
+
+                  <div
+                    className={`fixed left-4 mt-0 h-10 w-[203px] pt-2 ${
+                      isSidebarCollapsed ? "top-[5.5rem]" : "top-24"
+                    } ${isDraftButtonOpen ? "block" : "hidden"}`}
+                  >
+                    <div className="h-full w-full">
+                      <button
+                        onClick={() => setIsDraftIssueModalOpen(true)}
+                        className="flex w-full flex-shrink-0 items-center rounded border-[0.5px] border-custom-border-300 bg-custom-background-100 px-3 py-[10px] text-sm text-custom-text-300 shadow"
+                      >
+                        <PenSquare
+                          size={16}
+                          className="mr-2 !text-lg !leading-4 text-custom-sidebar-text-300"
                         />
-                      </div>
-                      <span className="text-xs">{name}</span>
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </Transition>
-        </div>
+                        Last Drafted Issue
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+          </div>
+        )}
+
+        <button
+          className={`flex flex-shrink-0 items-center rounded p-2 gap-2 outline-none ${
+            isAuthorizedUser ? "justify-center" : "w-full"
+          } ${
+            isSidebarCollapsed
+              ? "hover:bg-custom-sidebar-background-80"
+              : "border-[0.5px] border-custom-border-200 shadow-custom-sidebar-shadow-2xs"
+          }`}
+        //   onClick={() => commandPaletteStore.toggleCommandPaletteModal(true)}
+        >
+          <Search className="h-4 w-4 text-custom-sidebar-text-300" />
+          {!isAuthorizedUser && !isSidebarCollapsed && (
+            <span className="text-xs font-medium">Open command menu</span>
+          )}
+        </button>
       </div>
     </>
   );
-};
+});
