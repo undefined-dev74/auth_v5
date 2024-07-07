@@ -2,13 +2,18 @@ import { Home, Zap } from "lucide-react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import ProfileSection from "@/components/profile/ProfileSection";
+import { useApplication } from "@/hooks/store";
+import { observe } from "mobx";
+import { observer } from "mobx-react-lite";
 
 interface HeaderProps {
   isCollapsed: boolean;
 }
 
-export const Header = ({ isCollapsed }: HeaderProps) => {
+export const Header = observer(() => {
   const resolvedTheme = useTheme();
+
+
   return (
     <div className="relative z-[15] flex h-[3.75rem] w-full flex-shrink-0 flex-row items-center justify-between gap-x-2 gap-y-4 bg-custom-sidebar-background-100 p-4">
       <div className="flex items-center gap-2 overflow-ellipsis whitespace-nowrap">
@@ -62,6 +67,4 @@ export const Header = ({ isCollapsed }: HeaderProps) => {
       </div>
     </div>
   );
-};
-
-
+});
