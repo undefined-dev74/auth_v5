@@ -51,18 +51,7 @@ const userLinks = (workspaceSlug: string, userId: string) => [
     icon: Settings,
   },
 ];
-const profileLinks = (workspaceSlug: string, userId: string) => [
-  {
-    name: "View profile",
-    icon: UserCircle2,
-    link: `/${workspaceSlug}/profile/${userId}`,
-  },
-  {
-    name: "Settings",
-    icon: Settings,
-    link: "/profile",
-  },
-];
+
 export const WorkspaceSidebarDropdown = observer(() => {
   // router
   const query = useSearchParams();
@@ -298,85 +287,7 @@ export const WorkspaceSidebarDropdown = observer(() => {
           </>
         )}
       </Menu>
-      {!sidebarCollapsed && (
-        <Menu as="div" className="relative flex-shrink-0">
-          <Menu.Button
-            className="grid place-items-center outline-none"
-            ref={setReferenceElement}
-          >
-            <Avatar className="!text-base h-8 w-8 rounded-md">
-              <AvatarImage src={"https://github.com/shadcn.png"} />
-              <AvatarFallback>A</AvatarFallback>
-              {/* <AvatarFallback>{currentUser?.display_name}</AvatarFallback> */}
-            </Avatar>
-          </Menu.Button>
-          <Transition
-            as={Fragment}
-            enter="transition ease-out duration-100"
-            enterFrom="transform opacity-0 scale-95"
-            enterTo="transform opacity-100 scale-100"
-            leave="transition ease-in duration-75"
-            leaveFrom="transform opacity-100 scale-100"
-            leaveTo="transform opacity-0 scale-95"
-          >
-            <Menu.Items
-              className="absolute left-0 z-20 mt-1 flex w-52 origin-top-left  flex-col divide-y
-          divide-custom-sidebar-border-200 rounded-md border border-custom-sidebar-border-200 bg-[#191919] px-1 py-2 text-xs shadow-lg outline-none"
-              ref={setPopperElement}
-              style={styles.popper}
-              {...attributes.popper}
-            >
-              <div className="flex flex-col gap-2.5 pb-2">
-                <span className="px-2 text-[#a3a3a3]">
-                  {/* {currentUser?.email} */}
-                  john.doe@gmail.com
-                </span>
-                {profileLinks(
-                  workspaceSlug?.toString() ?? "",
-                  currentUser?.id ?? ""
-                ).map((link, index) => (
-                  <Link
-                    key={index}
-                    href={link.link}
-                    onClick={() => {
-                      if (index == 0) handleItemClick();
-                    }}
-                  >
-                    <Menu.Item key={index} as="div">
-                      <span className="flex w-full items-center gap-2 rounded px-2 py-1 hover:bg-custom-sidebar-background-80">
-                        <link.icon className="h-4 w-4 stroke-[1.5]" />
-                        {link.name}
-                      </span>
-                    </Menu.Item>
-                  </Link>
-                ))}
-              </div>
-              {/* <div className={`pt-2 ${isUserInstanceAdmin ? "pb-2" : ""}`}>
-                <Menu.Item
-                  as="button"
-                  type="button"
-                  className="flex w-full items-center gap-2 rounded px-2 py-1 hover:bg-custom-sidebar-background-80"
-                  onClick={handleSignOut}
-                >
-                  <LogOut className="h-4 w-4 stroke-[1.5]" />
-                  Sign out
-                </Menu.Item>
-              </div>
-              {isUserInstanceAdmin && (
-                <div className="p-2 pb-0">
-                  <Link href="/god-mode">
-                    <Menu.Item as="button" type="button" className="w-full">
-                      <span className="flex w-full items-center justify-center rounded bg-custom-primary-100/20 px-2 py-1 text-sm font-medium text-custom-primary-100 hover:bg-custom-primary-100/30 hover:text-custom-primary-200">
-                        Enter God Mode
-                      </span>
-                    </Menu.Item>
-                  </Link>
-                </div>
-              )} */}
-            </Menu.Items>
-          </Transition>
-        </Menu>
-      )}
+     
     </div>
   );
 });
