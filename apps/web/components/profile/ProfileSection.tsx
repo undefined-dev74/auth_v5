@@ -1,21 +1,18 @@
-import { logout } from "@/actions/logout";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import { useApplication, useUser } from "@/hooks/store";
-import { Menu, Transition } from "@headlessui/react";
-import { Settings, UserCircle2 } from "lucide-react";
+import useToast from "@/hooks/use-toast";
+import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
+import { LogOut, Settings, UserCircle2 } from "lucide-react";
 import { observer } from "mobx-react-lite";
+import { useTheme } from "next-themes";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useState } from "react";
+
 import { usePopper } from "react-popper";
+import { mutate } from "swr";
 
 
 const profileLinks = (workspaceSlug: string, userId: string) => [
@@ -33,13 +30,18 @@ const profileLinks = (workspaceSlug: string, userId: string) => [
 
 const ProfileSection = observer(() => {
   const query = useSearchParams();
-
+  const router = useRouter()
   const workspaceSlug = query.get("workspaceSlug");
 
   // store hooks
   const {
     theme: { toggleMobileSidebar, sidebarCollapsed },
   } = useApplication();
+  const { setTheme } = useTheme();
+  
+  // hooks
+  const { setToastAlert } = useToast();
+  
 
   // popper-js refs
   const [referenceElement, setReferenceElement] =
@@ -68,20 +70,36 @@ const ProfileSection = observer(() => {
       toggleMobileSidebar();
     }
   };
+  
+  const handleSignOut = async () => {
+    await signOut()
+      .then(() => {
+        mutate("CURRENT_USER_DETAILS", null);
+        setTheme("system");
+        router.push("/");
+      })
+      .catch(() =>
+        setToastAlert({
+          type: "error",
+          title: "Error!",
+          message: "Failed to sign out. Please try again.",
+        })
+      );
+  };
 
   return (
     <>
       <Menu as="div" className="relative flex-shrink-0">
-        <Menu.Button
+        <MenuButton
           className="grid place-items-center outline-none"
           ref={setReferenceElement}
         >
           <Avatar className="!text-base h-8 w-8 rounded-md">
             <AvatarImage src={"https://github.com/shadcn.png"} />
-            <AvatarFallback>A</AvatarFallback>
-            {/* <AvatarFallback>{currentUser?.display_name}</AvatarFallback> */}
+          
+            <AvatarFallback>{currentUser?.display_name}</AvatarFallback>
           </Avatar>
-        </Menu.Button>
+        </MenuButton>
         <Transition
           as={Fragment}
           enter="transition ease-out duration-100"
@@ -91,7 +109,7 @@ const ProfileSection = observer(() => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items
+          <MenuItems
             className="absolute left-0 z-20 mt-1 flex w-52 origin-top-left  flex-col divide-y
           divide-custom-sidebar-border-200 rounded-md border border-custom-sidebar-border-200 bg-[#191919] px-1 py-2 text-xs shadow-lg outline-none"
             ref={setPopperElement}
@@ -114,17 +132,17 @@ const ProfileSection = observer(() => {
                     if (index == 0) handleItemClick();
                   }}
                 >
-                  <Menu.Item key={index} as="div">
+                  <MenuItem key={index} as="div">
                     <span className="flex w-full items-center gap-2 rounded px-2 py-1 hover:bg-custom-sidebar-background-80">
                       <link.icon className="h-4 w-4 stroke-[1.5]" />
                       {link.name}
                     </span>
-                  </Menu.Item>
+                  </MenuItem>
                 </Link>
               ))}
             </div>
-            {/* <div className={`pt-2 ${isUserInstanceAdmin ? "pb-2" : ""}`}>
-                <Menu.Item
+            <div className={`pt-2  pb-2}`}>
+                <MenuItem
                   as="button"
                   type="button"
                   className="flex w-full items-center gap-2 rounded px-2 py-1 hover:bg-custom-sidebar-background-80"
@@ -132,40 +150,12 @@ const ProfileSection = observer(() => {
                 >
                   <LogOut className="h-4 w-4 stroke-[1.5]" />
                   Sign out
-                </Menu.Item>
+                </MenuItem>
               </div>
-              {isUserInstanceAdmin && (
-                <div className="p-2 pb-0">
-                  <Link href="/god-mode">
-                    <Menu.Item as="button" type="button" className="w-full">
-                      <span className="flex w-full items-center justify-center rounded bg-custom-primary-100/20 px-2 py-1 text-sm font-medium text-custom-primary-100 hover:bg-custom-primary-100/30 hover:text-custom-primary-200">
-                        Enter God Mode
-                      </span>
-                    </Menu.Item>
-                  </Link>
-                </div>
-              )} */}
-          </Menu.Items>
+          </MenuItems>
         </Transition>
       </Menu>
     </>
-    // <DropdownMenu>
-    //   <DropdownMenuTrigger asChild>
-    //     <Avatar>
-    //       <AvatarImage src="/placeholder-user.jpg" alt="user@avatar" />
-    //     </Avatar>
-    //   </DropdownMenuTrigger>
-    //   <DropdownMenuContent align="end">
-    //     <DropdownMenuLabel>My Account</DropdownMenuLabel>
-    //     <DropdownMenuSeparator />
-    //     <DropdownMenuItem>
-    //       <Link href="/settings/profile">Settings</Link>
-    //     </DropdownMenuItem>
-    //     <DropdownMenuItem onClick={() => logout()}>
-    //       <Link href="#">Logout</Link>
-    //     </DropdownMenuItem>
-    //   </DropdownMenuContent>
-    // </DropdownMenu>
   );
 });
 

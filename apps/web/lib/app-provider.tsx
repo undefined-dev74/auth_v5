@@ -14,6 +14,7 @@ import { SWRConfig } from "swr";
 import { SWR_CONFIG } from "@/constants/swr-config";
 import { THEMES } from "@/constants/themes";
 import { ThemeProvider } from "@/context/providers";
+import { ToastContextProvider } from "@/context/toast-context";
 // dynamic imports
 const StoreWrapper = dynamic(() => import("@/lib/wrappers/store-wrapper"), {
   ssr: false,
@@ -42,9 +43,11 @@ export const AppProvider: FC<IAppProvider> = observer((props) => {
       disableTransitionOnChange
       themes={THEMES}
     >
-      <StoreWrapper>
-        <SWRConfig value={SWR_CONFIG}>{children}</SWRConfig>
-      </StoreWrapper>
+      <ToastContextProvider>
+        <StoreWrapper>
+          <SWRConfig value={SWR_CONFIG}>{children}</SWRConfig>
+        </StoreWrapper>
+      </ToastContextProvider>
     </ThemeProvider>
   );
 });
