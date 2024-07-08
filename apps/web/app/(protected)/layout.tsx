@@ -28,7 +28,9 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
   };
   const ref = useRef<HTMLDivElement>(null);
   return (
-    <div className="relative flex h-screen w-full overflow-hidden">
+    <div className="h-screen w-full overflow-hidden">
+      
+    <div className="flex h-full w-full overflow-hidden">
       <Sidebar
         setIsCollapsed={setIsCollapsed}
         isCollapsed={isCollapsed}
@@ -52,7 +54,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
         <div className="z-[15]">
           <div className="z-10 flex w-full items-center border-b border-custom-border-200">
             <div className="w-full">
-              <Header isCollapsed={isCollapsed} />
+              <Header />
             </div>
           </div>
         </div>
@@ -62,6 +64,7 @@ const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
           </div>
         </div>
       </main>
+    </div>
     </div>
   );
 };

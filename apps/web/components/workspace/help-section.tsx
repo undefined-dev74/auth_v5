@@ -53,7 +53,7 @@ export const WorkspaceHelpSection: React.FC<WorkspaceHelpSectionProps> = () => {
   // refs
   const helpOptionsRef = useRef<HTMLDivElement | null>(null);
   const isCollapsed = sidebarCollapsed || false;
-  console.log(isCollapsed)
+
   return (
     <>
       <div
@@ -147,7 +147,7 @@ export const WorkspaceHelpSection: React.FC<WorkspaceHelpSectionProps> = () => {
             <div
               className={`absolute bottom-2 min-w-[10rem] ${
                 isCollapsed ? "left-full" : "-left-[75px]"
-              } divide-y divide-custom-border-200 whitespace-nowrap rounded bg-custom-background-100 p-1 shadow-custom-shadow-xs`}
+              } divide-y divide-custom-border-200 whitespace-nowrap rounded bg-[#191919] p-1 shadow-custom-shadow-xs`}
               ref={helpOptionsRef}
             >
               <div className="space-y-1 pb-2">

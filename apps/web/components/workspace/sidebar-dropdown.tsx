@@ -3,7 +3,7 @@ import { Fragment, useState } from "react";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { Menu, Transition } from "@headlessui/react";
+import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
 import { mutate } from "swr";
 import {
   Check,
@@ -112,7 +112,7 @@ export const WorkspaceSidebarDropdown = observer(() => {
       <Menu as="div" className="relative h-full flex-grow truncate text-left">
         {({ open }) => (
           <>
-            <Menu.Button className="group/menu-button h-full w-full truncate rounded-md text-sm font-medium text-custom-sidebar-text-200 hover:bg-[#2c2c2c] focus:outline-none">
+            <MenuButton className="group/menu-button h-full w-full truncate rounded-md text-sm font-medium text-custom-sidebar-text-200 hover:bg-[#2c2c2c] focus:outline-none">
               <div
                 className={`flex items-center  gap-x-2 truncate rounded p-1 ${
                   sidebarCollapsed ? "justify-center" : "justify-between"
@@ -154,7 +154,7 @@ export const WorkspaceSidebarDropdown = observer(() => {
                   />
                 )}
               </div>
-            </Menu.Button>
+            </MenuButton>
             <Transition
               as={Fragment}
               enter="transition ease-out duration-100"
@@ -164,7 +164,7 @@ export const WorkspaceSidebarDropdown = observer(() => {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Items as={Fragment}>
+              <MenuItems as={Fragment}>
                 <div className="fixed left-4 z-20 mt-1 flex w-full max-w-[19rem] origin-top-left flex-col rounded-md border-[0.5px] border-custom-sidebar-border-300 bg-[#191919] shadow-custom-shadow-rg divide-y divide-custom-border-100 outline-none">
                   <div className="flex max-h-96 flex-col items-start justify-start gap-2 mb-2 px-4">
                     <h6 className="sticky top-0 z-10 h-full w-full bg-custom-background-100 pt-3 text-sm font-medium text-custom-sidebar-text-400">
@@ -184,7 +184,7 @@ export const WorkspaceSidebarDropdown = observer(() => {
                               }}
                               className="w-full"
                             >
-                              <Menu.Item
+                              <MenuItem
                                 as="div"
                                 className="flex items-center justify-between gap-1 rounded p-1 text-sm text-custom-sidebar-text-100 hover:bg-gray-80"
                               >
@@ -222,7 +222,7 @@ export const WorkspaceSidebarDropdown = observer(() => {
                                     <Check className="h-5 w-5 text-custom-sidebar-text-100" />
                                   </span>
                                 )}
-                              </Menu.Item>
+                              </MenuItem>
                             </Link>
                           ))}
                       </div>
@@ -237,7 +237,7 @@ export const WorkspaceSidebarDropdown = observer(() => {
                   </div>
                   <div className="flex w-full flex-col items-start justify-start gap-2 px-4 py-2 text-sm">
                     <Link href="/create-workspace" className="w-full">
-                      <Menu.Item
+                      <MenuItem
                         as="div"
                         className="flex items-center gap-2 rounded px-2 py-1 text-sm text-custom-sidebar-text-100 hover:bg-custom-sidebar-background-80 font-medium"
                       >
@@ -246,7 +246,7 @@ export const WorkspaceSidebarDropdown = observer(() => {
                           className="h-4 w-4 flex-shrink-0"
                         />
                         Create workspace
-                      </Menu.Item>
+                      </MenuItem>
                     </Link>
                     {userLinks(
                       workspaceSlug?.toString() ?? "",
@@ -260,18 +260,18 @@ export const WorkspaceSidebarDropdown = observer(() => {
                           if (index > 0) handleItemClick();
                         }}
                       >
-                        <Menu.Item
+                        <MenuItem
                           as="div"
                           className="flex items-center gap-2 rounded px-2 py-1 text-sm text-custom-sidebar-text-200 hover:bg-custom-sidebar-background-80 font-medium"
                         >
                           <link.icon className="h-4 w-4 flex-shrink-0" />
                           {link.name}
-                        </Menu.Item>
+                        </MenuItem>
                       </Link>
                     ))}
                   </div>
                   <div className="w-full px-4 py-2">
-                    <Menu.Item
+                    <MenuItem
                       as="button"
                       type="button"
                       className="w-full flex items-center gap-2 rounded px-2 py-1 text-sm text-red-600 hover:bg-custom-sidebar-background-80 font-medium"
@@ -279,10 +279,10 @@ export const WorkspaceSidebarDropdown = observer(() => {
                     >
                       <LogOut className="h-4 w-4 flex-shrink-0" />
                       Sign out
-                    </Menu.Item>
+                    </MenuItem>
                   </div>
                 </div>
-              </Menu.Items>
+              </MenuItems>
             </Transition>
           </>
         )}
