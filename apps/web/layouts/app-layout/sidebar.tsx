@@ -22,6 +22,7 @@ import {
 import { useApplication } from "@/hooks/store";
 import { observer } from "mobx-react-lite";
 import { DashboardSidebarMenu } from "@/components/dashboard";
+import { ProjectSidebarList } from "@/components/project/sidebar-list";
 
 interface SidebarProps {
   links?: {
@@ -56,6 +57,8 @@ export const Sidebar = observer(({ links }: SidebarProps) => {
         <WorkspaceSidebarQuickAction />
         <DashboardSidebarMenu />
         <WorkspaceSidebarMenu />
+        <ProjectSidebarList />
+
         <WorkspaceHelpSection />
       </div>
     </div>
