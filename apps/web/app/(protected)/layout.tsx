@@ -1,71 +1,30 @@
-"use client";
 
-import { ThemeProvider } from "@/components/providers";
-import {
-  Archive,
-  ArchiveX,
-  ArrowRightLeft,
-  BarChart2,
-  BellIcon,
-  HomeIcon,
-  Trash2,
-} from "lucide-react";
+import { SessionProvider } from "next-auth/react";
+import { Toaster } from "@/components/ui/sonner";
+import { StoreProvider } from "@/context/store-context";
 
-import { useRef, useState } from "react";
+import { AppProvider } from "@/lib/app-provider";
 
 
-import { Sidebar, Header } from "@/layouts/app-layout";
+import { auth } from "../api/auth/[...nextauth]";
+import { AppLayout } from "@/layouts/app-layout/layout";
 
 interface ProtectedLayoutProps {
   children: React.ReactNode;
 }
 
-const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+const ProtectedLayout = async ({ children }: ProtectedLayoutProps) => {
+  const session = await auth();
 
-  const handleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  };
-  const ref = useRef<HTMLDivElement>(null);
   return (
-    <div className="h-screen w-full overflow-hidden">
-      
-    <div className="flex h-full w-full overflow-hidden">
-      <Sidebar
-        setIsCollapsed={setIsCollapsed}
-        isCollapsed={isCollapsed}
-        links={[
-          {
-            title: "Home",
-            label: "",
-            icon: HomeIcon,
-            variant: "default",
-          },
-          
-          {
-            title: "Notifications",
-            label: "0",
-            icon: BellIcon,
-            variant: "ghost",
-          },
-        ]}
-      />
-      <main className="relative flex h-full w-full flex-col overflow-hidden bg-[#191919]">
-        <div className="z-[15]">
-          <div className="z-10 flex w-full items-center border-b border-custom-border-200">
-            <div className="w-full">
-              <Header />
-            </div>
-          </div>
-        </div>
-        <div className="h-full w-full overflow-hidden bg-[#202020]">
-          <div className="relative h-full w-full overflow-x-hidden overflow-y-scroll">
-            {children}
-          </div>
-        </div>
-      </main>
-    </div>
-    </div>
+    <SessionProvider session={session}>
+      <StoreProvider>
+        <AppProvider>
+          <Toaster />
+          <AppLayout>{children}</AppLayout>
+        </AppProvider>
+      </StoreProvider>
+    </SessionProvider>
   );
 };
 
