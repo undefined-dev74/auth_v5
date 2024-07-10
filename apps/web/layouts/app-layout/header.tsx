@@ -11,8 +11,7 @@ interface HeaderProps {
 }
 
 export const Header = observer(() => {
-  const resolvedTheme = useTheme();
-
+  const {resolvedTheme} = useTheme();
 
   return (
     <div className="relative z-[15] flex h-[3.75rem] w-full flex-shrink-0 flex-row items-center justify-between gap-x-2 gap-y-4 bg-custom-sidebar-background-100 p-4">

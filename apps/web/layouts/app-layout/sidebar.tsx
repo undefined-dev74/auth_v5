@@ -58,7 +58,6 @@ export const Sidebar = observer(({ links }: SidebarProps) => {
         <DashboardSidebarMenu />
         <WorkspaceSidebarMenu />
         <ProjectSidebarList />
-
         <WorkspaceHelpSection />
       </div>
     </div>
