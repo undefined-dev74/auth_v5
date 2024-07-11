@@ -46,7 +46,7 @@ export const AppLayout: FC<IAppLayout> = observer(({children} :IAppLayout) => {
   return (
     <>
       {/* <UserAuthWrapper> */}
-      <div className="h-screen w-full overflow-hidden">
+      <div className="h-full w-full overflow-hidden">
         <div className="flex h-full w-full overflow-hidden">
           <Sidebar />
           <div className="relative flex h-full w-full flex-col overflow-hidden bg-[#191919]">
