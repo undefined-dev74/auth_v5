@@ -1,13 +1,14 @@
 import { FC, ReactNode } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { observer } from "mobx-react-lite";
 import useSWR from "swr";
 import useSWRImmutable from "swr/immutable";
+
 // hooks
 import { useUser, useWorkspace } from "@/hooks/store";
+
 // ui
 import { Spinner } from "@/components/ui/circular-spinner";
-
 
 export interface IUserAuthWrapper {
   children: ReactNode;
@@ -15,21 +16,25 @@ export interface IUserAuthWrapper {
 
 export const UserAuthWrapper: FC<IUserAuthWrapper> = observer((props) => {
   const { children } = props;
+
   // store hooks
   const {
     currentUser,
     currentUserError,
     fetchCurrentUser,
     fetchCurrentUserInstanceAdminStatus,
-
   } = useUser();
   const { fetchWorkspaces } = useWorkspace();
+
   // router
   const router = useRouter();
+  const pathname = usePathname();
+
   // fetching user information
   useSWR("CURRENT_USER_DETAILS", () => fetchCurrentUser(), {
     shouldRetryOnError: false,
   });
+
   // fetching current user instance admin status
   useSWRImmutable(
     "CURRENT_USER_INSTANCE_ADMIN_STATUS",
@@ -55,7 +60,7 @@ export const UserAuthWrapper: FC<IUserAuthWrapper> = observer((props) => {
   }
 
   if (currentUserError) {
-    const redirectTo = router.asPath;
+    const redirectTo = pathname;
     router.push(`/?next_path=${redirectTo}`);
     return null;
   }
