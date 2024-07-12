@@ -11,6 +11,7 @@ router
   .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
   .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
 
+router.get('/me', auth('VIEW_PROFILE'), userController.getMe);
 router
   .route('/:userId')
   .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)
@@ -19,7 +20,7 @@ router
 
 router
   .route('/me/instance-admin')
-  .get(auth('getUsers'), userController.getCurrentUserInstanceAdminStatus);
+  .get(auth('VIEW_ADMIN_INSTANCE'), userController.getCurrentUserInstanceAdminStatus);
 
 export default router;
 

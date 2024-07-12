@@ -12,7 +12,7 @@ export class UserService extends APIService {
   }
 
   async currentUser(): Promise<IUser> {
-    return this.get("/api/users/me/")
+    return this.get("/users/me")
       .then((response) => response?.data)
       .catch((error) => {
         throw error?.response;
@@ -20,7 +20,7 @@ export class UserService extends APIService {
   }
 
   async currentUserInstanceAdminStatus(): Promise<IInstanceAdminStatus> {
-    return this.get("/api/users/me/instance-admin/")
+    return this.get("/users/me/instance-admin")
       .then((response) => response?.data)
       .catch((error) => {
         throw error?.response;
