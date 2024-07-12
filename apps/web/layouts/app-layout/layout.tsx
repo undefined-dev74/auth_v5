@@ -45,7 +45,7 @@ export const AppLayout: FC<IAppLayout> = observer(({children} :IAppLayout) => {
 
   return (
     <>
-      {/* <UserAuthWrapper> */}
+      <UserAuthWrapper>
       <div className="h-full w-full overflow-hidden">
         <div className="flex h-full w-full overflow-hidden">
           <Sidebar />
@@ -65,7 +65,7 @@ export const AppLayout: FC<IAppLayout> = observer(({children} :IAppLayout) => {
           </div>
         </div>
       </div>
-      {/* </UserAuthWrapper> */}
+      </UserAuthWrapper>
     </>
   );
 });

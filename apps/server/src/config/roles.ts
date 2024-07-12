@@ -9,7 +9,9 @@ const allRoles = {
     'DELETE_WORKSPACE',
     'CREATE_ISSUE',
     'CREATE_PROJECT',
-    'VERIFY_EMAIL'
+    'VERIFY_EMAIL',
+    'VIEW_PROFILE',
+    'VIEW_ADMIN_INSTANCE'
   ],
   [Role.ADMIN]: ['getUsers', 'MANAGE_USERS', 'CREATE_ISSUE']
 };

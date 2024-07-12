@@ -26,6 +26,29 @@ const getUser = catchAsync(async (req, res) => {
   res.send(user);
 });
 
+const getMe = catchAsync(async (req: any, res: any) => {
+  try {
+    const userId = req.user.id;
+    const user = await userService.getUserById(userId);
+
+    if (!user) {
+      throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+    }
+
+    new SuccessResponse('Current user fetched successfully', { user }).send(res);
+  } catch (error) {
+    console.error('Error in getMe:', error);
+
+    if (error instanceof ApiError) {
+      // If it's an ApiError, create and send an ErrorResponse
+      new ApiError(error.statusCode, error.message);
+    } else {
+      // For any other type of error, send an InternalErrorResponse
+      new InternalErrorResponse('An error occurred while fetching the current user').send(res);
+    }
+  }
+});
+
 const updateUser = catchAsync(async (req, res) => {
   const user = await userService.updateUserById(req.params.userId, req.body);
   res.send(user);
@@ -55,6 +78,7 @@ export default {
   createUser,
   getUsers,
   getUser,
+  getMe,
   updateUser,
   deleteUser,
   getCurrentUserInstanceAdminStatus
