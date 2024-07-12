@@ -11,7 +11,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useSession } from "next-auth/react";
+
 
 import {
   WorkspaceHelpSection,
@@ -38,7 +38,6 @@ export const Sidebar = observer(({ links }: SidebarProps) => {
     theme: { sidebarCollapsed, toggleSidebar, toggleMobileSidebar },
   } = useApplication();
 
-  const { data: session, status } = useSession();
 
   return (
     <div
