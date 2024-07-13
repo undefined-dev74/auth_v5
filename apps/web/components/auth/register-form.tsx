@@ -1,5 +1,5 @@
 "use client";
-import { register } from "@/actions/register";
+
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { Button } from "@/components/ui/button";
