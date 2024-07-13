@@ -46,7 +46,7 @@ const ProfileSection = observer(() => {
   // popper-js refs
   const [referenceElement, setReferenceElement] =
     useState<HTMLButtonElement | null>(null);
-  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
+  const [popperElement, setPopperElement] = useState<HTMLElement | null>(
     null
   );
 

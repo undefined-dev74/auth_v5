@@ -25,6 +25,7 @@ export const AppLayout: FC<IAppLayout> = observer(({children} :IAppLayout) => {
   const projectId = "b16907a9-a55f-4f5b-b05e-7065a0869ba6";
 
   // const { issues, issuesFilter } = useIssues(EIssuesStoreType.ARCHIVED);
+  const issuesFilter : any = '';
 
   useSWR(
     workspaceSlug && projectId

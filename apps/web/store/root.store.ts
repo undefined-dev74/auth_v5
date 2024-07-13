@@ -11,6 +11,9 @@ export class RootStore {
   app: IAppRootStore;
   workspaceRoot: IWorkspaceRootStore;
   eventTracker: IEventTrackerStore;
+  //FIXME: fix this assignment with actual root store
+  projectRoot: any
+  state: any
 
   constructor() {
     this.user = new UserRootStore(this);
