@@ -1,5 +1,5 @@
 "use client";
-import { reset } from "@/actions/reset";
+
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { Button } from "@/components/ui/button";
@@ -36,11 +36,11 @@ export const ResetForm = () => {
     setError("");
     setSuccess("");
     setTransition(() => {
-      reset(values).then((data) => {
-        setError(data?.error);
+      // reset(values).then((data) => {
+      //   setError(data?.error);
 
-        setSuccess(data?.success);
-      });
+      //   setSuccess(data?.success);
+      // });
     });
   };
   return (

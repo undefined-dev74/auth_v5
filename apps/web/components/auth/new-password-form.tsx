@@ -1,5 +1,5 @@
 "use client";
-import { newPassword } from "@/actions/new-password";
+
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { Button } from "@/components/ui/button";
@@ -41,11 +41,11 @@ export const NewPasswordForm = () => {
     setError("");
     setSuccess("");
     setTransition(() => {
-      newPassword(values, token).then((data) => {
-        setError(data?.error);
+      // newPassword(values, token).then((data) => {
+      //   setError(data?.error);
 
-        setSuccess(data?.success);
-      });
+      //   setSuccess(data?.success);
+      // });
     });
   };
   return (

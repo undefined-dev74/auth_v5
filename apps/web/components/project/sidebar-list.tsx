@@ -1,5 +1,5 @@
 import { useState, FC, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   DragDropContext,
   Draggable,
@@ -28,6 +28,7 @@ export const ProjectSidebarList: FC = observer(() => {
   const [isFavoriteProjectCreate, setIsFavoriteProjectCreate] = useState(false);
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false); // scroll animation state
+   const pathname = usePathname();
   // refs
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -47,7 +48,7 @@ export const ProjectSidebarList: FC = observer(() => {
 //   } = useProject();
   // router
   const router = useRouter();
-//   const { workspaceSlug } = router.query;
+  const { workspaceSlug } = pathname as any;
   // toast
   const { setToastAlert } = useToast();
 
@@ -74,21 +75,21 @@ export const ProjectSidebarList: FC = observer(() => {
 
     if (source.index === destination.index) return;
 
-    const updatedSortOrder = orderProjectsWithSortOrder(
-      source.index,
-      destination.index,
-      draggableId
-    );
+    // const updatedSortOrder = orderProjectsWithSortOrder(
+    //   source.index,
+    //   destination.index,
+    //   draggableId
+    // );
 
-    updateProjectView(workspaceSlug.toString(), draggableId, {
-      sort_order: updatedSortOrder,
-    }).catch(() => {
-      setToastAlert({
-        type: "error",
-        title: "Error!",
-        message: "Something went wrong. Please try again.",
-      });
-    });
+    // updateProjectView(workspaceSlug.toString(), draggableId, {
+    //   sort_order: updatedSortOrder,
+    // }).catch(() => {
+    //   setToastAlert({
+    //     type: "error",
+    //     title: "Error!",
+    //     message: "Something went wrong. Please try again.",
+    //   });
+    // });
   };
 
   const isCollapsed = sidebarCollapsed || false;

@@ -1,5 +1,5 @@
 "use client";
-import { register } from "@/actions/register";
+
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { Button } from "@/components/ui/button";
@@ -38,11 +38,11 @@ export const RegisterForm = () => {
     setError("");
     setSuccess("");
     setTransition(() => {
-      register(values).then((data) => {
-        console.log("DATA", data);
-        setError(data.error);
-        setSuccess(data.success);
-      });
+      // register(values).then((data) => {
+      //   console.log("DATA", data);
+      //   setError(data.error);
+      //   setSuccess(data.success);
+      // });
     });
   };
   return (

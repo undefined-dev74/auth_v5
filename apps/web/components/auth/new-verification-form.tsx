@@ -1,6 +1,6 @@
 "use client";
 
-import { newVerification } from "@/actions/new-verification";
+
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";
@@ -22,12 +22,12 @@ const NewVerificationForm = () => {
       return;
     }
 
-    newVerification(token)
-      .then((data) => {
-        setSuccess(data?.success);
-        setError(data?.error);
-      })
-      .catch((error) => setError("Something went wrong!"));
+    // newVerification(token)
+    //   .then((data) => {
+    //     setSuccess(data?.success);
+    //     setError(data?.error);
+    //   })
+    //   .catch((error) => setError("Something went wrong!"));
   }, [token, error, success]);
 
   useEffect(() => {

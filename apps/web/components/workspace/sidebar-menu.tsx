@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
 
@@ -41,6 +41,7 @@ export const WorkspaceSidebarMenu = observer(() => {
   const { theme: themeStore } = useApplication();
   const { captureEvent } = useEventTracker();
   const router = useRouter();
+   const pathname = usePathname();
   const searchParams = useSearchParams();
   const workspaceSlug = searchParams.get("workspaceSlug") || "";
 
@@ -65,12 +66,12 @@ export const WorkspaceSidebarMenu = observer(() => {
                   onClick={() => handleLinkClick(link.key)}
                   className={cn(
                     "flex h-9 w-9 items-center justify-center rounded-md",
-                    link.highlight(router.pathname, `/${workspaceSlug}`)
+                    link.highlight(pathname, `/${workspaceSlug}`)
                       ? "bg-custom-primary-100/10 text-custom-primary-100"
                       : "text-custom-sidebar-text-200 hover:bg-custom-sidebar-background-80 focus:bg-custom-sidebar-background-80"
                   )}
                 >
-                  <link.Icon className="h-4 w-4" />
+                  <link.Icon />
                   <span className="sr-only">{link.label}</span>
                 </Link>
               </TooltipTrigger>
@@ -84,12 +85,12 @@ export const WorkspaceSidebarMenu = observer(() => {
               onClick={() => handleLinkClick(link.key)}
               className={cn(
                 "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium",
-                link.highlight(router.pathname, `/${workspaceSlug}`)
+                link.highlight(pathname, `/${workspaceSlug}`)
                   ? "bg-custom-primary-100/10 text-custom-primary-100"
                   : "text-custom-sidebar-text-200 hover:bg-custom-sidebar-background-80 focus:bg-custom-sidebar-background-80"
               )}
             >
-              <link.Icon className="h-4 w-4" />
+              <link.Icon />
               {link.label}
             </Link>
           )}

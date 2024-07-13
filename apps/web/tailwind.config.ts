@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+//@ts-ignore
 import { default as flattenColorPalette } from "tailwindcss/lib/util/flattenColorPalette";
 
 const config = {

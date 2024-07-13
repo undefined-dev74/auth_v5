@@ -20,6 +20,7 @@ export interface IUser {
   updated_at: Date;
   username: string;
   user_timezone: string;
+  last_workspace_id: string
 }
 
 export interface IUserSettings {

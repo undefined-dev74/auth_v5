@@ -1,5 +1,4 @@
 import cron from 'node-cron';
-import { updateDailyEarnings } from '../services/investment.service';
 
 // Schedule the cron job to run daily at midnight
 const cronSchedule = '* * * * *'; // Minute: 0, Hour: 1, Every Day
@@ -8,7 +7,7 @@ const cronJob = cron.schedule(
   async () => {
     console.log('Running daily earnings update...');
     try {
-      await updateDailyEarnings();
+      // await updateDailyEarnings();
       console.log('Daily earnings update completed successfully');
     } catch (error) {
       console.error('Error updating daily earnings:', error);
