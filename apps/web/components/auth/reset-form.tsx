@@ -36,11 +36,11 @@ export const ResetForm = () => {
     setError("");
     setSuccess("");
     setTransition(() => {
-      reset(values).then((data) => {
-        setError(data?.error);
+      // reset(values).then((data) => {
+      //   setError(data?.error);
 
-        setSuccess(data?.success);
-      });
+      //   setSuccess(data?.success);
+      // });
     });
   };
   return (

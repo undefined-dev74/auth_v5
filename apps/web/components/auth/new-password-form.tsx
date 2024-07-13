@@ -41,11 +41,11 @@ export const NewPasswordForm = () => {
     setError("");
     setSuccess("");
     setTransition(() => {
-      newPassword(values, token).then((data) => {
-        setError(data?.error);
+      // newPassword(values, token).then((data) => {
+      //   setError(data?.error);
 
-        setSuccess(data?.success);
-      });
+      //   setSuccess(data?.success);
+      // });
     });
   };
   return (

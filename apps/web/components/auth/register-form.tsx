@@ -38,11 +38,11 @@ export const RegisterForm = () => {
     setError("");
     setSuccess("");
     setTransition(() => {
-      register(values).then((data) => {
-        console.log("DATA", data);
-        setError(data.error);
-        setSuccess(data.success);
-      });
+      // register(values).then((data) => {
+      //   console.log("DATA", data);
+      //   setError(data.error);
+      //   setSuccess(data.success);
+      // });
     });
   };
   return (
