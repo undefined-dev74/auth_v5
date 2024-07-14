@@ -1,5 +1,5 @@
 "use client";
-import { login } from "@/actions/login";
+
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,10 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import CardWrapper from "./card-wrapper";
+import { AuthService } from "@/services/auth.service";
+import useToast from "@/hooks/use-toast";
+
+const authService = new AuthService();
 
 export const LoginForm = () => {
   const searchParams = useSearchParams();
@@ -32,6 +36,9 @@ export const LoginForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
 
+  // toast alert
+  const { setToastAlert } = useToast();
+
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -40,28 +47,21 @@ export const LoginForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
     console.log(values);
     setError("");
     setSuccess("");
-    setTransition(() => {
-      login(values)
-        .then((data) => {
-          console.log("DATA", data);
-          if (data?.error) {
-            form.reset();
-            setError(data?.error);
-          }
-          if (data?.success) {
-            form.reset();
-            setSuccess(data?.success);
-          }
-          if (data?.twoFactor) {
-            setShowTwoFactor(true);
-          }
+
+    await authService
+      .passwordSignIn(values)
+      .then((res) => console.log(res))
+      .catch((err) =>
+        setToastAlert({
+          type: "error",
+          title: "Error!",
+          message: err?.error ?? "Something went wrong. Please try again.",
         })
-        .catch(() => setError("Something went wrong!"));
-    });
+      );
   };
   return (
     <CardWrapper
