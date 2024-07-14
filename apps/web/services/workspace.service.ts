@@ -1,6 +1,6 @@
 // services
 import { APIService } from "@/services/api.service";
-import { IWorkspace } from "@/types/workspace";
+import { IWorkspace } from "@repo/types";
 // helpers
 import { API_BASE_URL } from "@/utils/helpers";
 // types

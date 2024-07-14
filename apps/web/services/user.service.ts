@@ -9,7 +9,7 @@ import {
   IUser,
   IUserProfileData,
   IUserSettings,
-} from "@/types/user";
+} from "@repo/types";
 
 export class UserService extends APIService {
   constructor() {

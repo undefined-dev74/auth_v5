@@ -1,6 +1,8 @@
 {
-  "name": "@example/types",
+  "name": "@repo/types",
   "main": "./src/index.d.ts",
+  "types": "./src/index.d.ts",
+  "source": "./src/index.d.ts",
   "version": "1.0.0",
   "private": true,
   "license": "MIT",

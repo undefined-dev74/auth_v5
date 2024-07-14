@@ -404,6 +404,9 @@ importers:
         specifier: ^3.22.4
         version: 3.23.8
     devDependencies:
+      '@repo/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@types/bcryptjs':
         specifier: ^2.4.6
         version: 2.4.6
@@ -525,6 +528,9 @@ importers:
         specifier: workspace:*
         version: link:../logger
     devDependencies:
+      '@repo/types':
+        specifier: workspace:*
+        version: link:../types
       eslint-config-example:
         specifier: workspace:*
         version: link:../eslint

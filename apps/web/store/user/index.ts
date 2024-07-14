@@ -6,7 +6,7 @@ import { UserService } from "@/services/user.service";
 // interfaces
 
 // store
-import { IUser, IUserSettings } from "@/types/user";
+import { IUser, IUserSettings } from "@repo/types";
 import { RootStore } from "../root.store";
 
 export interface IUserRootStore {

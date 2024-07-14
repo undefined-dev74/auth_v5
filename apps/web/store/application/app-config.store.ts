@@ -1,4 +1,4 @@
-import { IAppConfig } from "@/types/appConfig";
+import { IAppConfig } from "@repo/types";
 import { observable, action, makeObservable, runInAction } from "mobx";
 // types
 
