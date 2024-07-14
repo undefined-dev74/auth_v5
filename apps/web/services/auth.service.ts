@@ -6,7 +6,7 @@ import {APIService} from "@/services/api.service";
 // helpers
 
 // types
-
+console.log(API_BASE_URL)
 export class AuthService extends APIService {
   constructor() {
     super(API_BASE_URL);
@@ -15,10 +15,11 @@ export class AuthService extends APIService {
   async passwordSignIn(
     data: IPasswordSignInData
   ): Promise<ILoginTokenResponse> {
-    return this.post("/api/sign-in/", data, { headers: {} })
+    return this.post("/auth/login", data, { headers: {} })
       .then((response) => {
-        this.setAccessToken(response?.data?.access_token);
-        this.setRefreshToken(response?.data?.refresh_token);
+        console.log(response)
+        this.setAccessToken(response?.data.data.tokens?.access.token);
+        this.setRefreshToken(response?.data.data?.tokens.refresh.token);
         return response?.data;
       })
       .catch((error) => {
