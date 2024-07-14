@@ -2,11 +2,7 @@ import { useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { ChevronUp, PenSquare, Search } from "lucide-react";
 // hooks
-import {
-  useApplication,
-
-  useUser,
-} from "@/hooks/store";
+import { useApplication, useUser } from "@/hooks/store";
 import useLocalStorage from "@/hooks/use-local-storage";
 // components
 // import { CreateUpdateDraftIssueModal } from "components/issues";
@@ -18,13 +14,12 @@ export const WorkspaceSidebarQuickAction = observer(() => {
   // states
   const [isDraftIssueModalOpen, setIsDraftIssueModalOpen] = useState(false);
 
-  const { theme: themeStore } =
-    useApplication();
-//   const { setTrackElement } = useEventTracker();
-//   const { joinedProjectIds } = useProject();
-//   const {
-//     membership: { currentWorkspaceRole },
-//   } = useUser();
+  const { theme: themeStore } = useApplication();
+  //   const { setTrackElement } = useEventTracker();
+  //   const { joinedProjectIds } = useProject();
+  //   const {
+  //     membership: { currentWorkspaceRole },
+  //   } = useUser();
 
   const { storedValue, clearValue } = useLocalStorage<any>(
     "draftedIssue",
@@ -38,11 +33,10 @@ export const WorkspaceSidebarQuickAction = observer(() => {
 
   const isSidebarCollapsed = themeStore.sidebarCollapsed;
 
-  const isAuthorizedUser =
-    true ;
-    // currentWorkspaceRole >= EUserWorkspaceRoles.MEMBER;
+  const isAuthorizedUser = true;
+  // currentWorkspaceRole >= EUserWorkspaceRoles.MEMBER;
 
-//   const disabled = joinedProjectIds.length === 0;
+  //   const disabled = joinedProjectIds.length === 0;
   const disabled = false;
 
   const onMouseEnter = () => {
@@ -157,7 +151,7 @@ export const WorkspaceSidebarQuickAction = observer(() => {
               ? "hover:bg-custom-sidebar-background-80"
               : "border-[0.5px] border-custom-border-200 shadow-custom-sidebar-shadow-2xs"
           }`}
-        //   onClick={() => commandPaletteStore.toggleCommandPaletteModal(true)}
+          //   onClick={() => commandPaletteStore.toggleCommandPaletteModal(true)}
         >
           <Search className="h-4 w-4 text-custom-sidebar-text-300" />
           {!isAuthorizedUser && !isSidebarCollapsed && (

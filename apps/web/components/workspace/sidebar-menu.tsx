@@ -41,7 +41,7 @@ export const WorkspaceSidebarMenu = observer(() => {
   const { theme: themeStore } = useApplication();
   const { captureEvent } = useEventTracker();
   const router = useRouter();
-   const pathname = usePathname();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const workspaceSlug = searchParams.get("workspaceSlug") || "";
 
@@ -55,7 +55,11 @@ export const WorkspaceSidebarMenu = observer(() => {
   };
 
   return (
-    <nav className={`grid gap-1 px-2 sm:py-2 group-[[data-collapsed=true]]:justify-center ${themeStore.sidebarCollapsed ? "justify-center": ""} group-[[data-collapsed=true]]:px-2`}>
+    <nav
+      className={`grid gap-1 px-2 sm:py-2 group-[[data-collapsed=true]]:justify-center ${
+        themeStore.sidebarCollapsed ? "justify-center" : ""
+      } group-[[data-collapsed=true]]:px-2`}
+    >
       {SIDEBAR_MENU_ITEMS.map((link: SidebarMenuItem, index) => (
         <React.Fragment key={index}>
           {themeStore.sidebarCollapsed ? (

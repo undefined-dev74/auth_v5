@@ -12,15 +12,14 @@ export class RootStore {
   workspaceRoot: IWorkspaceRootStore;
   eventTracker: IEventTrackerStore;
   //FIXME: fix this assignment with actual root store
-  projectRoot: any
-  state: any
+  projectRoot: any;
+  state: any;
 
   constructor() {
     this.user = new UserRootStore(this);
     this.app = new AppRootStore(this);
     this.workspaceRoot = new WorkspaceRootStore(this);
     this.eventTracker = new EventTrackerStore(this);
-    
   }
 
   resetOnSignout() {

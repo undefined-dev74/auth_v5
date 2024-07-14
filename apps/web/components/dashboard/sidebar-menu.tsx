@@ -1,12 +1,12 @@
-import { useApplication } from '@/hooks/store';
-import { observer } from 'mobx-react-lite'
-import React from 'react'
-import { Tooltip, TooltipTrigger } from '../ui/tooltip';
-import Link from 'next/link';
-import { buttonVariants } from '../ui/button';
-import { cn } from '@/lib/utils';
-import { TooltipContent } from '@radix-ui/react-tooltip';
-import { BellIcon, HomeIcon, LucideIcon } from 'lucide-react';
+import { useApplication } from "@/hooks/store";
+import { observer } from "mobx-react-lite";
+import React from "react";
+import { Tooltip, TooltipTrigger } from "../ui/tooltip";
+import Link from "next/link";
+import { buttonVariants } from "../ui/button";
+import { cn } from "@/lib/utils";
+import { TooltipContent } from "@radix-ui/react-tooltip";
+import { BellIcon, HomeIcon, LucideIcon } from "lucide-react";
 
 interface DashboardMenuItem {
   title: string;
@@ -34,16 +34,16 @@ const DASHBOARD_MENU_ITEMS: DashboardMenu = {
       variant: "ghost",
     },
   ],
-}
+};
 
 export const DashboardSidebarMenu = observer(() => {
   // store hooks
   const {
     theme: { sidebarCollapsed, toggleSidebar, toggleMobileSidebar },
   } = useApplication();
-  
+
   const isCollapsed = sidebarCollapsed || false;
-  
+
   return (
     <nav className="grid gap-1 px-2 sm:py-2 group-[[data-collapsed=true]]:justify-center  group-[[data-collapsed=true]]:px-2 ">
       {DASHBOARD_MENU_ITEMS.links.map((link, index) =>
@@ -101,5 +101,4 @@ export const DashboardSidebarMenu = observer(() => {
       )}
     </nav>
   );
-})
-
+});

@@ -1,4 +1,10 @@
-import { action, computed, observable, makeObservable, runInAction } from "mobx";
+import {
+  action,
+  computed,
+  observable,
+  makeObservable,
+  runInAction,
+} from "mobx";
 import { RootStore } from "../root.store";
 import set from "lodash/set";
 // types
@@ -23,7 +29,10 @@ export interface IWorkspaceRootStore {
   fetchWorkspaces: () => Promise<IWorkspace[]>;
   // crud actions
   createWorkspace: (data: Partial<IWorkspace>) => Promise<IWorkspace>;
-  updateWorkspace: (workspaceSlug: string, data: Partial<IWorkspace>) => Promise<IWorkspace>;
+  updateWorkspace: (
+    workspaceSlug: string,
+    data: Partial<IWorkspace>
+  ) => Promise<IWorkspace>;
   deleteWorkspace: (workspaceSlug: string) => Promise<void>;
   // sub-stores
   apiToken: IApiTokenStore;
@@ -64,7 +73,7 @@ export class WorkspaceRootStore implements IWorkspaceRootStore {
     this.router = _rootStore.app.router;
     this.user = _rootStore.user;
     // sub-stores
-   
+
     this.apiToken = new ApiTokenStore(_rootStore);
   }
 
@@ -74,7 +83,9 @@ export class WorkspaceRootStore implements IWorkspaceRootStore {
   get currentWorkspace() {
     const workspaceSlug = this.router.workspaceSlug;
     if (!workspaceSlug) return null;
-    const workspaceDetails = Object.values(this.workspaces ?? {})?.find((w) => w.slug === workspaceSlug);
+    const workspaceDetails = Object.values(this.workspaces ?? {})?.find(
+      (w) => w.slug === workspaceSlug
+    );
     return workspaceDetails || null;
   }
 
@@ -85,7 +96,9 @@ export class WorkspaceRootStore implements IWorkspaceRootStore {
     if (!this.workspaces) return null;
     const user = this.user.currentUser;
     if (!user) return null;
-    const userWorkspaces = Object.values(this.workspaces ?? {})?.filter((w) => w.created_by === user?.id);
+    const userWorkspaces = Object.values(this.workspaces ?? {})?.filter(
+      (w) => w.created_by === user?.id
+    );
     return userWorkspaces || null;
   }
 
@@ -94,13 +107,16 @@ export class WorkspaceRootStore implements IWorkspaceRootStore {
    * @param workspaceSlug
    */
   getWorkspaceBySlug = (workspaceSlug: string) =>
-    Object.values(this.workspaces ?? {})?.find((w) => w.slug == workspaceSlug) || null;
+    Object.values(this.workspaces ?? {})?.find(
+      (w) => w.slug == workspaceSlug
+    ) || null;
 
   /**
    * get workspace info from the array of workspaces in the store using workspace id
    * @param workspaceId
    */
-  getWorkspaceById = (workspaceId: string) => this.workspaces?.[workspaceId] || null; // TODO: use undefined instead of null
+  getWorkspaceById = (workspaceId: string) =>
+    this.workspaces?.[workspaceId] || null; // TODO: use undefined instead of null
 
   /**
    * fetch user workspaces from API
@@ -133,12 +149,14 @@ export class WorkspaceRootStore implements IWorkspaceRootStore {
    * @param data
    */
   updateWorkspace = async (workspaceSlug: string, data: Partial<IWorkspace>) =>
-    await this.workspaceService.updateWorkspace(workspaceSlug, data).then((response) => {
-      runInAction(() => {
-        set(this.workspaces, response.id, response);
+    await this.workspaceService
+      .updateWorkspace(workspaceSlug, data)
+      .then((response) => {
+        runInAction(() => {
+          set(this.workspaces, response.id, response);
+        });
+        return response;
       });
-      return response;
-    });
 
   /**
    * delete workspace using the workspace slug

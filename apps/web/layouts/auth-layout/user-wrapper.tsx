@@ -48,7 +48,7 @@ export const UserAuthWrapper: FC<IUserAuthWrapper> = observer((props) => {
   useSWR("USER_WORKSPACES_LIST", () => fetchWorkspaces(), {
     shouldRetryOnError: false,
   });
-  console.log(currentUser)
+  console.log(currentUser);
 
   if (!currentUser && !currentUserError) {
     return (

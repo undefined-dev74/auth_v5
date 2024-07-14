@@ -3,7 +3,13 @@ import { Fragment, useState } from "react";
 import { observer } from "mobx-react-lite";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+  Transition,
+} from "@headlessui/react";
 import { mutate } from "swr";
 import {
   Check,
@@ -104,7 +110,7 @@ export const WorkspaceSidebarDropdown = observer(() => {
       toggleMobileSidebar();
     }
   };
- 
+
   const workspacesList = Object.values(workspaces ?? {});
   // TODO: fix workspaces list scroll
   return (
@@ -287,7 +293,6 @@ export const WorkspaceSidebarDropdown = observer(() => {
           </>
         )}
       </Menu>
-     
     </div>
   );
 });
