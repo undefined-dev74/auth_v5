@@ -8,37 +8,33 @@ Thank you for your interest in contributing to the prisma-express-typescript-boi
 
 2. **Clone the Repository**: Clone your forked repository to your local machine using the following command:
 
- ```git clone https://github.com/your-username/prisma-express-typescript-boilerplate.git ```
-
+`git clone https://github.com/your-username/prisma-express-typescript-boilerplate.git `
 
 3. **Install Dependencies**: Navigate to the cloned repository directory and install the project dependencies by running:
 
-```npm install```
-
+`npm install`
 
 ## Making Changes
 
 1. **Create a Branch**: Create a new branch for your changes. Use a descriptive name that reflects the nature of your contribution. For example:
 
-```git checkout -b my-contribution```
+`git checkout -b my-contribution`
 
 2. **Implement Your Changes**: Make the necessary modifications and improvements to the project. This could involve bug fixes, feature enhancements, documentation updates, or any other relevant changes.
 
 3. **Test Your Changes**: Ensure that your modifications work as intended and don't introduce any regressions. Run the existing tests using:
 
-```npm test```
+`npm test`
 
 If you're adding new features, consider writing tests to cover the new functionality.
 
 4. **Commit Your Changes**: Once you're satisfied with your changes, commit them with a clear and descriptive commit message:
 
-```git add .```
+`git add .`
 
-```git commit -m "Add my contribution```
-
+`git commit -m "Add my contribution`
 
 5. **Push Your Changes**: Push your changes to your forked repository:
-
 
 ## Submitting a Pull Request
 

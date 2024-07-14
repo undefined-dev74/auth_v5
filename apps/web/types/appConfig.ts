@@ -1,4 +1,3 @@
-
 export interface IAppConfig {
   email_password_login: boolean;
   file_size_limit: number;

@@ -6,7 +6,13 @@ type Props = {
 };
 
 const DefaultLayout: FC<Props> = ({ children, gradient = false }) => (
-  <div className={`h-full w-full overflow-hidden ${gradient ? "" : "bg-[#191919]"}`}>{children}</div>
+  <div
+    className={`h-full w-full overflow-hidden ${
+      gradient ? "" : "bg-[#191919]"
+    }`}
+  >
+    {children}
+  </div>
 );
 
 export default DefaultLayout;

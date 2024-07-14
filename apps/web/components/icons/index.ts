@@ -1,1 +1,1 @@
-export * from './setting-icon'
+export * from "./setting-icon";

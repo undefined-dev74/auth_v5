@@ -12,8 +12,13 @@ import { Props } from "@/components/icons/types";
 // constants
 import { EUserWorkspaceRoles } from "./workspace";
 // icons
-import { BarChart2, Briefcase, CheckCircle, Contrast, LayoutGrid } from "lucide-react";
-
+import {
+  BarChart2,
+  Briefcase,
+  CheckCircle,
+  Contrast,
+  LayoutGrid,
+} from "lucide-react";
 
 // gradients for issues by priority widget graph bars
 export const PRIORITY_GRAPH_GRADIENTS = [
@@ -201,12 +206,14 @@ export const ASSIGNED_ISSUES_EMPTY_STATES = {
     lightImage: UpcomingIssuesLight,
   },
   overdue: {
-    title: "Issues assigned to you that are past\ntheir due date will show up here.",
+    title:
+      "Issues assigned to you that are past\ntheir due date will show up here.",
     darkImage: OverdueIssuesDark,
     lightImage: OverdueIssuesLight,
   },
   completed: {
-    title: "Issues assigned to you that you have\nmarked Completed will show up here.",
+    title:
+      "Issues assigned to you that you have\nmarked Completed will show up here.",
     darkImage: CompletedIssuesDark,
     lightImage: CompletedIssuesLight,
   },
@@ -224,12 +231,14 @@ export const CREATED_ISSUES_EMPTY_STATES = {
     lightImage: UpcomingIssuesLight,
   },
   overdue: {
-    title: "Issues created by you that are past their\ndue date will show up here.",
+    title:
+      "Issues created by you that are past their\ndue date will show up here.",
     darkImage: OverdueIssuesDark,
     lightImage: OverdueIssuesLight,
   },
   completed: {
-    title: "Issues created by you that you have\nmarked completed will show up here.",
+    title:
+      "Issues created by you that you have\nmarked completed will show up here.",
     darkImage: CompletedIssuesDark,
     lightImage: CompletedIssuesLight,
   },
@@ -256,7 +265,8 @@ export const SIDEBAR_MENU_ITEMS: {
     label: "Analytics",
     href: `/analytics`,
     access: EUserWorkspaceRoles.MEMBER,
-    highlight: (pathname: string, baseUrl: string) => pathname === `${baseUrl}/analytics`,
+    highlight: (pathname: string, baseUrl: string) =>
+      pathname === `${baseUrl}/analytics`,
     Icon: BarChart2,
   },
   {
@@ -264,7 +274,8 @@ export const SIDEBAR_MENU_ITEMS: {
     label: "Projects",
     href: `/projects`,
     access: EUserWorkspaceRoles.GUEST,
-    highlight: (pathname: string, baseUrl: string) => pathname === `${baseUrl}/projects`,
+    highlight: (pathname: string, baseUrl: string) =>
+      pathname === `${baseUrl}/projects`,
     Icon: Briefcase,
   },
   {
@@ -272,7 +283,8 @@ export const SIDEBAR_MENU_ITEMS: {
     label: "All Issues",
     href: `/workspace-views/all-issues`,
     access: EUserWorkspaceRoles.GUEST,
-    highlight: (pathname: string, baseUrl: string) => pathname?.includes(`${baseUrl}/workspace-views`),
+    highlight: (pathname: string, baseUrl: string) =>
+      pathname?.includes(`${baseUrl}/workspace-views`),
     Icon: CheckCircle,
   },
   {
@@ -280,7 +292,8 @@ export const SIDEBAR_MENU_ITEMS: {
     label: "Active Cycles",
     href: `/active-cycles`,
     access: EUserWorkspaceRoles.GUEST,
-    highlight: (pathname: string, baseUrl: string) => pathname === `${baseUrl}/active-cycles`,
+    highlight: (pathname: string, baseUrl: string) =>
+      pathname === `${baseUrl}/active-cycles`,
     Icon: Contrast,
   },
 ];

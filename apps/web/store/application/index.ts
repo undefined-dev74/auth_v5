@@ -7,7 +7,6 @@ import { AppConfigStore, IAppConfigStore } from "./app-config.store";
 import { RouterStore, IRouterStore } from "./router.store";
 import { IThemeStore, ThemeStore } from "./theme.store";
 
-
 export interface IAppRootStore {
   config: IAppConfigStore;
   theme: IThemeStore;

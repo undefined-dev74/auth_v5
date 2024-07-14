@@ -1,9 +1,15 @@
-"use client"
+"use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { useApplication, useUser } from "@/hooks/store";
 import useToast from "@/hooks/use-toast";
-import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
+import {
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+  Transition,
+} from "@headlessui/react";
 import { LogOut, Settings, UserCircle2 } from "lucide-react";
 import { observer } from "mobx-react-lite";
 import { useTheme } from "next-themes";
@@ -13,7 +19,6 @@ import { Fragment, useState } from "react";
 
 import { usePopper } from "react-popper";
 import { mutate } from "swr";
-
 
 const profileLinks = (workspaceSlug: string, userId: string) => [
   {
@@ -30,7 +35,7 @@ const profileLinks = (workspaceSlug: string, userId: string) => [
 
 const ProfileSection = observer(() => {
   const query = useSearchParams();
-  const router = useRouter()
+  const router = useRouter();
   const workspaceSlug = query.get("workspaceSlug");
 
   // store hooks
@@ -38,17 +43,14 @@ const ProfileSection = observer(() => {
     theme: { toggleMobileSidebar, sidebarCollapsed },
   } = useApplication();
   const { setTheme } = useTheme();
-  
+
   // hooks
   const { setToastAlert } = useToast();
-  
 
   // popper-js refs
   const [referenceElement, setReferenceElement] =
     useState<HTMLButtonElement | null>(null);
-  const [popperElement, setPopperElement] = useState<HTMLElement | null>(
-    null
-  );
+  const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
 
   const { currentUser, updateCurrentUser, signOut } = useUser();
 
@@ -70,7 +72,7 @@ const ProfileSection = observer(() => {
       toggleMobileSidebar();
     }
   };
-  
+
   const handleSignOut = async () => {
     await signOut()
       .then(() => {
@@ -96,7 +98,7 @@ const ProfileSection = observer(() => {
         >
           <Avatar className="!text-base h-8 w-8 rounded-md">
             <AvatarImage src={"https://github.com/shadcn.png"} />
-          
+
             <AvatarFallback>{currentUser?.display_name}</AvatarFallback>
           </Avatar>
         </MenuButton>
@@ -142,16 +144,16 @@ const ProfileSection = observer(() => {
               ))}
             </div>
             <div className={`pt-2  pb-2}`}>
-                <MenuItem
-                  as="button"
-                  type="button"
-                  className="flex w-full items-center gap-2 rounded px-2 py-1 hover:bg-custom-sidebar-background-80"
-                  onClick={handleSignOut}
-                >
-                  <LogOut className="h-4 w-4 stroke-[1.5]" />
-                  Sign out
-                </MenuItem>
-              </div>
+              <MenuItem
+                as="button"
+                type="button"
+                className="flex w-full items-center gap-2 rounded px-2 py-1 hover:bg-custom-sidebar-background-80"
+                onClick={handleSignOut}
+              >
+                <LogOut className="h-4 w-4 stroke-[1.5]" />
+                Sign out
+              </MenuItem>
+            </div>
           </MenuItems>
         </Transition>
       </Menu>

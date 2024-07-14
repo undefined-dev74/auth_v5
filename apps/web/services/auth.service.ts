@@ -2,11 +2,11 @@
 
 import { ILoginTokenResponse, IPasswordSignInData } from "@/types/auth";
 import { API_BASE_URL } from "@/utils/helpers";
-import {APIService} from "@/services/api.service";
+import { APIService } from "@/services/api.service";
 // helpers
 
 // types
-console.log(API_BASE_URL)
+console.log(API_BASE_URL);
 export class AuthService extends APIService {
   constructor() {
     super(API_BASE_URL);
@@ -17,7 +17,7 @@ export class AuthService extends APIService {
   ): Promise<ILoginTokenResponse> {
     return this.post("/auth/login", data, { headers: {} })
       .then((response) => {
-        console.log(response)
+        console.log(response);
         this.setAccessToken(response?.data.data.tokens?.access.token);
         this.setRefreshToken(response?.data.data?.tokens.refresh.token);
         return response?.data;

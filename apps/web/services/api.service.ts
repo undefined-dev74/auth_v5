@@ -106,4 +106,3 @@ export abstract class APIService {
     return axios(config);
   }
 }
-

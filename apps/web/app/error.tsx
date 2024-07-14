@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useRouter } from "next/navigation";
 
@@ -10,7 +10,6 @@ import useToast from "@/hooks/use-toast";
 import DefaultLayout from "@/layouts/default-layout";
 import { Button } from "@/components/ui/button";
 // ui
-
 
 // services
 const authService = new AuthService();
@@ -43,10 +42,14 @@ const Error = ({ error, reset }: ErrorPageProps) => {
       <div className="grid h-full place-items-center p-4">
         <div className="space-y-8 text-center">
           <div className="space-y-2">
-            <h3 className="text-slate-300 text-lg font-semibold">Exception Detected!</h3>
+            <h3 className="text-slate-300 text-lg font-semibold">
+              Exception Detected!
+            </h3>
             <p className="mx-auto w-1/2 text-sm text-slate-300">
-              We{"'"}re Sorry! An exception has been detected, and our engineering team has been notified. We apologize
-              for any inconvenience this may have caused. Please reach out to our engineering team at{" "}
+              We{"'"}re Sorry! An exception has been detected, and our
+              engineering team has been notified. We apologize for any
+              inconvenience this may have caused. Please reach out to our
+              engineering team at{" "}
               <a href="mailto:support@plane.so" className="text-purple-500">
                 support@plane.so
               </a>{" "}
@@ -56,10 +59,8 @@ const Error = ({ error, reset }: ErrorPageProps) => {
                 target="_blank"
                 className="text-purple-500"
                 rel="noopener noreferrer"
-            />
-                Discord
-              
-              server for further assistance.
+              />
+              Discord server for further assistance.
             </p>
           </div>
           <div className="flex items-center justify-center gap-2">

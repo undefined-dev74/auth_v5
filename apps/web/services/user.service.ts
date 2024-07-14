@@ -1,10 +1,15 @@
 // services
-import {APIService} from "@/services/api.service";
+import { APIService } from "@/services/api.service";
 // helpers
 import { API_BASE_URL } from "@/utils/helpers";
 
 // types
-import { IInstanceAdminStatus, IUser, IUserProfileData, IUserSettings } from "@/types/user";
+import {
+  IInstanceAdminStatus,
+  IUser,
+  IUserProfileData,
+  IUserSettings,
+} from "@/types/user";
 
 export class UserService extends APIService {
   constructor() {

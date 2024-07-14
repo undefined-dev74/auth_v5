@@ -12,7 +12,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-
 import {
   WorkspaceHelpSection,
   WorkspaceSidebarDropdown,
@@ -37,7 +36,6 @@ export const Sidebar = observer(({ links }: SidebarProps) => {
   const {
     theme: { sidebarCollapsed, toggleSidebar, toggleMobileSidebar },
   } = useApplication();
-
 
   return (
     <div

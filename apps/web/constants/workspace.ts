@@ -92,7 +92,7 @@ export const EXPORTERS_LIST = [
 ];
 
 export const DEFAULT_GLOBAL_VIEWS_LIST: {
-//   key: TStaticViewTypes;
+  //   key: TStaticViewTypes;
   key: any;
   label: string;
 }[] = [

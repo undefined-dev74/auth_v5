@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { BeatLoader } from "react-spinners";

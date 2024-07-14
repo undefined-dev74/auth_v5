@@ -5,7 +5,6 @@ import { IWorkspace } from "@/types/workspace";
 import { API_BASE_URL } from "@/utils/helpers";
 // types
 
-
 export class WorkspaceService extends APIService {
   constructor() {
     super(API_BASE_URL);
@@ -53,6 +52,4 @@ export class WorkspaceService extends APIService {
         throw error?.response?.data;
       });
   }
-
- 
 }

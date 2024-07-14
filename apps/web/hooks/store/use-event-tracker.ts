@@ -10,4 +10,3 @@ export const useEventTracker = (): IEventTrackerStore => {
     throw new Error("useEventTracker must be used within StoreProvider");
   return context.eventTracker;
 };
- 
