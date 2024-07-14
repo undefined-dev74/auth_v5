@@ -5,7 +5,7 @@
     "PORT",
     "IS_SERVER_BUILD"
   ],
-  "pipeline": {
+  "tasks": {
     "build": {
       "dependsOn": [
         "^build"

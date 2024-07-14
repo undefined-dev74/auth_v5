@@ -13,12 +13,13 @@
     "typecheck": "turbo run typecheck"
   },
   "dependencies": {
-    "turbo": "1.8.3"
+    "turbo": "2.0.6"
   },
   "devDependencies": {
     "cross-env": "7.0.3"
   },
   "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "packageManager": "pnpm@9.4.0"
 }
