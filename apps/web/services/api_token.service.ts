@@ -1,6 +1,6 @@
 import { API_BASE_URL } from "@/utils/helpers";
 import { APIService } from "./api.service";
-import { IApiToken } from "@/types/apiToken";
+import { IApiToken } from "@repo/types";
 
 export class APITokenService extends APIService {
   constructor() {

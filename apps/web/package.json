@@ -85,6 +85,8 @@
     "postcss": "^8",
     "prisma": "^5.7.1",
     "tailwindcss": "^3.3.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "@repo/types": "workspace:*"
+    
   }
 }

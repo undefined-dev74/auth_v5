@@ -4,7 +4,7 @@ import { computedFn } from "mobx-utils";
 
 import { APITokenService } from "@/services/api_token.service";
 // types
-import { IApiToken } from "@/types/apiToken";
+import { IApiToken } from "@repo/types";
 import { RootStore } from "../root.store";
 
 export interface IApiTokenStore {
