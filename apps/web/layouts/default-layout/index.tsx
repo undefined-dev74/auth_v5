@@ -1,3 +1,5 @@
+"use client";
+import { ToastContextProvider } from "@/context/toast-context";
 import { FC, ReactNode } from "react";
 
 type Props = {
@@ -11,7 +13,7 @@ const DefaultLayout: FC<Props> = ({ children, gradient = false }) => (
       gradient ? "" : "bg-[#191919]"
     }`}
   >
-    {children}
+    <ToastContextProvider>{children}</ToastContextProvider>
   </div>
 );
 
