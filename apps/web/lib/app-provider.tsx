@@ -9,6 +9,9 @@ import NProgress from "nprogress";
 // hooks
 import { useUser } from "@/hooks/store";
 
+// styles
+import "../styles/nprogress.css";
+
 import { SWRConfig } from "swr";
 // constants
 import { SWR_CONFIG } from "@/constants/swr-config";
