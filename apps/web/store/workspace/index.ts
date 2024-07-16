@@ -14,7 +14,7 @@ import { WorkspaceService } from "@/services/workspace.service";
 // sub-stores
 
 import { ApiTokenStore, IApiTokenStore } from "./api-token.store";
-import { IWorkspace } from "@/types/workspace";
+import { IWorkspace } from "@repo/types";
 
 export interface IWorkspaceRootStore {
   // observables

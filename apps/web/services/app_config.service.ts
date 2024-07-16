@@ -3,7 +3,7 @@ import { APIService } from "@/services/api.service";
 // helper
 import { API_BASE_URL } from "@/utils/helpers";
 // types
-import { IAppConfig } from "@/types/appConfig";
+import { IAppConfig } from "@repo/types";
 
 export class AppConfigService extends APIService {
   constructor() {

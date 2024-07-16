@@ -14,25 +14,29 @@ import {
 import { Input } from "@/components/ui/input";
 import { NewPasswordSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import CardWrapper from "./card-wrapper";
+import { AuthService } from "@/services/auth.service";
+import useToast from "@/hooks/use-toast";
 
+const authService = new AuthService()
 export const NewPasswordForm = () => {
   const searchParams = useSearchParams();
-
+  const router = useRouter()
   const [isPending, setTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-
-  const token = searchParams.get("token");
+  
+  const {setToastAlert} = useToast()
+  const token = searchParams.get("token") as string;
 
   const form = useForm<z.infer<typeof NewPasswordSchema>>({
     resolver: zodResolver(NewPasswordSchema),
     defaultValues: {
-      password: "",
+      new_password: "",
     },
   });
 
@@ -41,10 +45,16 @@ export const NewPasswordForm = () => {
     setError("");
     setSuccess("");
     setTransition(() => {
-      // newPassword(values, token).then((data) => {
-      //   setError(data?.error);
-      //   setSuccess(data?.success);
-      // });
+     authService.resetPassword(token, values).then((data) => {
+      setToastAlert({
+        type: "success",
+        title: "Success!",
+        message: "You have successfully reset your password.",})
+       router.push("/auth/login")
+     }).catch(error => {
+      console.log(error)
+       setError(error.message)
+     })
     });
   };
   return (
@@ -58,7 +68,7 @@ export const NewPasswordForm = () => {
           <div className="space-y-4">
             <FormField
               control={form.control}
-              name="password"
+              name="new_password"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>

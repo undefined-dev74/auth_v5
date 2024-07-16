@@ -6,8 +6,8 @@ import catchAsync from '../utils/catchAsync';
 import exclude from '../utils/exclude';
 
 const register = catchAsync(async (req, res) => {
-  const { email, password } = req.body;
-  const user = await userService.createUser(email, password);
+  const { email, password, name } = req.body;
+  const user = await userService.createUser(email, password, name);
   const userWithoutPassword = exclude(user, ['password', 'createdAt', 'updatedAt']);
   const tokens = await tokenService.generateAuthTokens(user);
   res.status(httpStatus.CREATED).send({ user: userWithoutPassword, tokens });
@@ -39,7 +39,7 @@ const forgotPassword = catchAsync(async (req, res) => {
 });
 
 const resetPassword = catchAsync(async (req, res) => {
-  await authService.resetPassword(req.query.token as string, req.body.password);
+  await authService.resetPassword(req.query.token as string, req.body.new_password);
   res.status(httpStatus.NO_CONTENT).send();
 });
 
