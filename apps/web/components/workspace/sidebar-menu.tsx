@@ -23,6 +23,8 @@ import { EUserWorkspaceRoles } from "@/constants/workspace";
 
 // helper
 import { cn } from "@/lib/utils";
+import { buttonVariants } from "../ui/button";
+import { LucideIcon } from "lucide-react";
 
 interface Props {
   // Add any props that your Icon component expects
@@ -34,7 +36,8 @@ interface SidebarMenuItem {
   href: string;
   access: EUserWorkspaceRoles;
   highlight: (pathname: string, baseUrl: string) => boolean;
-  Icon: FC<Props>;
+  Icon: LucideIcon;
+  variant?: string
 }
 
 export const WorkspaceSidebarMenu = observer(() => {
@@ -69,13 +72,14 @@ export const WorkspaceSidebarMenu = observer(() => {
                   href={`/${workspaceSlug}${link.href}`}
                   onClick={() => handleLinkClick(link.key)}
                   className={cn(
+                    // buttonVariants({ variant: link.variant, size: "icon" }),
                     "flex h-9 w-9 items-center justify-center rounded-md",
                     link.highlight(pathname, `/${workspaceSlug}`)
                       ? "bg-custom-primary-100/10 text-custom-primary-100"
                       : "text-custom-sidebar-text-200 hover:bg-custom-sidebar-background-80 focus:bg-custom-sidebar-background-80"
                   )}
                 >
-                  <link.Icon />
+                  <link.Icon className="h-4 w-4" />
                   <span className="sr-only">{link.label}</span>
                 </Link>
               </TooltipTrigger>
@@ -88,13 +92,13 @@ export const WorkspaceSidebarMenu = observer(() => {
               href={`/${workspaceSlug}${link.href}`}
               onClick={() => handleLinkClick(link.key)}
               className={cn(
-                "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium",
+                "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm",
                 link.highlight(pathname, `/${workspaceSlug}`)
                   ? "bg-custom-primary-100/10 text-custom-primary-100"
                   : "text-custom-sidebar-text-200 hover:bg-custom-sidebar-background-80 focus:bg-custom-sidebar-background-80"
               )}
             >
-              <link.Icon />
+              <link.Icon className="mr-2 h-4 w-4" />
               {link.label}
             </Link>
           )}

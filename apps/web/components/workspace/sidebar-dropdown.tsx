@@ -33,7 +33,7 @@ import { usePopper } from "react-popper";
 import { toast } from "sonner";
 import { useApplication } from "@/hooks/store/use-application";
 import { useUser, useWorkspace } from "@/hooks/store";
-import { IWorkspace } from "@/types/workspace";
+import { IWorkspace } from "@repo/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter, useSearchParams } from "next/navigation";
 // Static Data
