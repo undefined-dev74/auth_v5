@@ -18,12 +18,15 @@ import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import CardWrapper from "./card-wrapper";
+import { AuthService } from "@/services/auth.service";
+
+const authService = new AuthService();
 
 export const RegisterForm = () => {
   const [isPending, setTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-
+  
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -33,17 +36,15 @@ export const RegisterForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
+  const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
     console.log(values);
     setError("");
     setSuccess("");
-    setTransition(() => {
-      // register(values).then((data) => {
-      //   console.log("DATA", data);
-      //   setError(data.error);
-      //   setSuccess(data.success);
-      // });
-    });
+    
+    await authService.emailSignUp(values).then((res) => {
+      
+    })
+    
   };
   return (
     <CardWrapper

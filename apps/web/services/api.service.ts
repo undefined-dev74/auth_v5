@@ -12,7 +12,12 @@ export abstract class APIService {
   }
 
   setRefreshToken(token: string) {
-    Cookies.set("refreshToken", token);
+    Cookies.set("refreshToken", token, {
+      secure: process.env.NODE_ENV !== "development",
+      sameSite: "strict",
+    });
+    // Set for server-side access
+    document.cookie = `refreshToken=${token}; path=/; max-age=2592000; SameSite=Lax; Secure; HttpOnly`;
   }
 
   getRefreshToken() {
@@ -20,11 +25,18 @@ export abstract class APIService {
   }
 
   purgeRefreshToken() {
+    document.cookie =
+      "refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; HttpOnly";
     Cookies.remove("refreshToken", { path: "/" });
   }
 
   setAccessToken(token: string) {
-    Cookies.set("accessToken", token);
+    Cookies.set("accessToken", token, {
+      secure: process.env.NODE_ENV !== "development",
+      sameSite: "strict",
+    });
+    // This sets a cookie that's accessible both client and server-side
+    document.cookie = `accessToken=${token}; path=/; max-age=3600; SameSite=Lax`;
   }
 
   getAccessToken() {
@@ -32,6 +44,8 @@ export abstract class APIService {
   }
 
   purgeAccessToken() {
+    document.cookie =
+      "accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure";
     Cookies.remove("accessToken", { path: "/" });
   }
 
