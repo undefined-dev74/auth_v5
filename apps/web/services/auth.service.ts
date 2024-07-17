@@ -1,6 +1,6 @@
 // services
 
-import { ILoginTokenResponse, IPasswordSignInData } from "@/types/auth";
+import { IApiResponse, ILoginTokenResponse, IPasswordSignInData } from "@repo/types";
 import { API_BASE_URL } from "@/utils/helpers";
 import { APIService } from "@/services/api.service";
 // helpers
@@ -14,7 +14,7 @@ export class AuthService extends APIService {
 
   async passwordSignIn(
     data: IPasswordSignInData
-  ): Promise<ILoginTokenResponse> {
+  ): Promise<IApiResponse<ILoginTokenResponse>> {
     return this.post("/auth/login", data, { headers: {} })
       .then((response) => {
         console.log(response);
@@ -28,7 +28,7 @@ export class AuthService extends APIService {
   }
 
   async sendResetPasswordLink(data: { email: string }): Promise<any> {
-    return this.post(`/api/forgot-password/`, data)
+    return this.post(`/auth/forgot-password/`, data)
       .then((response) => response?.data)
       .catch((error) => {
         throw error?.response;
@@ -44,19 +44,18 @@ export class AuthService extends APIService {
   }
 
   async resetPassword(
-    uidb64: string,
     token: string,
     data: {
       new_password: string;
     }
-  ): Promise<ILoginTokenResponse> {
-    return this.post(`/api/reset-password/${uidb64}/${token}/`, data, {
+  ): Promise<IApiResponse<ILoginTokenResponse>> {
+    return this.post(`/auth/reset-password?token=${token}`, data, {
       headers: {},
     })
       .then((response) => {
         if (response?.status === 200) {
-          this.setAccessToken(response?.data?.access_token);
-          this.setRefreshToken(response?.data?.refresh_token);
+           this.setAccessToken(response?.data.data.tokens?.access.token);
+           this.setRefreshToken(response?.data.data?.tokens.refresh.token);
           return response?.data;
         }
       })
@@ -68,11 +67,12 @@ export class AuthService extends APIService {
   async emailSignUp(data: {
     email: string;
     password: string;
-  }): Promise<ILoginTokenResponse> {
-    return this.post("/api/sign-up/", data, { headers: {} })
+    name?: string;
+  }): Promise<IApiResponse<ILoginTokenResponse>> {
+    return this.post("/auth/register", data, { headers: {} })
       .then((response) => {
-        this.setAccessToken(response?.data?.access_token);
-        this.setRefreshToken(response?.data?.refresh_token);
+        this.setAccessToken(response?.data.data.tokens?.access.token);
+        this.setRefreshToken(response?.data.data?.tokens.refresh.token);
         return response?.data;
       })
       .catch((error) => {
@@ -80,7 +80,7 @@ export class AuthService extends APIService {
       });
   }
 
-  async socialAuth(data: any): Promise<ILoginTokenResponse> {
+  async socialAuth(data: any): Promise<IApiResponse<ILoginTokenResponse>> {
     return this.post("/api/social-auth/", data, { headers: {} })
       .then((response) => {
         this.setAccessToken(response?.data?.access_token);
