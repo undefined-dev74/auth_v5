@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { LoginSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -26,6 +26,7 @@ import useToast from "@/hooks/use-toast";
 const authService = new AuthService();
 
 export const LoginForm = () => {
+  const router = useRouter()
   const searchParams = useSearchParams();
   const urlError =
     searchParams.get("error") === "OAuthAccountNotLinked"
@@ -54,7 +55,15 @@ export const LoginForm = () => {
 
     await authService
       .passwordSignIn(values)
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res)
+        setToastAlert({
+          type: "success",
+          title: "Success!",
+          message: "You have successfully logged in.",
+        });
+        router.refresh()
+      })
       .catch((err) =>
         setToastAlert({
           type: "error",
