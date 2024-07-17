@@ -18,6 +18,7 @@ import {
   CheckCircle,
   Contrast,
   LayoutGrid,
+  LucideIcon,
 } from "lucide-react";
 
 // gradients for issues by priority widget graph bars
@@ -250,7 +251,8 @@ export const SIDEBAR_MENU_ITEMS: {
   href: string;
   access: EUserWorkspaceRoles;
   highlight: (pathname: string, baseUrl: string) => boolean;
-  Icon: React.FC<Props>;
+  Icon: LucideIcon;
+  variant?: "default" | "ghost";
 }[] = [
   {
     key: "dashboard",
@@ -259,6 +261,7 @@ export const SIDEBAR_MENU_ITEMS: {
     access: EUserWorkspaceRoles.GUEST,
     highlight: (pathname: string, baseUrl: string) => pathname === `${baseUrl}`,
     Icon: LayoutGrid,
+    variant: "default"
   },
   {
     key: "analytics",
@@ -268,6 +271,7 @@ export const SIDEBAR_MENU_ITEMS: {
     highlight: (pathname: string, baseUrl: string) =>
       pathname === `${baseUrl}/analytics`,
     Icon: BarChart2,
+    variant: "default"
   },
   {
     key: "projects",
@@ -277,6 +281,7 @@ export const SIDEBAR_MENU_ITEMS: {
     highlight: (pathname: string, baseUrl: string) =>
       pathname === `${baseUrl}/projects`,
     Icon: Briefcase,
+    variant: "default"
   },
   {
     key: "all-issues",
@@ -286,6 +291,7 @@ export const SIDEBAR_MENU_ITEMS: {
     highlight: (pathname: string, baseUrl: string) =>
       pathname?.includes(`${baseUrl}/workspace-views`),
     Icon: CheckCircle,
+    variant: "default"
   },
   {
     key: "active-cycles",
@@ -295,5 +301,6 @@ export const SIDEBAR_MENU_ITEMS: {
     highlight: (pathname: string, baseUrl: string) =>
       pathname === `${baseUrl}/active-cycles`,
     Icon: Contrast,
+    variant: "default"
   },
 ];
