@@ -16,8 +16,9 @@ import { SWRConfig } from "swr";
 // constants
 import { SWR_CONFIG } from "@/constants/swr-config";
 import { THEMES } from "@/constants/themes";
-import { ThemeProvider } from "@/context/providers";
+import { ThemeProvider } from "next-themes";
 import { ToastContextProvider } from "@/context/toast-context";
+import { TooltipProvider } from "@/components/ui/tooltip";
 // dynamic imports
 const StoreWrapper = dynamic(() => import("@/lib/wrappers/store-wrapper"), {
   ssr: false,
@@ -39,16 +40,15 @@ export const AppProvider: FC<IAppProvider> = observer((props) => {
   const { currentUser } = useUser();
 
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="dark"
-      enableSystem
-      disableTransitionOnChange
-      themes={THEMES}
-    >
+    <ThemeProvider defaultTheme="system" themes={THEMES}>
       <ToastContextProvider>
         <StoreWrapper>
-          <SWRConfig value={SWR_CONFIG}>{children}</SWRConfig>
+          <SWRConfig value={SWR_CONFIG}>
+            <TooltipProvider>
+              
+            {children}
+            </TooltipProvider>
+            </SWRConfig>
         </StoreWrapper>
       </ToastContextProvider>
     </ThemeProvider>
