@@ -1,10 +1,12 @@
 import { useApplication } from "@/hooks/store";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
-
 import { BellIcon, HomeIcon, LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -13,8 +15,7 @@ interface DashboardMenuItem {
   title: string;
   label?: string;
   icon: LucideIcon;
-  href?: string
-  variant: "default" | "ghost";
+  href?: string;
   highlight: (pathname: string, baseUrl: string) => boolean;
 }
 
@@ -28,63 +29,58 @@ const DASHBOARD_MENU_ITEMS: DashboardMenu = {
       title: "Home",
       label: "",
       icon: HomeIcon,
-      variant: "default",
-      highlight: (pathname: string, baseUrl: string) =>
-        pathname.startsWith(baseUrl),
+      href: "/",
+      highlight: (pathname: string, baseUrl: string) => pathname === baseUrl,
     },
     {
       title: "Notifications",
       label: "0",
       icon: BellIcon,
-      variant: "ghost",
+      href: "/notifications",
       highlight: (pathname: string, baseUrl: string) =>
-        pathname.startsWith(baseUrl),
+        pathname.startsWith(`${baseUrl}/notifications`),
     },
   ],
 };
 
 export const DashboardSidebarMenu = observer(() => {
-  // store hooks
   const {
-    theme: { sidebarCollapsed, toggleSidebar, toggleMobileSidebar },
+    theme: { sidebarCollapsed },
   } = useApplication();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  
-  const workspaceSlug = searchParams.get("workspaceSlug") || "";
 
+  const workspaceSlug = searchParams.get("workspaceSlug") || "";
   const isCollapsed = sidebarCollapsed || false;
 
   return (
     <nav
-      className={`grid gap-1 px-2 sm:py-2 group-[[data-collapsed=true]]:justify-center ${
-        sidebarCollapsed ? "justify-center" : ""
-      } group-[[data-collapsed=true]]:px-2`}
+      className={cn(
+        "grid gap-1 px-2 py-2",
+        isCollapsed ? "justify-center" : ""
+      )}
     >
       {DASHBOARD_MENU_ITEMS.links.map((link, index) =>
-        sidebarCollapsed ? (
+        isCollapsed ? (
           <Tooltip key={index} delayDuration={0}>
             <TooltipTrigger asChild>
               <Link
                 href={`/${workspaceSlug}${link.href}`}
                 className={cn(
-                  buttonVariants({ variant: link.variant, size: "icon" }),
                   "flex h-9 w-9 items-center justify-center rounded-md",
                   link.highlight(pathname, `/${workspaceSlug}`)
-                    ? "bg-custom-primary-100/10 text-custom-primary-100"
-                    : "text-custom-sidebar-text-200 hover:bg-custom-sidebar-background-80 focus:bg-custom-sidebar-background-80"
+                    ? "bg-indigo-600 text-white"
+                    : "text-gray-400 hover:bg-primary hover:text-white"
                 )}
               >
-                <link.icon className="h-4 w-4" />
+                <link.icon className="h-5 w-5" />
                 <span className="sr-only">{link.title}</span>
               </Link>
             </TooltipTrigger>
             <TooltipContent side="right" className="flex items-center gap-4">
               {link.title}
               {link.label && (
-                <span className="ml-auto text-muted-foreground font-normal">
-                  {link.label}
-                </span>
+                <span className="ml-auto text-gray-400">{link.label}</span>
               )}
             </TooltipContent>
           </Tooltip>
@@ -93,25 +89,16 @@ export const DashboardSidebarMenu = observer(() => {
             key={index}
             href={`/${workspaceSlug}${link.href}`}
             className={cn(
-              buttonVariants({ variant: link.variant, size: "sm" }),
-              "flex gap-2.5 rounded-md px-3 py-2 text-sm justify-start",
+              "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm",
               link.highlight(pathname, `/${workspaceSlug}`)
-                ? "bg-custom-primary-100/10 text-custom-primary-100"
-                : "text-custom-sidebar-text-200 hover:bg-custom-sidebar-background-80 focus:bg-custom-sidebar-background-80 ju"
+                ? "bg-indigo-600 text-white"
+                : "text-gray-400 hover:bg-primary hover:text-white"
             )}
           >
-            <link.icon className="mr-2 h-4 w-4" />
+            <link.icon className="h-5 w-5" />
             {link.title}
             {link.label && (
-              <span
-                className={cn(
-                  "ml-auto",
-                  link.variant === "default" &&
-                    "text-background dark:text-white"
-                )}
-              >
-                {link.label}
-              </span>
+              <span className="ml-auto text-gray-400">{link.label}</span>
             )}
           </Link>
         )

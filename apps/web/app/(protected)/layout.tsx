@@ -4,6 +4,9 @@ import { StoreProvider } from "@/context/store-context";
 import { AppProvider } from "@/lib/app-provider";
 import { AppLayout } from "@/layouts/app-layout/layout";
 
+import "../globals.css";
+
+
 interface ProtectedLayoutProps {
   children: React.ReactNode;
 }

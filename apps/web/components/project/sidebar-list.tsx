@@ -111,202 +111,120 @@ export const ProjectSidebarList: FC = observer(() => {
     };
   }, []);
 
-  return (
-    <>
-      {/* {workspaceSlug && (
-        <CreateProjectModal
-          isOpen={isProjectModalOpen}
-          onClose={() => {
-            setIsProjectModalOpen(false);
-          }}
-          setToFavorite={isFavoriteProjectCreate}
-          workspaceSlug={workspaceSlug.toString()}
-        />
-      )} */}
-      <div
-        ref={containerRef}
-        className={`h-full space-y-2 overflow-y-auto px-4 ${
-          isScrolled ? "border-t border-custom-sidebar-border-300" : ""
-        }`}
-      >
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="favorite-projects">
-            {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                {/* {favoriteProjects && favoriteProjects.length > 0 && ( */}
-                <Disclosure as="div" className="flex flex-col" defaultOpen>
-                  {({ open }) => (
-                    <>
-                      {!isCollapsed && (
-                        <div className="group flex w-full items-center justify-between rounded p-1.5 text-xs text-custom-sidebar-text-400 hover:bg-custom-sidebar-background-80">
-                          <Disclosure.Button
-                            as="button"
-                            type="button"
-                            className="group flex w-full items-center gap-1 whitespace-nowrap rounded px-1.5 text-left text-sm font-semibold text-custom-sidebar-text-400 hover:bg-custom-sidebar-background-80"
-                          >
-                            Favorites
-                            {open ? (
-                              <ChevronDown className="h-3.5 w-3.5" />
-                            ) : (
-                              <ChevronRight className="h-3.5 w-3.5" />
-                            )}
-                          </Disclosure.Button>
-                          {/* {isAuthorizedUser && ( */}
-                          <button
-                            className="opacity-0 group-hover:opacity-100"
-                            onClick={() => {
-                              setTrackElement("APP_SIDEBAR_FAVORITES_BLOCK");
-                              setIsFavoriteProjectCreate(true);
-                              setIsProjectModalOpen(true);
-                            }}
-                          >
-                            <Plus className="h-3 w-3" />
-                          </button>
-                          {/* )} */}
-                        </div>
-                      )}
-                      {/* <Transition
-                          enter="transition duration-100 ease-out"
-                          enterFrom="transform scale-95 opacity-0"
-                          enterTo="transform scale-100 opacity-100"
-                          leave="transition duration-75 ease-out"
-                          leaveFrom="transform scale-100 opacity-100"
-                          leaveTo="transform scale-95 opacity-0"
-                        >
-                          <Disclosure.Panel as="div" className="space-y-2">
-                            {favoriteProjects.map((projectId, index) => (
-                              <Draggable
-                                key={projectId}
-                                draggableId={projectId}
-                                index={index}
-                                // FIXME refactor the Draggable to a different component
-                                //isDragDisabled={!project.is_member}
-                              >
-                                {(provided, snapshot) => (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                  >
-                                    <ProjectSidebarListItem
-                                      key={projectId}
-                                      projectId={projectId}
-                                      provided={provided}
-                                      snapshot={snapshot}
-                                      handleCopyText={() =>
-                                        handleCopyText(projectId)
-                                      }
-                                      shortContextMenu
-                                    />
-                                  </div>
-                                )}
-                              </Draggable>
-                            ))}
-                          </Disclosure.Panel>
-                        </Transition> */}
-                      {provided.placeholder}
-                    </>
-                  )}
-                </Disclosure>
-                {/* )} */}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="joined-projects">
-            {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                {/* {joinedProjects && joinedProjects.length > 0 && ( */}
-                <Disclosure as="div" className="flex flex-col" defaultOpen>
-                  {({ open }) => (
-                    <>
-                      {!isCollapsed && (
-                        <div className="group flex w-full items-center justify-between rounded p-1.5 text-xs text-custom-sidebar-text-400 hover:bg-custom-sidebar-background-80">
-                          <Disclosure.Button
-                            as="button"
-                            type="button"
-                            className="group flex w-full items-center gap-1 whitespace-nowrap rounded px-1.5 text-left text-sm font-semibold text-custom-sidebar-text-400 hover:bg-custom-sidebar-background-80"
-                          >
-                            Your projects
-                            {open ? (
-                              <ChevronDown className="h-3.5 w-3.5" />
-                            ) : (
-                              <ChevronRight className="h-3.5 w-3.5" />
-                            )}
-                          </Disclosure.Button>
-                          {/* {isAuthorizedUser && ( */}
-                          <button
-                            className="opacity-0 group-hover:opacity-100"
-                            onClick={() => {
-                              setTrackElement("Sidebar");
-                              setIsFavoriteProjectCreate(false);
-                              setIsProjectModalOpen(true);
-                            }}
-                          >
-                            <Plus className="h-3 w-3" />
-                          </button>
-                          {/* )} */}
-                        </div>
-                      )}
-                      <Transition
-                        enter="transition duration-100 ease-out"
-                        enterFrom="transform scale-95 opacity-0"
-                        enterTo="transform scale-100 opacity-100"
-                        leave="transition duration-75 ease-out"
-                        leaveFrom="transform scale-100 opacity-100"
-                        leaveTo="transform scale-95 opacity-0"
-                      >
-                        <Disclosure.Panel as="div" className="space-y-2">
-                          {/* {joinedProjects.map((projectId, index) => (
-                              <Draggable
-                                key={projectId}
-                                draggableId={projectId}
-                                index={index}
-                              >
-                                {(provided, snapshot) => (
-                                  <div
-                                    ref={provided.innerRef}
-                                    {...provided.draggableProps}
-                                  >
-                                    <ProjectSidebarListItem
-                                      key={projectId}
-                                      projectId={projectId}
-                                      provided={provided}
-                                      snapshot={snapshot}
-                                      handleCopyText={() =>
-                                        handleCopyText(projectId)
-                                      }
-                                    />
-                                  </div>
-                                )}
-                              </Draggable>
-                            ))} */}
-                        </Disclosure.Panel>
-                      </Transition>
-                      {provided.placeholder}
-                    </>
-                  )}
-                </Disclosure>
-                {/* )} */}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+   return (
+     <>
+       <div
+         ref={containerRef}
+         className={`h-full space-y-2 overflow-y-auto px-4 ${
+           isScrolled ? "border-t border-border" : ""
+         }`}
+       >
+         <DragDropContext onDragEnd={onDragEnd}>
+           <Droppable droppableId="favorite-projects">
+             {(provided) => (
+               <div ref={provided.innerRef} {...provided.droppableProps}>
+                 <Disclosure as="div" className="flex flex-col" defaultOpen>
+                   {({ open }) => (
+                     <>
+                       {!isCollapsed && (
+                         <div className="group flex w-full items-center justify-between rounded p-1.5 text-xs text-muted-foreground hover:bg-secondary">
+                           <Disclosure.Button
+                             as="button"
+                             type="button"
+                             className="group flex w-full items-center gap-1 whitespace-nowrap rounded px-1.5 text-left text-sm font-semibold text-muted-foreground hover:bg-secondary"
+                           >
+                             Favorites
+                             {open ? (
+                               <ChevronDown className="h-3.5 w-3.5" />
+                             ) : (
+                               <ChevronRight className="h-3.5 w-3.5" />
+                             )}
+                           </Disclosure.Button>
+                           <button
+                             className="opacity-0 group-hover:opacity-100"
+                             onClick={() => {
+                               setTrackElement("APP_SIDEBAR_FAVORITES_BLOCK");
+                               setIsFavoriteProjectCreate(true);
+                               setIsProjectModalOpen(true);
+                             }}
+                           >
+                             <Plus className="h-3 w-3" />
+                           </button>
+                         </div>
+                       )}
+                       {provided.placeholder}
+                     </>
+                   )}
+                 </Disclosure>
+               </div>
+             )}
+           </Droppable>
+         </DragDropContext>
+         <DragDropContext onDragEnd={onDragEnd}>
+           <Droppable droppableId="joined-projects">
+             {(provided) => (
+               <div ref={provided.innerRef} {...provided.droppableProps}>
+                 <Disclosure as="div" className="flex flex-col" defaultOpen>
+                   {({ open }) => (
+                     <>
+                       {!isCollapsed && (
+                         <div className="group flex w-full items-center justify-between rounded p-1.5 text-xs text-muted-foreground hover:bg-secondary">
+                           <Disclosure.Button
+                             as="button"
+                             type="button"
+                             className="group flex w-full items-center gap-1 whitespace-nowrap rounded px-1.5 text-left text-sm font-semibold text-muted-foreground hover:bg-secondary"
+                           >
+                             Your projects
+                             {open ? (
+                               <ChevronDown className="h-3.5 w-3.5" />
+                             ) : (
+                               <ChevronRight className="h-3.5 w-3.5" />
+                             )}
+                           </Disclosure.Button>
+                           <button
+                             className="opacity-0 group-hover:opacity-100"
+                             onClick={() => {
+                               setTrackElement("Sidebar");
+                               setIsFavoriteProjectCreate(false);
+                               setIsProjectModalOpen(true);
+                             }}
+                           >
+                             <Plus className="h-3 w-3" />
+                           </button>
+                         </div>
+                       )}
+                       <Transition
+                         enter="transition duration-100 ease-out"
+                         enterFrom="transform scale-95 opacity-0"
+                         enterTo="transform scale-100 opacity-100"
+                         leave="transition duration-75 ease-out"
+                         leaveFrom="transform scale-100 opacity-100"
+                         leaveTo="transform scale-95 opacity-0"
+                       >
+                         <Disclosure.Panel as="div" className="space-y-2">
+                           {/* Disclosure panel content */}
+                         </Disclosure.Panel>
+                       </Transition>
+                       {provided.placeholder}
+                     </>
+                   )}
+                 </Disclosure>
+               </div>
+             )}
+           </Droppable>
+         </DragDropContext>
 
-        {/* {isAuthorizedUser && joinedProjects && joinedProjects.length === 0 && ( */}
-        <button
-          type="button"
-          className="flex w-full items-center gap-2 px-3 text-sm text-custom-sidebar-text-200"
-          onClick={() => {
-            setTrackElement("Sidebar");
-            //   toggleCreateProjectModal(true);
-          }}
-        >
-          <Plus className="h-5 w-5" />
-          {!isCollapsed && "Add Project"}
-        </button>
-        {/* )} */}
-      </div>
-    </>
-  );
+         <button
+           type="button"
+           className="flex w-full items-center gap-2 px-3 text-sm text-muted-foreground"
+           onClick={() => {
+             setTrackElement("Sidebar");
+           }}
+         >
+           <Plus className="h-5 w-5" />
+           {!isCollapsed && "Add Project"}
+         </button>
+       </div>
+     </>
+   );
 });
