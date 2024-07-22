@@ -1,6 +1,6 @@
 {
   "name": "auth_v5",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "sideEffects": false,
   "scripts": {
@@ -71,6 +71,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.9",
     "@types/bcryptjs": "^2.4.6",
     "@types/js-cookie": "^3.0.6",
     "@types/lodash": "^4.17.6",
@@ -87,6 +88,5 @@
     "tailwindcss": "^3.3.0",
     "typescript": "^5",
     "@repo/types": "workspace:*"
-    
   }
 }

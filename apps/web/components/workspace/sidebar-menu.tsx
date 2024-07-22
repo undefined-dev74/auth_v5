@@ -23,12 +23,7 @@ import { EUserWorkspaceRoles } from "@/constants/workspace";
 
 // helper
 import { cn } from "@/lib/utils";
-import { buttonVariants } from "../ui/button";
 import { LucideIcon } from "lucide-react";
-
-interface Props {
-  // Add any props that your Icon component expects
-}
 
 interface SidebarMenuItem {
   key: string;
@@ -37,10 +32,10 @@ interface SidebarMenuItem {
   access: EUserWorkspaceRoles;
   highlight: (pathname: string, baseUrl: string) => boolean;
   Icon: LucideIcon;
-  variant?: string
+  variant?: string;
 }
 
-export const WorkspaceSidebarMenu = observer(() => {
+export const WorkspaceSidebarMenu: FC = observer(() => {
   const { theme: themeStore } = useApplication();
   const { captureEvent } = useEventTracker();
   const router = useRouter();
@@ -59,9 +54,10 @@ export const WorkspaceSidebarMenu = observer(() => {
 
   return (
     <nav
-      className={`grid gap-1 px-2 sm:py-2 group-[[data-collapsed=true]]:justify-center ${
+      className={cn(
+        "grid gap-1 px-2 py-2",
         themeStore.sidebarCollapsed ? "justify-center" : ""
-      } group-[[data-collapsed=true]]:px-2`}
+      )}
     >
       {SIDEBAR_MENU_ITEMS.map((link: SidebarMenuItem, index) => (
         <React.Fragment key={index}>
@@ -72,14 +68,13 @@ export const WorkspaceSidebarMenu = observer(() => {
                   href={`/${workspaceSlug}${link.href}`}
                   onClick={() => handleLinkClick(link.key)}
                   className={cn(
-                    // buttonVariants({ variant: link.variant, size: "icon" }),
                     "flex h-9 w-9 items-center justify-center rounded-md",
                     link.highlight(pathname, `/${workspaceSlug}`)
-                      ? "bg-custom-primary-100/10 text-custom-primary-100"
-                      : "text-custom-sidebar-text-200 hover:bg-custom-sidebar-background-80 focus:bg-custom-sidebar-background-80"
+                      ? "bg-indigo-600 text-white"
+                      : "text-gray-400 hover:bg-primary hover:text-white"
                   )}
                 >
-                  <link.Icon className="h-4 w-4" />
+                  <link.Icon className="h-5 w-5" />
                   <span className="sr-only">{link.label}</span>
                 </Link>
               </TooltipTrigger>
@@ -94,11 +89,11 @@ export const WorkspaceSidebarMenu = observer(() => {
               className={cn(
                 "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm",
                 link.highlight(pathname, `/${workspaceSlug}`)
-                  ? "bg-custom-primary-100/10 text-custom-primary-100"
-                  : "text-custom-sidebar-text-200 hover:bg-custom-sidebar-background-80 focus:bg-custom-sidebar-background-80"
+                  ? "bg-indigo-600 text-white"
+                  : "text-gray-400 hover:bg-primary hover:text-white"
               )}
             >
-              <link.Icon className="mr-2 h-4 w-4" />
+              <link.Icon className="h-5 w-5" />
               {link.label}
             </Link>
           )}

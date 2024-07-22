@@ -40,14 +40,10 @@ export const Sidebar = observer(({ links }: SidebarProps) => {
   return (
     <div
       data-collapsed={sidebarCollapsed}
-      className={`inset-y-0 z-20 flex h-full flex-shrink-0 flex-grow-0 flex-col border-r border-custom-sidebar-border-200 bg-[#191919]
-        duration-300 md:relative
-        ${sidebarCollapsed ? "-ml-[280px]" : ""}
-        sm:${sidebarCollapsed ? "-ml-[280px]" : ""}
-        md:ml-0 ${sidebarCollapsed ? "w-[80px]" : "w-[280px]"}
-        lg:ml-0 ${sidebarCollapsed ? "w-[80px]" : "w-[280px]"}
-        ${sidebarCollapsed ? "items-center" : ""}
-      `}
+      className={cn(
+        "inset-y-0 z-20 flex h-full flex-shrink-0 flex-grow-0 flex-col border-r border-border bg-background duration-300 fixed md:relative",
+        sidebarCollapsed ? "-ml-[280px] sm:-ml-[280px] md:ml-0 w-[80px] lg:w-[80px] items-center" : "w-[280px] lg:w-[280px]"
+      )}
     >
       <div className="flex h-full w-full flex-1 flex-col">
         <WorkspaceSidebarDropdown />
