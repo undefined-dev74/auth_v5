@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { LoginSchema } from "@/schema";
 import { AuthService } from "@/services/auth.service";
 import useToast from "@/hooks/use-toast";
+import { OAuthOptions } from "./oauth-options";
 
 const authService = new AuthService();
 
@@ -47,6 +48,10 @@ const LoginForm = () => {
       code: "",
     },
   });
+  
+  const { control,
+    formState: { errors, isSubmitting, isValid },
+    handleSubmit,} = form
 
   const onSubmit = async (values) => {
     setError("");
@@ -71,11 +76,11 @@ const LoginForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-y-4">
           {showTwoFactor ? (
             <FormField
-              control={form.control}
+              control={control}
               name="code"
               render={({ field }) => (
                 <FormItem>
@@ -83,6 +88,7 @@ const LoginForm = () => {
                   <FormControl>
                     <Input
                       {...field}
+                      ref={field.ref}
                       disabled={isPending}
                       placeholder="123456"
                       className="bg-gray-700 text-white border-gray-600"
@@ -95,7 +101,7 @@ const LoginForm = () => {
           ) : (
             <>
               <FormField
-                control={form.control}
+                control={control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
@@ -104,7 +110,9 @@ const LoginForm = () => {
                       <Input
                         {...field}
                         disabled={isPending}
+                        ref={field.ref}
                         placeholder="john.doe@example.com"
+                        hasError={Boolean(errors.email)}
                         type="email"
                         className="bg-gray-700 text-white border-gray-600"
                       />
@@ -114,7 +122,7 @@ const LoginForm = () => {
                 )}
               />
               <FormField
-                control={form.control}
+                control={control}
                 name="password"
                 render={({ field }) => (
                   <FormItem>
@@ -123,6 +131,8 @@ const LoginForm = () => {
                       <Input
                         {...field}
                         disabled={isPending}
+                        ref={field.ref}
+                        hasError={Boolean(errors.password)}
                         placeholder="Enter your password"
                         type="password"
                         className="bg-gray-700 text-white border-gray-600"
@@ -145,35 +155,11 @@ const LoginForm = () => {
         </div>
         <FormError message={error || urlError} />
         <FormSuccess message={success} />
-        <Button
-          disabled={isPending}
-          type="submit"
-          className="w-full bg-violet-500 text-neutral-50 p-2 rounded-lg hover:bg-violet-400"
-        >
-          {showTwoFactor ? "Confirm" : "Continue"}
+        <Button type="submit" className="w-full disabled:cursor-not-allowed">
+          {isSubmitting ? "Updating..." : "Continue"}
         </Button>
       </form>
-      <div className="mt-4 text-center text-gray-500">or</div>
-      <Button
-        variant="outline"
-        className="w-full mt-2 bg-gray-700 text-white border-gray-600 hover:bg-gray-600"
-        onClick={() => {
-          /* Handle Google login */
-        }}
-      >
-        <img src="/logo/google.svg" alt="Google" className="w-5 h-5 mr-2" />
-        Continue with Google
-      </Button>
-      <Button
-        variant="outline"
-        className="w-full mt-2 bg-gray-700 text-white border-gray-600 hover:bg-gray-600"
-        onClick={() => {
-          /* Handle GitHub login */
-        }}
-      >
-        <img src="/logo/github.svg" alt="GitHub" className="w-5 h-5 mr-2" />
-        Continue with GitHub
-      </Button>
+      <OAuthOptions handleSignInRedirection={() => console.log('first')}/>
     </Form>
   );
 };
