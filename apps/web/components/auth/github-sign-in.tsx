@@ -8,7 +8,6 @@ import { useTheme } from "next-themes";
 import githubBlackImage from "@/public/logo/github-black.svg";
 import githubWhiteImage from "@/public/logo/github-white.svg";
 
-
 type Props = {
   handleSignIn: (code: string) => void;
   clientId: string;
