@@ -7,7 +7,6 @@ import AuthCard from "@/components/card/auth-card";
 import AuthBackground from "./auth-background";
 import Logo from "@/components/core/logo";
 
-
 type AuthLayoutProps = {
   children?: ReactNode;
 };
@@ -23,7 +22,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => (
     />
 
     {/* Logo */}
-    <div className="absolute top-4 left-4 z-20">
+    <div className="absolute top-8 left-8 z-20">
       <Logo />
     </div>
 
@@ -31,12 +30,14 @@ const AuthLayout = ({ children }: AuthLayoutProps) => (
     <div className="flex-grow flex justify-center items-center">
       <div className="w-full max-w-md z-10">
         <AuthCard>{children}</AuthCard>
-        <AuthFooter />
+        <div className="py-6">
+          <AuthFooter />
+        </div>
       </div>
     </div>
 
     {/* "Create an account" link */}
-    <div className="absolute top-4 right-4 z-20 bg-gray-750 px-8 py-4 text-sm text-gray-400 text-center">
+    <div className="absolute top-10 right-10 z-20 bg-gray-750 px-8 py-4 text-sm text-gray-400 text-center">
       New to Streamline?
       <a
         href="/signup"
