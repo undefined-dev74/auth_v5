@@ -44,11 +44,8 @@ export const AppProvider: FC<IAppProvider> = observer((props) => {
       <ToastContextProvider>
         <StoreWrapper>
           <SWRConfig value={SWR_CONFIG}>
-            <TooltipProvider>
-              
-            {children}
-            </TooltipProvider>
-            </SWRConfig>
+            <TooltipProvider>{children}</TooltipProvider>
+          </SWRConfig>
         </StoreWrapper>
       </ToastContextProvider>
     </ThemeProvider>

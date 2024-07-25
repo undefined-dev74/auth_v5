@@ -43,59 +43,51 @@ export const ResetForm = () => {
     setError("");
     setSuccess("");
    authService.sendResetPasswordLink(values).then((res) => {
-     setSuccess(res?.success) 
-     setToastAlert({
-       type: "success",
-       title: "Success!",
-       message: "We have sent a new link to your email.",
-     });
+    console.log(res)
+     setSuccess("We have sent a new link to your email."); 
      router.push("/auth/new-password")
      setError(res.error)
    }).catch((err) => {
-     setError(err)
-     setToastAlert({
-       type: "error",
-       title: "Error!",
-       message: err,
-     })
+    console.log('error', err)
+     setError(err.data?.message);
+     form.setError("email", { message: err.data?.message })
    })
   };
   return (
-    <CardWrapper
-      headerLabel="Forgot your password?"
-      backButtonLabel="Back to login"
-      backButtonHref="/auth/login"
-    >
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="john.deo@example.com"
-                      type="email"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          {}
-          <FormError message={error} />
-          <FormSuccess message={success} />
-          <Button disabled={isPending} type="submit" className="w-full">
-            Send reset email
-          </Button>
-        </form>
-      </Form>
-    </CardWrapper>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <FormError message={error} />
+        <FormSuccess message={success} />
+        <div className="space-y-4">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field, fieldState }) => (
+              <FormItem>
+                <FormLabel className="text-gray-500">Email</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    disabled={isPending}
+                    placeholder="john.deo@example.com"
+                    type="email"
+                    className="bg-gray-700 text-white border-gray-600"
+                    hasError={Boolean(fieldState.error?.message)}
+                    errorMessage={fieldState.error?.message ?? ""}
+                    hasSuccess={Boolean(success)}
+                    helperText={success}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </div>
+        {}
+
+        <Button disabled={isPending} type="submit" className="w-full">
+          Send reset email
+        </Button>
+      </form>
+    </Form>
   );
 };
