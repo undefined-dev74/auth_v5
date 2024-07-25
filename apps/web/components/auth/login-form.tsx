@@ -23,6 +23,7 @@ import { LoginSchema } from "@/schema";
 import { AuthService } from "@/services/auth.service";
 import useToast from "@/hooks/use-toast";
 import { OAuthOptions } from "./oauth-options";
+import { CheckCircle, CircleCheck } from "lucide-react";
 
 const authService = new AuthService();
 
@@ -84,7 +85,7 @@ const LoginForm = () => {
               name="code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-white">Two Factor Code</FormLabel>
+                  <FormLabel className="text-gray-500">Two Factor Code</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -94,6 +95,7 @@ const LoginForm = () => {
                       className="bg-gray-700 text-white border-gray-600"
                     />
                   </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
@@ -105,7 +107,7 @@ const LoginForm = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-white">Email</FormLabel>
+                    <FormLabel className="text-gray-500">Email</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -115,9 +117,11 @@ const LoginForm = () => {
                         hasError={Boolean(errors.email)}
                         type="email"
                         className="bg-gray-700 text-white border-gray-600"
+                        errorMessage={errors.email?.message ?? ""}
                       />
                     </FormControl>
-                    <FormMessage />
+
+                    {/* <FormMessage /> */}
                   </FormItem>
                 )}
               />
@@ -126,19 +130,19 @@ const LoginForm = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-white">Password</FormLabel>
+                    <FormLabel className="text-gray-500">Password</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         disabled={isPending}
                         ref={field.ref}
                         hasError={Boolean(errors.password)}
+                        errorMessage={errors.password?.message ?? ""}
                         placeholder="Enter your password"
                         type="password"
                         className="bg-gray-700 text-white border-gray-600"
                       />
                     </FormControl>
-                    <FormMessage />
                     <Button
                       size="sm"
                       variant="link"
@@ -159,7 +163,7 @@ const LoginForm = () => {
           {isSubmitting ? "Updating..." : "Continue"}
         </Button>
       </form>
-      <OAuthOptions handleSignInRedirection={() => console.log('first')}/>
+      <OAuthOptions handleSignInRedirection={() => console.log("first")} />
     </Form>
   );
 };

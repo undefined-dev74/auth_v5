@@ -1,4 +1,5 @@
 "use client";
+
 import { ToastContextProvider } from "@/context/toast-context";
 import { FC, ReactNode } from "react";
 
@@ -10,7 +11,7 @@ type Props = {
 const DefaultLayout: FC<Props> = ({ children, gradient = false }) => (
   <div
     className={`h-full w-full overflow-hidden ${
-      gradient ? "" : "bg-[#191919]"
+      gradient ? "" : "bg-secondary/20"
     }`}
   >
     <ToastContextProvider>{children}</ToastContextProvider>
