@@ -7,6 +7,9 @@ import prisma from '../client';
 import { encryptPassword, isPasswordMatch } from '../utils/encryption';
 import { AuthTokensResponse } from '../types/response';
 import exclude from '../utils/exclude';
+import axios from 'axios';
+import QueryString from 'qs';
+
 
 /**
  * Login with username and password
@@ -116,6 +119,66 @@ const verifyEmail = async (verifyEmailToken: string): Promise<void> => {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Email verification failed');
   }
 };
+
+/**
+ * get Google Oauth Tokens
+ * @param {string} code
+ * @returns {Promise<any>}
+ */
+export const getGoogleOauthToken = async (code: string) => {
+  const rootURl = 'https://oauth2.googleapis.com/token';
+  console.log('CODE', code);
+  const options = {
+    code,
+    client_id: process.env.GOOGLE_OAUTH_CLIENT_ID,
+    client_secret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+    redirect_uri: process.env.GOOGLE_OAUTH_REDIRECT_URL,
+    grant_type: 'authorization_code'
+  };
+  try {
+    const { data } = await axios.post(rootURl, QueryString.stringify(options), {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
+    console.log('DATA in getGoogleOauth', data);
+    return data;
+  } catch (err) {
+    console.log('Failed to fetch Google Oauth Tokens', err);
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR,'Failed to fetch Google Oauth Tokens');
+  }
+};
+
+/**
+ * Get Google User
+ * @param {string} {id_token, access_token}
+ * @returns {Promise<any>}
+ */
+export const getGoogleUser = async ({
+  id_token,
+  access_token
+}: {
+  id_token: string;
+  access_token: string;
+}): Promise<void> => {
+  try {
+    const { data } = await axios.get(
+      `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${access_token}`,
+      {
+        headers: {
+          Authorization: `Bearer ${id_token}`,
+          Accept: 'application/json'
+        }
+      }
+    );
+
+    return data;
+  } catch (err) {
+    console.log(err);
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR,'Something went wrong!');
+  }
+};
+
 
 export default {
   loginUserWithEmailAndPassword,
