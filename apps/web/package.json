@@ -51,7 +51,6 @@
     "mobx-react-lite": "^4.0.7",
     "mobx-utils": "^6.0.8",
     "next": "14.0.4",
-    "next-auth": "^5.0.0-beta.4",
     "next-themes": "^0.2.1",
     "nprogress": "^0.2.0",
     "react": "^18",
@@ -62,7 +61,6 @@
     "react-popper": "^2.3.0",
     "react-resizable-panels": "^2.0.19",
     "react-spinners": "^0.13.8",
-    "resend": "^2.1.0",
     "sonner": "^1.3.1",
     "swr": "^2.2.5",
     "tailwind-merge": "^2.3.0",
@@ -71,6 +69,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@repo/types": "workspace:*",
     "@tailwindcss/typography": "^0.5.9",
     "@types/bcryptjs": "^2.4.6",
     "@types/js-cookie": "^3.0.6",
@@ -86,7 +85,6 @@
     "postcss": "^8",
     "prisma": "^5.7.1",
     "tailwindcss": "^3.3.0",
-    "typescript": "^5",
-    "@repo/types": "workspace:*"
+    "typescript": "^5"
   }
 }
