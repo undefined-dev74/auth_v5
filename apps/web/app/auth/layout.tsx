@@ -4,8 +4,10 @@ import { ReactNode } from "react";
 // import Logo from '~/components/Logo';
 import AuthFooter from "@/components/auth/auth-footer";
 
+
 import AuthBackground from "./auth-background";
 import Logo from "@/components/core/logo";
+import { usePathname } from "next/navigation";
 import { usePathname } from "next/navigation";
 
 type AuthLayoutProps = {
@@ -13,8 +15,8 @@ type AuthLayoutProps = {
 };
 
 const AuthLayout = ({ children }: AuthLayoutProps) => {
-  const path = usePathname()
-  console.log(path)
+  const path = usePathname();
+
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col">
       {/* Background pattern */}
@@ -24,14 +26,20 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
       <div className="absolute top-8 left-8 z-20">
         <Logo />
       </div>
+      {/* Logo */}
+      <div className="absolute top-8 left-8 z-20">
+        <Logo />
+      </div>
 
       {/* Main content */}
       <div className="flex-grow flex justify-center items-center">
         <div className="w-full max-w-md z-10">
           {children}
-          <div className="py-6">
-            <AuthFooter />
-          </div>
+          {["login", "register"].includes(path) && (
+            <div className="py-6">
+              <AuthFooter />
+            </div>
+          )}
         </div>
       </div>
 
@@ -48,6 +56,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
         </a>
       </div>
     </div>
-  );};
+  );
+};
 
 export default AuthLayout;
