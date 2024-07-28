@@ -4,8 +4,10 @@ import { ReactNode } from "react";
 // import Logo from '~/components/Logo';
 import AuthFooter from "@/components/auth/auth-footer";
 
+
 import AuthBackground from "./auth-background";
 import Logo from "@/components/core/logo";
+import { usePathname } from "next/navigation";
 import { usePathname } from "next/navigation";
 
 type AuthLayoutProps = {
@@ -20,6 +22,10 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
       {/* Background pattern */}
       <AuthBackground />
 
+      {/* Logo */}
+      <div className="absolute top-8 left-8 z-20">
+        <Logo />
+      </div>
       {/* Logo */}
       <div className="absolute top-8 left-8 z-20">
         <Logo />
