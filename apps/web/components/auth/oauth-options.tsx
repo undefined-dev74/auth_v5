@@ -1,5 +1,3 @@
-
-
 import { observer } from "mobx-react-lite";
 // services
 import { AuthService } from "@/services/auth.service";
@@ -11,7 +9,6 @@ import useToast from "@/hooks/use-toast";
 import { GitHubSignInButton } from "./github-sign-in";
 import { GoogleSignInButton } from "./google-sign-in";
 
-
 type Props = {
   handleSignInRedirection: () => Promise<void>;
 };
@@ -19,19 +16,16 @@ type Props = {
 // services
 const authService = new AuthService();
 
-
 export const OAuthOptions: React.FC<Props> = observer((props) => {
   const { handleSignInRedirection } = props;
   // toast alert
   const { setToastAlert } = useToast();
 
-//   const { data: envConfig } = useSWR("APP_CONFIG", () => appConfig.envConfig());
-const envConfig = {
-  github_client_id: process.env.NEXT_PUBLIC_GITHUB_OAUTH_CLIENT_ID,
-  google_client_id: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID,
-}
-
-
+  //   const { data: envConfig } = useSWR("APP_CONFIG", () => appConfig.envConfig());
+  const envConfig = {
+    github_client_id: process.env.NEXT_PUBLIC_GITHUB_OAUTH_CLIENT_ID,
+    google_client_id: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID,
+  };
 
   const handleGoogleSignIn = async ({ clientId, credential }: any) => {
     try {
@@ -92,13 +86,13 @@ const envConfig = {
             clientId={envConfig?.google_client_id}
             handleSignIn={handleGoogleSignIn}
           />
-        )} 
-        {envConfig?.github_client_id && ( 
+        )}
+        {envConfig?.github_client_id && (
           <GitHubSignInButton
             clientId={envConfig?.github_client_id}
             handleSignIn={handleGitHubSignIn}
           />
-        )} 
+        )}
       </div>
     </>
   );
