@@ -1,19 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useTheme } from "next-themes";
+import { usePathname } from "next/navigation";
 
 const AuthFooter = () => {
+  const pathname = usePathname();
   return (
     <p className="bg-gray-750 text-sm text-gray-400 text-center whitespace-pre-line">
-      By signing in, you agree to our <br />
-      <a href="/terms" className="text-blue-400 hover:underline ml-1">
+      By {pathname === "/auth/register" ? "registering" : "signing"} in, you agree to our <br />
+      <Link href="/terms" className="text-blue-400 hover:underline ml-1">
         Terms of Service
-      </a>{" "}
+      </Link>{" "}
       and{" "}
-      <a href="/privacy" className="text-blue-400 hover:underline">
+      <Link href="/privacy" className="text-blue-400 hover:underline">
         Privacy Policy
-      </a>
+      </Link>
       .
     </p>
   );
