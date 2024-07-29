@@ -26,6 +26,11 @@ router.post(
 );
 router.post('/send-verification-email', auth('VERIFY_EMAIL'), authController.sendVerificationEmail);
 router.get('/verify-email', validate(authValidation.verifyEmail), authController.verifyEmail);
+router.get(
+  '/verify-reset-token',
+  validate(authValidation.verifyResetToken),
+  authController.verifyResetToken
+);
 
 export default router;
 

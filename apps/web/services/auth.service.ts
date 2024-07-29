@@ -1,6 +1,10 @@
 // services
 
-import { IApiResponse, ILoginTokenResponse, IPasswordSignInData } from "@repo/types";
+import {
+  IApiResponse,
+  ILoginTokenResponse,
+  IPasswordSignInData,
+} from "@repo/types";
 import { API_BASE_URL } from "@/utils/helpers";
 import { APIService } from "@/services/api.service";
 // helpers
@@ -54,8 +58,8 @@ export class AuthService extends APIService {
     })
       .then((response) => {
         if (response?.status === 200) {
-           this.setAccessToken(response?.data.data.tokens?.access.token);
-           this.setRefreshToken(response?.data.data?.tokens.refresh.token);
+          this.setAccessToken(response?.data.data.tokens?.access.token);
+          this.setRefreshToken(response?.data.data?.tokens.refresh.token);
           return response?.data;
         }
       })
@@ -113,6 +117,14 @@ export class AuthService extends APIService {
         this.purgeAccessToken();
         this.purgeRefreshToken();
         throw error?.response?.data;
+      });
+  }
+
+  async verifyResetToken(token: string): Promise<void> {
+    return this.get(`/auth/verify-reset-token/?token=${token}`, { headers: {} })
+      .then((response) => response.data)
+      .catch((error) => {
+        throw error.response.data;
       });
   }
 }
