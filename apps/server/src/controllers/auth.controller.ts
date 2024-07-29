@@ -55,6 +55,12 @@ const verifyEmail = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const verifyResetToken = catchAsync(async (req, res) => {
+  const { token } = req.query;
+  await tokenService.verifyResetPasswordToken(token as string);
+  res.status(httpStatus.OK).send({ message: 'Token is valid' });
+});
+
 export default {
   register,
   login,
@@ -63,5 +69,6 @@ export default {
   forgotPassword,
   resetPassword,
   sendVerificationEmail,
-  verifyEmail
+  verifyEmail,
+  verifyResetToken
 };

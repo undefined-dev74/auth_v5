@@ -130,11 +130,27 @@ const generateVerifyEmailToken = async (user: { id: number }): Promise<string> =
   return verifyEmailToken;
 };
 
+/**
+ * Verifies a reset password token.
+ *
+ * @param {string} token - The reset password token to verify.
+ * @return {Promise<void>} A Promise that resolves when the token is verified.
+ * @throws {ApiError} If the token is invalid or has expired.
+ */
+const verifyResetPasswordToken = async (token: string): Promise<void> => {
+  try {
+    await verifyToken(token, TokenType.RESET_PASSWORD);
+  } catch (error) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Password reset token is invalid or has expired');
+  }
+};
+
 export default {
   generateToken,
   saveToken,
   verifyToken,
   generateAuthTokens,
   generateResetPasswordToken,
-  generateVerifyEmailToken
+  generateVerifyEmailToken,
+  verifyResetPasswordToken
 };

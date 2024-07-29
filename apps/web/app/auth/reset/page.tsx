@@ -13,11 +13,14 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import AuthCard from "@/components/card/auth-card";
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
 
 const authService = new AuthService();
 
@@ -26,10 +29,8 @@ const ResetSchema = z.object({
 });
 
 const Reset = () => {
-  const [isPending, setTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
-  const router = useRouter();
-  const { setToastAlert } = useToast();
+  const [success, setSuccess] = useState<string | undefined>("");
 
   const form = useForm<z.infer<typeof ResetSchema>>({
     resolver: zodResolver(ResetSchema),
@@ -38,25 +39,22 @@ const Reset = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof ResetSchema>) => {
+  const onSubmit = async (values: z.infer<typeof ResetSchema>) => {
     setError("");
-    setTransition(() => {
-      authService
-        .sendResetPasswordLink(values)
-        .then((res) => {
-          setToastAlert("We have sent a new link to your email.", "success");
-          router.push("/auth/new-password");
-        })
-        .catch((err) => {
-          setError(err?.data?.message ?? "Something went wrong!");
-          form.setError("email", { message: err?.data?.message });
-        });
-    });
+    setSuccess("");
+    try {
+      await authService.sendResetPasswordLink(values);
+      setSuccess(
+        "An email has been sent to your email address. Please check your inbox and follow the instructions to reset your password."
+      );
+    } catch (error: Error | any) {
+      setError(error?.message ?? "Something went wrong!");
+      form.setError("email", { message: error?.message });
+    }
   };
 
   return (
     <AuthCard title="">
-      
       <div className="flex flex-col items-center mb-6">
         <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mb-4">
           <svg
@@ -82,16 +80,19 @@ const Reset = () => {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormError message={error} />
+          <FormSuccess message={success} />
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
+                <FormLabel className="text-gray-300">Email</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    disabled={isPending}
-                    placeholder="Email"
+                    disabled={form.formState.isSubmitting}
+                    placeholder="john.doe@me.com"
                     type="email"
                     className="bg-gray-700 text-white border-gray-600"
                   />
@@ -101,11 +102,7 @@ const Reset = () => {
             )}
           />
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          <Button
-            disabled={isPending}
-            type="submit"
-            className="w-full"
-          >
+          <Button disabled={form.formState.isSubmitting} type="submit" className="w-full">
             Verify
           </Button>
         </form>
@@ -113,12 +110,14 @@ const Reset = () => {
       <div className="mt-4 text-center">
         <p className="text-gray-400 text-sm">
           Are you facing any problems with receiving the code?{" "}
-          <button
+          <Button
+          variant="link"
+          disabled={form.formState.isValid}
             onClick={() => form.handleSubmit(onSubmit)()}
             className="text-blue-400 hover:underline"
           >
             Resend code
-          </button>
+          </Button>
         </p>
       </div>
       <div className="mt-6 text-center">
