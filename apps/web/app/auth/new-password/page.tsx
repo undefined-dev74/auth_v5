@@ -35,6 +35,7 @@ const NewPassword = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isTokenValid, setIsTokenValid] = useState<boolean | null>(null);
+  const [isVerifying, setIsVerifying] = useState(true);
 
   const { setToastAlert } = useToast();
   const token = searchParams.get("token") as string;
@@ -45,33 +46,36 @@ const NewPassword = () => {
       new_password: "",
     },
   });
-  
-  const {formState :{errors, isSubmitting}} = form
+
+  const {
+    formState: { errors, isSubmitting },
+  } = form;
 
   useEffect(() => {
-     if (!token) {
-       setError("Missing token!");
-       setIsTokenValid(false);
-       return;
-     }
     const verifyToken = async () => {
-      if (token) {
-        try {
-          await authService.verifyResetToken(token);
-          setIsTokenValid(true);
-        } catch (error) {
-          console.log(error);
-          setIsTokenValid(false);
-          setError(
-            "Invalid or expired token. Please request a new password reset token."
-          );
-        }
+      setIsVerifying(true);
+      if (!token) {
+        setError("Missing token!");
+        setIsTokenValid(false);
+        setIsVerifying(false);
+        return;
+      }
+      try {
+        await authService.verifyResetToken(token);
+        setIsTokenValid(true);
+      } catch (error) {
+        console.log(error);
+        setIsTokenValid(false);
+        setError(
+          "Invalid or expired token. Please request a new password reset token."
+        );
+      } finally {
+        setIsVerifying(false);
       }
     };
 
     verifyToken();
   }, [token]);
-
 
   const onSubmit = async (values: z.infer<typeof NewPasswordSchema>) => {
     setError("");
@@ -85,8 +89,8 @@ const NewPassword = () => {
         message: "You have successfully reset your password.",
       });
       router.push("/auth/login");
-    } catch (error : Error | any) {
-      console.log("ERror", error);
+    } catch (error: Error | any) {
+      console.log("Error", error);
       setError(
         error?.message || "An error occurred while resetting your password."
       );
@@ -96,7 +100,7 @@ const NewPassword = () => {
   return (
     <AuthCard title="">
       <div className="flex flex-col items-center mb-6">
-        <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mb-4">
+        <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mb-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 text-white"
@@ -118,9 +122,10 @@ const NewPassword = () => {
         </p>
       </div>
 
-      {isTokenValid === null ? (
-        <div className="flex justify-center my-4">
+      {isVerifying ? (
+        <div className="flex flex-col items-center justify-center my-4">
           <BeatLoader color="#3B82F6" />
+          <p className="text-gray-400 text-sm mt-2">Verifying token...</p>
         </div>
       ) : isTokenValid ? (
         <Form {...form}>

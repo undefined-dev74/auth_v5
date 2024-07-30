@@ -1,8 +1,7 @@
 "use-client";
 
 import { BackButton } from "@/components/auth/back-button";
-import Header from "@/components/auth/header";
-import Social from "@/components/auth/social";
+
 import {
   Card,
   CardContent,
@@ -28,12 +27,12 @@ const CardWrapper = ({
   return (
     <Card className="w-custom-width bg-custom-gradient shadow-custom rounded-custom-radius  ">
       <CardHeader>
-        <Header label={headerLabel} />
+       
       </CardHeader>
       <CardContent>{children}</CardContent>
       {showSocial && (
         <CardFooter>
-          <Social />
+       
         </CardFooter>
       )}
       <CardFooter>

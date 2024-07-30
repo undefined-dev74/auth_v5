@@ -8,7 +8,6 @@ import AuthFooter from "@/components/auth/auth-footer";
 import AuthBackground from "./auth-background";
 import Logo from "@/components/core/logo";
 import { usePathname } from "next/navigation";
-import { usePathname } from "next/navigation";
 
 type AuthLayoutProps = {
   children?: ReactNode;
