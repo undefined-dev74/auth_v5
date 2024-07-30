@@ -1,6 +1,6 @@
 import { User } from '@prisma/client';
 import httpStatus from 'http-status';
-import { SuccessResponse } from '../core/ApiResponse';
+import { SuccessMsgResponse, SuccessResponse } from '../core/ApiResponse';
 import { authService, emailService, tokenService, userService } from '../services';
 import catchAsync from '../utils/catchAsync';
 import exclude from '../utils/exclude';
@@ -10,7 +10,9 @@ const register = catchAsync(async (req, res) => {
   const user = await userService.createUser(email, password, name);
   const userWithoutPassword = exclude(user, ['password', 'createdAt', 'updatedAt']);
   const tokens = await tokenService.generateAuthTokens(user);
-  res.status(httpStatus.CREATED).send({ user: userWithoutPassword, tokens });
+  new SuccessResponse('User registration successful', { user: userWithoutPassword, tokens }).send(
+    res
+  );
 });
 
 const login = catchAsync(async (req, res) => {
@@ -35,24 +37,29 @@ const refreshTokens = catchAsync(async (req, res) => {
 const forgotPassword = catchAsync(async (req, res) => {
   const resetPasswordToken = await tokenService.generateResetPasswordToken(req.body.email);
   await emailService.sendResetPasswordEmail(req.body.email, resetPasswordToken);
-  res.status(httpStatus.NO_CONTENT).send();
+  new SuccessMsgResponse('Password reset email sent to ' + req.body.email).send(res);
 });
 
 const resetPassword = catchAsync(async (req, res) => {
   await authService.resetPassword(req.query.token as string, req.body.new_password);
-  res.status(httpStatus.NO_CONTENT).send();
+  new SuccessMsgResponse('Password reset successfully').send(res);
 });
 
 const sendVerificationEmail = catchAsync(async (req, res) => {
   const user = req.user as User;
+  const currentUser = await userService.getUserById(user.id);
+  if (currentUser?.isEmailVerified) {
+    new SuccessMsgResponse('Email already verified').send(res);
+    return;
+  }
   const verifyEmailToken = await tokenService.generateVerifyEmailToken(user);
   await emailService.sendVerificationEmail(user.email, verifyEmailToken);
-  res.status(httpStatus.NO_CONTENT).send();
+  new SuccessMsgResponse('Verification email sent to ' + user.email).send(res);
 });
 
 const verifyEmail = catchAsync(async (req, res) => {
   await authService.verifyEmail(req.query.token as string);
-  res.status(httpStatus.NO_CONTENT).send();
+  new SuccessMsgResponse('Email verified successfully').send(res);
 });
 
 const verifyResetToken = catchAsync(async (req, res) => {

@@ -10,7 +10,6 @@ import exclude from '../utils/exclude';
 import axios from 'axios';
 import QueryString from 'qs';
 
-
 /**
  * Login with username and password
  * @param {string} email
@@ -96,7 +95,7 @@ const resetPassword = async (resetPasswordToken: string, newPassword: string): P
     await userService.updateUserById(user.id, { password: encryptedPassword });
     await prisma.token.deleteMany({ where: { userId: user.id, type: TokenType.RESET_PASSWORD } });
   } catch (error) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Password reset failed');
+    throw new ApiError(httpStatus.UNAUTHORIZED, error as string);
   }
 };
 
@@ -111,11 +110,32 @@ const verifyEmail = async (verifyEmailToken: string): Promise<void> => {
       verifyEmailToken,
       TokenType.VERIFY_EMAIL
     );
+    // Check if the user is already verified
+    const user = await userService.getUserById(verifyEmailTokenData.userId);
+
+    if (user?.isEmailVerified) {
+      // If already verified, just delete the token and return
+      await prisma.token.delete({ where: { id: verifyEmailTokenData.id } });
+      return;
+    }
+    const updatedUser = await userService.updateUserById(verifyEmailTokenData.userId, {
+      isEmailVerified: true
+    });
+
+    if (!updatedUser) {
+      throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Failed to update user');
+    }
+
+    // Only after successful verification, delete the token
     await prisma.token.deleteMany({
       where: { userId: verifyEmailTokenData.userId, type: TokenType.VERIFY_EMAIL }
     });
-    await userService.updateUserById(verifyEmailTokenData.userId, { isEmailVerified: true });
+    console.log('Email verified successfully for user:', updatedUser.id);
   } catch (error) {
+    console.error('EMAIL VERIFICATION ERROR', error);
+    if (error instanceof Error) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, `Email verification failed: ${error.message}`);
+    }
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Email verification failed');
   }
 };
@@ -145,7 +165,7 @@ export const getGoogleOauthToken = async (code: string) => {
     return data;
   } catch (err) {
     console.log('Failed to fetch Google Oauth Tokens', err);
-    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR,'Failed to fetch Google Oauth Tokens');
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Failed to fetch Google Oauth Tokens');
   }
 };
 
@@ -175,10 +195,9 @@ export const getGoogleUser = async ({
     return data;
   } catch (err) {
     console.log(err);
-    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR,'Something went wrong!');
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Something went wrong!');
   }
 };
-
 
 export default {
   loginUserWithEmailAndPassword,

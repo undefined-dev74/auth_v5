@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import moment, { Moment } from 'moment';
 import httpStatus from 'http-status';
 import config from '../config/config';
@@ -66,15 +66,41 @@ const saveToken = async (
  * @returns {Promise<Token>}
  */
 const verifyToken = async (token: string, type: TokenType): Promise<Token> => {
-  const payload = jwt.verify(token, config.jwt.secret);
-  const userId = Number(payload.sub);
-  const tokenData = await prisma.token.findFirst({
-    where: { token, type, userId, blacklisted: false }
-  });
-  if (!tokenData) {
-    throw new Error('Token not found');
+  try {
+    const payload = jwt.verify(token, config.jwt.secret) as JwtPayload;
+
+    if (!payload.sub) {
+      throw new Error('Invalid token payload');
+    }
+
+    const userId = Number(payload.sub);
+
+    if (isNaN(userId)) {
+      throw new Error('Invalid user ID in token');
+    }
+
+    const tokenData = await prisma.token.findFirst({
+      where: { token, type, userId, blacklisted: false }
+    });
+
+    console.log('TOKEN DATA =====> ', tokenData);
+
+    if (!tokenData) {
+      throw new Error('Token not found or invalid');
+    }
+
+    // Check if the token has expired
+    if (tokenData.expires && new Date() > tokenData.expires) {
+      throw new Error('Token has expired');
+    }
+
+    return tokenData;
+  } catch (error) {
+    if (error instanceof jwt.JsonWebTokenError) {
+      throw new Error('Invalid token');
+    }
+    throw error;
   }
-  return tokenData;
 };
 
 /**

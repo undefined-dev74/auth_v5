@@ -114,7 +114,7 @@ const Reset = () => {
           variant="link"
           disabled={form.formState.isValid}
             onClick={() => form.handleSubmit(onSubmit)()}
-            className="text-blue-400 hover:underline"
+            className="text-primary hover:underline"
           >
             Resend code
           </Button>
@@ -123,7 +123,7 @@ const Reset = () => {
       <div className="mt-6 text-center">
         <p className="text-gray-400 text-sm">
           Remember your password?{" "}
-          <Link href="/auth/login" className="text-blue-400 hover:underline">
+          <Link href="/auth/login" className="text-primary hover:underline">
             Go Back
           </Link>
         </p>

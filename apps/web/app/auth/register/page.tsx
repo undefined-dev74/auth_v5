@@ -33,7 +33,7 @@ const RegisterSchema = z.object({
 });
 
 const RegisterPage = () => {
-  const [isPending, setTransition] = useTransition();
+  
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [level, setLevel] = useState<Record<string, any>>();
@@ -56,13 +56,17 @@ const RegisterPage = () => {
     const temp = strengthIndicator(value);
     setLevel(strengthColor(temp));
   };
-  console.log(level);
+
   const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
     console.log(values);
     setError("");
     setSuccess("");
-
-    await authService.emailSignUp(values).then((res) => {});
+    try {
+      await authService.emailSignUp(values)
+      
+    } catch (error) {
+      
+    }
   };
 
   return (
@@ -79,7 +83,7 @@ const RegisterPage = () => {
                   <FormControl>
                     <Input
                       {...field}
-                      disabled={isPending}
+                      disabled={isSubmitting}
                       placeholder="John Doe"
                       type="name"
                       className="bg-gray-700 text-white border-gray-600"
@@ -100,7 +104,7 @@ const RegisterPage = () => {
                   <FormControl>
                     <Input
                       {...field}
-                      disabled={isPending}
+                      disabled={isSubmitting}
                       placeholder="john.deo@example.com"
                       type="email"
                       className="bg-gray-700 text-white border-gray-600"
@@ -121,7 +125,7 @@ const RegisterPage = () => {
                   <FormControl>
                     <Input
                       {...field}
-                      disabled={isPending}
+                      disabled={isSubmitting}
                       placeholder="Enter your password"
                       onChange={(e) => {
                         field.onChange(e);

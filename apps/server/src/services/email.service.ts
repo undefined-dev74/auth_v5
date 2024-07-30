@@ -52,7 +52,7 @@ If you did not request any password resets, then ignore this email.`;
 const sendVerificationEmail = async (to: string, token: string) => {
   const subject = 'Email Verification';
   // replace this url with the link to the email verification page of your front-end app
-  const verificationEmailUrl = `http://localhost:8000/api/v1/auth/verify-email?token=${token}`;
+  const verificationEmailUrl = `http://localhost:3000/auth/new-verification?token=${token}`;
   const text = `Dear user,
 To verify your email, click on this link: ${verificationEmailUrl}`;
   await sendEmail(to, subject, text);

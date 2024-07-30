@@ -57,11 +57,9 @@ export class AuthService extends APIService {
       headers: {},
     })
       .then((response) => {
-        if (response?.status === 200) {
-          this.setAccessToken(response?.data.data.tokens?.access.token);
-          this.setRefreshToken(response?.data.data?.tokens.refresh.token);
-          return response?.data;
-        }
+        // this.setAccessToken(response?.data.data.tokens?.access.token);
+        // this.setRefreshToken(response?.data.data?.tokens.refresh.token);
+        return response?.data;
       })
       .catch((error) => {
         throw error?.response?.data;
@@ -121,7 +119,15 @@ export class AuthService extends APIService {
   }
 
   async verifyResetToken(token: string): Promise<void> {
-    return this.get(`/auth/verify-reset-token/?token=${token}`, { headers: {} })
+    return this.get(`/auth/verify-reset-token?token=${token}`, { headers: {} })
+      .then((response) => response.data)
+      .catch((error) => {
+        throw error.response.data;
+      });
+  }
+
+  async verifyEmail(token: string): Promise<void> {
+    return this.get(`/auth/verify-email?token=${token}`, { headers: {} })
       .then((response) => response.data)
       .catch((error) => {
         throw error.response.data;
