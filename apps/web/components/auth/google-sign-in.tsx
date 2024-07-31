@@ -26,7 +26,7 @@ export const GoogleSignInButton: FC<Props> = (props) => {
         googleSignInButton.current,
         {
           type: "standard",
-          theme: "outline",
+          theme: "filled_black",
           size: "large",
           logo_alignment: "center",
           text: "signin_with",
