@@ -9,6 +9,7 @@ import useToast from "@/hooks/use-toast";
 import { GitHubSignInButton } from "./github-sign-in";
 import { GoogleSignInButton } from "./google-sign-in";
 
+
 type Props = {
   handleSignInRedirection: () => Promise<void>;
 };
@@ -35,11 +36,10 @@ export const OAuthOptions: React.FC<Props> = observer((props) => {
           credential,
           clientId,
         };
-        const response = await authService.socialAuth(socialAuthPayload);
-
-        if (response) handleSignInRedirection();
+       window.location.href = 'http://localhost:8000/api/v1/auth/google';
       } else throw Error("Cant find credentials");
     } catch (err: any) {
+      console.log("ERRPR", err)
       setToastAlert({
         title: "Error signing in!",
         type: "error",

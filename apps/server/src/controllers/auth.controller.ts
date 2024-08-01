@@ -68,6 +68,70 @@ const verifyResetToken = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send({ message: 'Token is valid' });
 });
 
+const googleOAuthLogin = catchAsync(async (req, res) => {
+  try {
+    const rootUrl = process.env.GOOGLE_OAUTH_BASE_URL;
+    const options = {
+      redirect_uri: process.env.GOOGLE_OAUTH_REDIRECT_URL,
+      client_id: process.env.GOOGLE_OAUTH_CLIENT_ID,
+      access_type: 'offline',
+      response_type: 'code',
+      prompt: 'consent',
+      scope: [
+        'https://www.googleapis.com/auth/userinfo.profile',
+        'https://www.googleapis.com/auth/userinfo.email'
+      ].join(' ')
+    };
+
+    const qs = new URLSearchParams(options as any);
+    const url = `${rootUrl}?${qs.toString()}`;
+    res.redirect(url);
+  } catch (error) {
+    console.log('ERROR on GOOGLE OAUTH', error);
+  }
+});
+
+const googleOAuthCallback = catchAsync(async (req, res) => {
+  console.log('Entering googleOAuthCallback');
+  const { code } = req.query;
+  console.log('Received code:', code);
+
+  try {
+    const { id_token, access_token } = await authService.getGoogleOauthToken(code as string);
+    console.log('Tokens received successfully');
+
+    const googleUser = await authService.getGoogleUser({ id_token, access_token });
+    console.log('Google user info:', googleUser);
+
+    if (!googleUser?.verified_email) {
+      return res.redirect(
+        `${process.env.GOOGLE_OAUTH_CLIENT_URL}/oauth/error?message=Google account not verified`
+      );
+    }
+
+    const user = await userService.upsertUser(googleUser);
+    const tokens = await tokenService.generateAuthTokens(user);
+
+    console.log('User upserted:', user);
+
+    // Redirect to React application with user and tokens as query parameters
+    const redirectUrl = new URL(`${process.env.GOOGLE_OAUTH_CLIENT_URL}/home`);
+    res.cookie('accessToken', tokens.access.token);
+    res.cookie('refreshToken', tokens.refresh?.token);
+    redirectUrl.searchParams.append(
+      'user',
+      JSON.stringify({ id: user.id, name: user.name, email: user.email })
+    );
+    redirectUrl.searchParams.append('tokens', JSON.stringify(tokens));
+
+    console.log('Redirecting to:', redirectUrl.toString());
+    res.redirect(redirectUrl.toString());
+  } catch (error) {
+    console.error('Error in googleOAuthCallback:', error);
+    res.redirect(`${process.env.GOOGLE_OAUTH_CLIENT_URL}/oauth/error`);
+  }
+});
+
 export default {
   register,
   login,
@@ -77,5 +141,7 @@ export default {
   resetPassword,
   sendVerificationEmail,
   verifyEmail,
-  verifyResetToken
+  verifyResetToken,
+  googleOAuthLogin,
+  googleOAuthCallback
 };

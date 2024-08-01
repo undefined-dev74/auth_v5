@@ -89,7 +89,8 @@
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.2",
     "tsup": "8.1.0",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "@repo/types": "workspace:*"
   },
   "dependencies": {
     "@example/logger": "workspace:*",

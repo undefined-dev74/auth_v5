@@ -31,7 +31,9 @@ router.get(
   validate(authValidation.verifyResetToken),
   authController.verifyResetToken
 );
-
+router.get('/google', authController.googleOAuthLogin);
+router.get('/sessions/oauth/google', authController.googleOAuthCallback);
+// router.get('/sessions/oauth/github', authController.githubOauthHandler);
 export default router;
 
 /**
