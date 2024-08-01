@@ -9,6 +9,7 @@ import { AuthTokensResponse } from '../types/response';
 import exclude from '../utils/exclude';
 import axios from 'axios';
 import QueryString from 'qs';
+import { GoogleUser } from '@repo/types';
 
 /**
  * Login with username and password
@@ -172,7 +173,7 @@ export const getGoogleOauthToken = async (code: string) => {
 /**
  * Get Google User
  * @param {string} {id_token, access_token}
- * @returns {Promise<any>}
+ * @returns {Promise<GoogleUser>}
  */
 export const getGoogleUser = async ({
   id_token,
@@ -180,7 +181,7 @@ export const getGoogleUser = async ({
 }: {
   id_token: string;
   access_token: string;
-}): Promise<void> => {
+}): Promise<GoogleUser> => {
   try {
     const { data } = await axios.get(
       `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${access_token}`,
@@ -206,5 +207,7 @@ export default {
   logout,
   refreshAuth,
   resetPassword,
-  verifyEmail
+  verifyEmail,
+  getGoogleOauthToken,
+  getGoogleUser
 };
