@@ -83,7 +83,7 @@ export class AuthService extends APIService {
   }
 
   async socialAuth(data: any): Promise<IApiResponse<ILoginTokenResponse>> {
-    return this.get("/auth/google", data )
+    return this.get("/auth/sessions/oauth/github", data )
       .then((response) => {
         this.setAccessToken(response?.data?.access_token);
         this.setRefreshToken(response?.data?.refresh_token);

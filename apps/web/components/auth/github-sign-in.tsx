@@ -13,14 +13,13 @@ type Props = {
   clientId: string;
 };
 
-export const    GitHubSignInButton: FC<Props> = ({ handleSignIn, clientId }) => {
+export const GitHubSignInButton: FC<Props> = ({ handleSignIn, clientId }) => {
   const [loginCallBackURL, setLoginCallBackURL] = useState<string>("");
   const [gitCode, setGitCode] = useState<string | null>(null);
 
   const router = useRouter();
   const searchParams = useSearchParams();
   const { theme } = useTheme();
-  console.log(theme)
 
   useEffect(() => {
     const code = searchParams.get("code");
@@ -32,7 +31,9 @@ export const    GitHubSignInButton: FC<Props> = ({ handleSignIn, clientId }) => 
 
   useEffect(() => {
     const origin = typeof window !== "undefined" ? window.location.origin : "";
-    setLoginCallBackURL(`${origin}/`);
+    setLoginCallBackURL(
+      process.env.NEXT_PUBLIC_GITHUB_OAUTH_REDIRECT_URL as string
+    );
   }, []);
 
   return (

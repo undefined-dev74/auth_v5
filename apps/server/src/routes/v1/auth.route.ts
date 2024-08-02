@@ -33,7 +33,7 @@ router.get(
 );
 router.get('/google', authController.googleOAuthLogin);
 router.get('/sessions/oauth/google', authController.googleOAuthCallback);
-// router.get('/sessions/oauth/github', authController.githubOauthHandler);
+router.get('/sessions/oauth/github', authController.githubOauthHandler);
 export default router;
 
 /**

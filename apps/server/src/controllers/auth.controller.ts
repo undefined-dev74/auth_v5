@@ -105,17 +105,22 @@ const googleOAuthCallback = catchAsync(async (req, res) => {
 
     if (!googleUser?.verified_email) {
       return res.redirect(
-        `${process.env.GOOGLE_OAUTH_CLIENT_URL}/oauth/error?message=Google account not verified`
+        `${process.env.OAUTH_CLIENT_URL}/oauth/error?message=Google account not verified`
       );
     }
 
-    const user = await userService.upsertUser(googleUser);
+    const user = await userService.upsertUser({
+      email: googleUser.email,
+      name: googleUser.name,
+      verified_email: googleUser.verified_email,
+      picture: googleUser.picture
+    });
     const tokens = await tokenService.generateAuthTokens(user);
 
     console.log('User upserted:', user);
 
     // Redirect to React application with user and tokens as query parameters
-    const redirectUrl = new URL(`${process.env.GOOGLE_OAUTH_CLIENT_URL}/home`);
+    const redirectUrl = new URL(`${process.env.OAUTH_CLIENT_URL}/home`);
     res.cookie('accessToken', tokens.access.token);
     res.cookie('refreshToken', tokens.refresh?.token);
     redirectUrl.searchParams.append(
@@ -128,10 +133,48 @@ const googleOAuthCallback = catchAsync(async (req, res) => {
     res.redirect(redirectUrl.toString());
   } catch (error) {
     console.error('Error in googleOAuthCallback:', error);
-    res.redirect(`${process.env.GOOGLE_OAUTH_CLIENT_URL}/oauth/error`);
+    res.redirect(`${process.env.OAUTH_CLIENT_URL}/oauth/error`);
   }
 });
 
+const githubOauthHandler = catchAsync(async (req, res) => {
+  try {
+    const code = req.query.code as string;
+
+    if (!code) {
+      return res.json({ error: 'authorization code not provided' });
+    }
+    // Get access_token using code
+    const { access_token } = await authService.getGithubOathToken({ code });
+
+    // Get user details using access token
+    const githubUser = await authService.getGithubUser({ access_token });
+    console.log('USER DATA FROM GITHUB', githubUser);
+    if (!githubUser?.email) {
+      return res.redirect(
+        `${process.env.OAUTH_CLIENT_URL}/oauth/error?message=github account not verified or email has been not set to Public`
+      );
+    }
+    const user = await userService.upsertUser({
+      email: githubUser?.email,
+      verified_email: true,
+      name: githubUser?.name,
+      picture: githubUser?.avatar_url
+    });
+    const tokens = await tokenService.generateAuthTokens(user);
+    // Redirect to React application with user and tokens as query parameters
+    const redirectUrl = new URL(`${process.env.OAUTH_CLIENT_URL}/home`);
+    res.cookie('accessToken', tokens.access.token);
+    res.cookie('refreshToken', tokens.refresh?.token);
+    // redirectUrl.searchParams.append('tokens', JSON.stringify(tokens.access.token));
+
+    console.log('Redirecting to:', redirectUrl.toString());
+    res.redirect(redirectUrl.toString());
+  } catch (error) {
+    console.log('Error in githubOAuthCallback:', error);
+    res.redirect(`${process.env.OAUTH_CLIENT_URL}/oauth/error`);
+  }
+});
 export default {
   register,
   login,
@@ -143,5 +186,6 @@ export default {
   verifyEmail,
   verifyResetToken,
   googleOAuthLogin,
-  googleOAuthCallback
+  googleOAuthCallback,
+  githubOauthHandler
 };
