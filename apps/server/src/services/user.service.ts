@@ -3,7 +3,7 @@ import httpStatus from 'http-status';
 import prisma from '../client';
 import ApiError from '../utils/ApiError';
 import { encryptPassword } from '../utils/encryption';
-import { GoogleUser } from '@repo/types';
+import { GoogleUser, OAuthUser } from '@repo/types';
 
 /**
  * Create a user
@@ -185,19 +185,24 @@ const currentUserInstanceAdminStatus = async (
   return { is_instance_admin: user.role === 'ADMIN' };
 };
 
-async function upsertUser(googleUser: GoogleUser) {
+/**
+ * create or update the oauth users
+ * @param {OAuthUser} oauthUser
+ * @returns Promise<User>
+ */
+async function upsertUser(oauthUser: OAuthUser) {
   const user = await prisma.user.upsert({
-    where: { email: googleUser.email },
+    where: { email: oauthUser.email },
     update: {
-      name: googleUser.name,
-      isEmailVerified: googleUser.verified_email
-      // picture: googleUser.picture
+      name: oauthUser.name,
+      isEmailVerified: oauthUser.verified_email
+      // picture: oauthUser.picture
     },
     create: {
-      email: googleUser.email,
-      name: googleUser.name,
+      email: oauthUser.email,
+      name: oauthUser.name,
       password: 'oauth-user',
-      isEmailVerified: googleUser.verified_email
+      isEmailVerified: oauthUser.verified_email
       // picture: googleUser.picture
     } as User
   });

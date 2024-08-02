@@ -9,7 +9,7 @@ import { AuthTokensResponse } from '../types/response';
 import exclude from '../utils/exclude';
 import axios from 'axios';
 import QueryString from 'qs';
-import { GoogleUser } from '@repo/types';
+import { GitHubOauthToken, GoogleUser } from '@repo/types';
 
 /**
  * Login with username and password
@@ -200,6 +200,54 @@ export const getGoogleUser = async ({
   }
 };
 
+/**
+ * get Github Oauth Tokens
+ * @param {string} code
+ * @returns {Promise<any>}
+ */
+export const getGithubOathToken = async ({ code }: { code: string }): Promise<any> => {
+  const rootUrl = process.env.GITHUB_OAUTH_ROOT_URI;
+  const options = {
+    client_id: process.env.GITHUB_OAUTH_CLIENT_ID,
+    client_secret: process.env.GITHUB_OAUTH_CLIENT_SECRET,
+    code
+  };
+
+  const queryString = QueryString.stringify(options);
+
+  try {
+    const { data } = await axios.post(`${rootUrl}?${queryString}`, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    });
+    const decoded = QueryString.parse(data) as GitHubOauthToken;
+    return decoded;
+  } catch (err: any) {
+    throw Error(err);
+  }
+};
+
+/**
+ * Get Github User
+ * @param {GitHubOauthToken} {access_token}
+ * @returns {Promise<any>}
+ */
+export const getGithubUser = async ({ access_token }: GitHubOauthToken): Promise<any> => {
+  try {
+    const { data } = await axios.get('https://api.github.com/user', {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        Accept: 'application/json'
+      }
+    });
+
+    return data;
+  } catch (err: any) {
+    throw Error(err);
+  }
+};
+
 export default {
   loginUserWithEmailAndPassword,
   isPasswordMatch,
@@ -209,5 +257,7 @@ export default {
   resetPassword,
   verifyEmail,
   getGoogleOauthToken,
-  getGoogleUser
+  getGoogleUser,
+  getGithubUser,
+  getGithubOathToken
 };
