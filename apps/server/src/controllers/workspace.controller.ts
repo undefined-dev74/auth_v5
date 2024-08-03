@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { SuccessResponse } from '../core/ApiResponse';
+import { SuccessMsgResponse, SuccessResponse } from '../core/ApiResponse';
 import { workspaceService } from '../services';
 
 import ApiError from '../utils/ApiError';
@@ -10,17 +10,12 @@ export const createWorkspace = catchAsync(async (req: any, res: Response) => {
   const { name, description } = req.body;
   const userId = req.user.id;
 
-  // Input validation
-  if (!name) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Workspace name is required');
-  }
-
   const newWorkspace = await workspaceService.createWorkspace(name, description, userId);
   new SuccessResponse('Workspace created successfully.', newWorkspace).send(res);
 });
 
 export const getWorkspaces = catchAsync(async (req: Request, res: Response) => {
-  const filter = {}; // You can add filter logic based on query params if needed
+  const filter = req.query.name ? { name: { contains: req.query.name } } : {};
   const options = {
     sortBy: req.query.sortBy as string,
     limit: req.query.limit ? parseInt(req.query.limit as string, 10) : 10,
@@ -28,7 +23,7 @@ export const getWorkspaces = catchAsync(async (req: Request, res: Response) => {
   };
 
   const workspaces = await workspaceService.queryWorkspaces(filter, options);
-  res.status(httpStatus.OK).json(workspaces);
+  new SuccessResponse('Workspaces retrieved successfully.', workspaces).send(res);
 });
 
 export const getWorkspace = catchAsync(async (req: Request, res: Response) => {
@@ -36,7 +31,7 @@ export const getWorkspace = catchAsync(async (req: Request, res: Response) => {
   if (!workspace) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Workspace not found');
   }
-  res.status(httpStatus.OK).json(workspace);
+  new SuccessResponse('Workspace retrieved successfully.', workspace).send(res);
 });
 
 export const updateWorkspace = catchAsync(async (req: Request, res: Response) => {
@@ -44,12 +39,12 @@ export const updateWorkspace = catchAsync(async (req: Request, res: Response) =>
     parseInt(req.params.workspaceId, 10),
     req.body
   );
-  res.status(httpStatus.OK).json(workspace);
+  new SuccessResponse('Workspace updated successfully.', workspace).send(res);
 });
 
 export const deleteWorkspace = catchAsync(async (req: Request, res: Response) => {
   await workspaceService.deleteWorkspaceById(parseInt(req.params.workspaceId, 10));
-  res.status(httpStatus.NO_CONTENT).send();
+  new SuccessMsgResponse('Workspace deleted successfully.').send(res);
 });
 
 export default {

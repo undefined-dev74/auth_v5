@@ -13,7 +13,7 @@ router
     validate(workspaceValidation.createWorkspace),
     workspaceController.createWorkspace
   )
-  .get(auth(), workspaceController.getWorkspaces);
+  .get(auth('GET_WORKSPACE'), workspaceController.getWorkspaces);
 
 router
   .route('/:workspaceId')
