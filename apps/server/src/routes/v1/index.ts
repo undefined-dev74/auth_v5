@@ -25,7 +25,7 @@ const defaultRoutes = [
     route: webhookRoute
   },
   {
-    path: '/workspace',
+    path: '/workspaces',
     route: workspaceRoute
   },
   {
