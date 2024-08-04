@@ -58,6 +58,21 @@ model Workspace {
   owner    User            @relation("WorkspaceOwner", fields: [ownerId], references: [id])
   projects Project[]
   members  UserWorkspace[]
+  invitations WorkspaceInvitation[]
+}
+
+model WorkspaceInvitation {
+  id          Int       @id @default(autoincrement())
+  email       String
+  token       String    @unique
+  status      String    @default("PENDING")
+  workspaceId Int
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  expiresAt   DateTime
+  createdAt   DateTime  @default(now())
+
+  @@index([email])
+  @@index([token])
 }
 
 // You would need to add this model for the many-to-many relationship with users
