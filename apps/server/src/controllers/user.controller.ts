@@ -41,7 +41,7 @@ const getMe = catchAsync(async (req: any, res: any) => {
       throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
     }
 
-    new SuccessResponse('Current user fetched successfully', { user }).send(res);
+    res.send(user);
   } catch (error) {
     console.error('Error in getMe:', error);
 

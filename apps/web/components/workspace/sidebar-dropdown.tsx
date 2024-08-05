@@ -177,8 +177,7 @@ export const WorkspaceSidebarDropdown = observer(() => {
                 <div className="fixed left-4 z-20 mt-1 flex w-full max-w-[19rem] origin-top-left flex-col rounded-md border border-border bg-background shadow-md divide-y divide-border outline-none">
                   <div className="flex max-h-96 flex-col items-start justify-start gap-2 mb-2 px-4">
                     <h6 className="sticky top-0 z-10 h-full w-full bg-background pt-3 text-sm font-medium text-muted-foreground/80">
-                      {/* {currentUser?.email} */}
-                      Aman@gmail.com
+                      {currentUser?.email}
                     </h6>
                     {workspacesList ? (
                       <div className="flex h-full w-full flex-col items-start justify-start gap-1.5">
