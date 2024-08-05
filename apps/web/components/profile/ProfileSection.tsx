@@ -54,6 +54,7 @@ const ProfileSection = observer(() => {
 
   const { currentUser, updateCurrentUser, signOut } = useUser();
 
+
   // popper-js init
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: "right",
@@ -99,7 +100,7 @@ const ProfileSection = observer(() => {
           <Avatar className="!text-base h-8 w-8 rounded-md">
             <AvatarImage src={"https://github.com/shadcn.png"} />
 
-            <AvatarFallback>{currentUser?.display_name}</AvatarFallback>
+            <AvatarFallback>{currentUser?.name}</AvatarFallback>
           </Avatar>
         </MenuButton>
         <Transition
@@ -120,8 +121,7 @@ const ProfileSection = observer(() => {
           >
             <div className="flex flex-col gap-2.5 pb-2">
               <span className="px-2 text-[#a3a3a3]">
-                {/* {currentUser?.email} */}
-                john.doe@gmail.com
+                {currentUser?.email}
               </span>
               {profileLinks(
                 workspaceSlug?.toString() ?? "",
