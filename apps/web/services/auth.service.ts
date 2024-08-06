@@ -103,8 +103,8 @@ export class AuthService extends APIService {
   }
 
   async signOut(): Promise<any> {
-    return this.post("/api/sign-out/", {
-      refresh_token: this.getRefreshToken(),
+    return this.post("/auth/logout", {
+      refreshToken: this.getRefreshToken(),
     })
       .then((response) => {
         this.purgeAccessToken();

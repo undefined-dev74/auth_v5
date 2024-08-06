@@ -26,10 +26,10 @@ export default function NotFound() {
             <Image src={Image404} layout="fill" alt="404- Page not found" />
           </div>
           <div className="space-y-2 my-2">
-            <h3 className="text-lg text-slate-200 font-semibold">
+            <h3 className="text-lg text-slate-500 font-semibold">
               Oops! Something went wrong.
             </h3>
-            <p className="text-sm text-slate-300">
+            <p className="text-sm text-slate-400">
               Sorry, the page you are looking for cannot be found. It may have
               been removed, had its name changed, or is temporarily unavailable.
             </p>

@@ -2,6 +2,7 @@
 
 import { ToastContextProvider } from "@/context/toast-context";
 import { FC, ReactNode } from "react";
+import "../../app/globals.css";
 
 type Props = {
   children: ReactNode;
