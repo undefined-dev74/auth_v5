@@ -29,6 +29,7 @@ model User {
   watchedIssues   Issue[]              @relation("IssueWatcher")
   ownedWorkspaces Workspace[]          @relation("WorkspaceOwner")
   workspaces      UserWorkspace[]
+  WorkspaceInvitation WorkspaceInvitation[]
 
   @@index([email])
 }
@@ -66,8 +67,11 @@ model WorkspaceInvitation {
   email       String
   token       String    @unique
   status      String    @default("PENDING")
+  role        WorkspaceRole @default(MEMBER) 
   workspaceId Int
+  inviterId   Int
   workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  inviter     User      @relation(fields: [inviterId], references: [id])
   expiresAt   DateTime
   createdAt   DateTime  @default(now())
 
