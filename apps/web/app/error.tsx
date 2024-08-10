@@ -73,7 +73,7 @@ const Error = ({ error, reset }: ErrorPageProps) => {
             <div className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-lg p-8 shadow-2xl">
               <h2 className="text-3xl font-bold text-white mb-4">Oops! Something went wrong</h2>
               <p className="text-xl text-purple-200 mb-8">
-                We've encountered an unexpected error. Our team has been notified and is working on a fix.
+                We&apos;ve encountered an unexpected error. Our team has been notified and is working on a fix.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
                 <Button
