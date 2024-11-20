@@ -13,5 +13,10 @@
   },
   "devDependencies": {
     "pino-pretty": "9.2.0"
+  },
+  "packageManager": "pnpm@latest",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
   }
 }

@@ -15,5 +15,10 @@
   },
   "devDependencies": {
     "eslint-config-example": "workspace:*"
+  },
+  "packageManager": "pnpm@latest",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
   }
 }

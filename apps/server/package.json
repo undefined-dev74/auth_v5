@@ -136,5 +136,10 @@
     "uuid": "^9.0.1",
     "winston": "^3.8.2",
     "xss-filters": "^1.2.7"
+  },
+  "packageManager": "pnpm@latest",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
   }
 }
