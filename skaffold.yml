@@ -1,0 +1,38 @@
+apiVersion: skaffold/v4beta7
+kind: Config
+build:
+  tagPolicy:
+    gitCommit: {}
+  local: {}
+profiles: # used to differentiate the manifest files for dev and prod env.
+  - name: dev # used in cloud-deploy.yaml of step-1.
+    manifests:
+      kustomize:
+        paths:
+          - "." # relative path to skaffold.yaml where kustomize.yaml file is located.
+  - name: non-prod
+    manifests:
+      kustomize:
+        paths:
+          - "." # relative path to skaffold.yaml where kustomize.yaml file is located.
+deploy:
+  kubectl: {}
+  logs:
+    prefix: container # this is a fixed value. 
+customActions: # this would be used in pre-deploy and post-deploy steps.
+  - name: em-verify-test # used in cloud-deploy.yaml file of step-1. 
+    containers:
+      - name: em-verify-test # can be any name
+        image: alpine # this should be an image provided by GCP or from the Artifact registry.
+        command:
+          - /bin/sh
+        args:
+          - -c
+          - ls -la # can be any command that can be run inside on the fly container where the image mentioned is used.
+verify:
+ - name: verify-endpoint-test  # can be any name relevant to your verify test case
+   container:
+    name: alpine # can be any name. 
+    image: alpine # this should be an image provided by GCP or from the Artifact registry releated to your deployment.
+    command: ["/bin/sh"] 
+    args: ["-c", "ls -la"] # can be any test command or argument.

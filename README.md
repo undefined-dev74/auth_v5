@@ -13,7 +13,7 @@ This is very simple to do with Next.js 13 using [Transpile packages](https://bet
 ```js
 // next.config.js
 const nextConfig = {
-  transpilePackages: ["@example/**"],
+  transpilePackages: ["@repo/**"],
 };
 
 module.exports = nextConfig;
@@ -32,7 +32,7 @@ import { defineConfig } from "tsup";
 
 export default defineConfig({
   entry: ["./index.ts"],
-  noExternal: ["@example"],
+  noExternal: ["@repo"],
   splitting: false,
   bundle: true,
   outDir: "./dist",
@@ -44,11 +44,11 @@ export default defineConfig({
 });
 ```
 
-The magic here is `noExternal: ['@example']`
+The magic here is `noExternal: ['@repo']`
 
-This one setting allows you to bundle any external shared packages matching `@example` **and** their dependencies into the app's build output.
+This one setting allows you to bundle any external shared packages matching `@repo` **and** their dependencies into the app's build output.
 
-Example: shared packages named `@example/logger` and `@example/utils` will both be bundled into the app's build output, along with their dependencies.
+Example: shared packages named `@repo/logger` and `@repo/utils` will both be bundled into the app's build output, along with their dependencies.
 
 ## Try it out yourself:
 
