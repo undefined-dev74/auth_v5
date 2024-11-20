@@ -1,5 +1,5 @@
 {
-  "name": "@example/utils",
+  "name": "@repo/utils",
   "main": "./index.ts",
   "types": "./index.ts",
   "source": "./index.ts",
@@ -8,7 +8,7 @@
     "lint": "eslint . --quiet"
   },
   "dependencies": {
-    "@example/logger": "workspace:*"
+    "@repo/logger": "workspace:*"
   },
   "devDependencies": {
     "eslint-config-example": "workspace:*"

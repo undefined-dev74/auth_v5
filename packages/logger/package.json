@@ -1,5 +1,5 @@
 {
-  "name": "@example/logger",
+  "name": "@repo/logger",
   "main": "./index.ts",
   "types": "./index.ts",
   "source": "./index.ts",
