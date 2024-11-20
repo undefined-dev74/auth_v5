@@ -1,9 +1,9 @@
 # Use node:20-alpine as base image
 FROM node:20-alpine AS base
 
-# Install necessary packages
+# Install necessary packages and specific pnpm version
 RUN apk add --no-cache libc6-compat
-RUN corepack enable pnpm
+RUN npm install -g pnpm@8.15.1
 
 # Set working directory
 WORKDIR /app
@@ -13,7 +13,12 @@ FROM base AS deps
 WORKDIR /app
 
 # Copy configuration files
-COPY pnpm-lock.yaml pnpm-workspace.yaml package.json .npmrc ./
+COPY pnpm-lock.yaml ./
+COPY package.json ./
+COPY pnpm-workspace.yaml ./
+COPY .npmrc ./
+
+# Copy all package.json files
 COPY apps/web/package.json ./apps/web/package.json
 COPY packages/*/package.json ./packages/*/package.json/
 
@@ -52,9 +57,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public ./apps/web/public
 
-# Set environment variables
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV PORT 3000
 
 EXPOSE 3000
 

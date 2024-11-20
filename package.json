@@ -3,6 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "packageManager": "pnpm@9.14.2",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+   "keywords": [],
+  "author": "",
+  "license": "MIT",
   "scripts": {
     "build": "turbo run build",
     "clean": "turbo run clean & rm -rf node_modules",
@@ -19,13 +27,7 @@
   },
   "devDependencies": {
     "cross-env": "7.0.3"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "MIT",
-  "packageManager": "pnpm@latest",
-  "engines": {
-    "node": ">=18.0.0",
-    "pnpm": ">=8.0.0"
   }
+ 
+ 
 }

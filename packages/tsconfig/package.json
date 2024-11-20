@@ -6,7 +6,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "packageManager": "pnpm@latest",
+  "packageManager": "pnpm@9.14.2",
   "engines": {
     "node": ">=18.0.0",
     "pnpm": ">=8.0.0"

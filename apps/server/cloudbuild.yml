@@ -2,7 +2,7 @@ steps:
   # Install pnpm
   - name: 'node:18'
     entrypoint: npm
-    args: ['install', '-g', 'pnpm@latest']
+    args: ['install', '-g', 'pnpm@9.14.2']
 
   # Install dependencies
   - name: 'node:18'

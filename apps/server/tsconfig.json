@@ -1,25 +1,17 @@
 {
-  "extends": "@example/tsconfig/tsconfig.node.json",
+  "extends": "@repo/tsconfig/tsconfig.node.json",
   "compilerOptions": {
-    "target": "es2016",
-    "outDir": "./build",
-    // "outDir": "dist", // new implemention monorepo
-    "module": "commonjs",
-    "types": ["node", "jsonwebtoken"],
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "strictNullChecks": true,
+    "lib": ["ES2022"],
+    "outDir": "./dist",
+    "rootDir": "./src",
     "baseUrl": ".",
-      "tsBuildInfoFile": "tsconfig.tsbuildinfo"
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "skipLibCheck": true,
+    "allowJs": true,
+    "types": ["node"]
   },
-  "include": ["."],
-  "exclude": ["dist", "build"],
-  // "ts-node": {
-  //   "swc": true
-  // }
+  "include": ["src/**/*", "tests/**/*", "jest.config.ts", "tsup.config.ts"],
+  "exclude": ["node_modules" ,"dist"]
 }
