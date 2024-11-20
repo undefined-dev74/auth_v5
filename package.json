@@ -10,7 +10,9 @@
     "lint": "turbo run lint",
     "start": "turbo run start",
     "test": "cross-env FORCE_COLOR=1 turbo run test",
-    "typecheck": "turbo run typecheck"
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
     "turbo": "2.0.6"
@@ -21,5 +23,9 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "packageManager": "pnpm@9.4.0"
+  "packageManager": "pnpm@latest",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
 }
