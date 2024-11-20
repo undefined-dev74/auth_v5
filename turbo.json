@@ -1,39 +1,29 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalEnv": [
-    "NODE_ENV",
-    "PORT",
-    "IS_SERVER_BUILD"
-  ],
+  "globalDependencies": ["**/.env.*local"],
+  "globalEnv": ["NODE_ENV", "PORT", "IS_SERVER_BUILD"],
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        ".next/**",
-        "dist/**"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "dist/**", "!.next/cache/**"],
+      "env": ["NEXT_PUBLIC_*"]
     },
     "start": {
-      "dependsOn": [
-        "^build"
-      ],
+      "dependsOn": ["^build"],
       "cache": false
     },
     "lint": {
       "outputs": []
     },
     "dev": {
-      "cache": false
+      "cache": false,
+      "persistent": true
     },
     "clean": {
       "cache": false
     },
     "typecheck": {
-      "outputs": [
-        "tsconfig.tsbuildinfo"
-      ]
+      "outputs": ["tsconfig.tsbuildinfo"]
     },
     "test": {
       "outputs": []

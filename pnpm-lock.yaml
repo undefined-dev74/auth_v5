@@ -18,13 +18,13 @@ importers:
 
   apps/server:
     dependencies:
-      '@example/logger':
+      '@repo/logger':
         specifier: workspace:*
         version: link:../../packages/logger
-      '@example/tsconfig':
+      '@repo/tsconfig':
         specifier: workspace:*
         version: link:../../packages/tsconfig
-      '@example/utils':
+      '@repo/utils':
         specifier: workspace:*
         version: link:../../packages/utils
       '@types/bcryptjs':
@@ -78,6 +78,9 @@ importers:
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
+      module-alias:
+        specifier: ^2.2.3
+        version: 2.2.3
       moment:
         specifier: ^2.29.4
         version: 2.30.1
@@ -108,6 +111,12 @@ importers:
       ts-node-dev:
         specifier: 2.0.0
         version: 2.0.0(@swc/core@1.3.36)(@types/node@18.15.0)(typescript@4.9.4)
+      tsconfig-paths:
+        specifier: ^4.2.0
+        version: 4.2.0
+      uuid:
+        specifier: ^9.0.1
+        version: 9.0.1
       winston:
         specifier: ^3.8.2
         version: 3.13.0
@@ -175,6 +184,9 @@ importers:
       '@types/swagger-ui-express':
         specifier: ^4.1.3
         version: 4.1.6
+      '@types/uuid':
+        specifier: ^9.0.7
+        version: 9.0.8
       '@types/xss-filters':
         specifier: ^0.0.27
         version: 0.0.27
@@ -250,15 +262,6 @@ importers:
       '@blueprintjs/popover2':
         specifier: ^2.1.7
         version: 2.1.7(@types/react@18.0.28)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      '@example/logger':
-        specifier: workspace:*
-        version: link:../../packages/logger
-      '@example/tsconfig':
-        specifier: workspace:*
-        version: link:../../packages/tsconfig
-      '@example/utils':
-        specifier: workspace:*
-        version: link:../../packages/utils
       '@headlessui/react':
         specifier: ^2.1.1
         version: 2.1.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -313,6 +316,15 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.0.7
         version: 1.1.2(@types/react-dom@18.0.11)(@types/react@18.0.28)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@repo/logger':
+        specifier: workspace:*
+        version: link:../../packages/logger
+      '@repo/tsconfig':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+      '@repo/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       '@tanstack/react-query':
         specifier: ^5.45.1
         version: 5.48.0(react@18.2.0)
@@ -337,9 +349,6 @@ importers:
       framer-motion:
         specifier: ^11.2.10
         version: 11.2.12(@emotion/is-prop-valid@0.8.8)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      jose:
-        specifier: ^5.6.3
-        version: 5.6.3
       jotai:
         specifier: ^2.8.3
         version: 2.8.4(@types/react@18.0.28)(react@18.2.0)
@@ -536,7 +545,7 @@ importers:
 
   packages/utils:
     dependencies:
-      '@example/logger':
+      '@repo/logger':
         specifier: workspace:*
         version: link:../logger
     devDependencies:
@@ -4431,6 +4440,9 @@ packages:
   mobx@6.13.0:
     resolution: {integrity: sha512-1laWODrBWmB7mDJ8EClCjUQTyLwJ0ydJgE4FtK7t9r3JnjXgc9OhmYs2P4RtHrY1co5+4T6cKP2UswX2SU29mA==}
 
+  module-alias@2.2.3:
+    resolution: {integrity: sha512-23g5BFj4zdQL/b6tor7Ji+QY4pEfNH784BMslY9Qb0UnJWRAt+lQGLYmRaM0KDBwIG23ffEBELhZDP2rhi9f/Q==}
+
   module-details-from-path@1.0.3:
     resolution: {integrity: sha512-ySViT69/76t8VhE1xXHK6Ch4NcDd26gx0MzKXLO+F7NOtnqH68d9zF94nT8ZWSxXh8ELOERsnJO/sWt1xZYw5A==}
 
@@ -5681,6 +5693,10 @@ packages:
 
   tsconfig-paths@3.15.0:
     resolution: {integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==}
+
+  tsconfig-paths@4.2.0:
+    resolution: {integrity: sha512-NoZ4roiN7LnbKn9QqE1amc9DJfzvZXxF4xDavcOWt1BPkdx+m+0gJuPM+S0vCe7zTJMYUP0R8pO2XMr+Y8oLIg==}
+    engines: {node: '>=6'}
 
   tsconfig@7.0.0:
     resolution: {integrity: sha512-vZXmzPrL+EmC4T/4rVlT2jNVMWCi/O4DIiSj3UHg1OE5kCKbk4mfrXc6dZksLgRM/TZlKnousKH9bbTazUWRRw==}
@@ -10730,6 +10746,8 @@ snapshots:
 
   mobx@6.13.0: {}
 
+  module-alias@2.2.3: {}
+
   module-details-from-path@1.0.3: {}
 
   moment@2.30.1: {}
@@ -12174,6 +12192,12 @@ snapshots:
     dependencies:
       '@types/json5': 0.0.29
       json5: 1.0.2
+      minimist: 1.2.8
+      strip-bom: 3.0.0
+
+  tsconfig-paths@4.2.0:
+    dependencies:
+      json5: 2.2.3
       minimist: 1.2.8
       strip-bom: 3.0.0
 

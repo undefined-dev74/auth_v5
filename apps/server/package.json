@@ -2,17 +2,26 @@
   "name": "server",
   "version": "1.0.0",
   "description": "REST API Boilerplate with Node JS, TypeScript, Express and Prisma",
-  "main": "src/index.ts",
   "repository": "https://github.com/antonio-lazaro/prisma-express-typescript-boilerplate.git",
+  "_moduleAliases": {
+    "@": "dist"
+  },
   "scripts": {
-    "start": "pnpm build && pm2 start ecosystem.config.json --no-daemon",
-    "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
+    "start": "cross-env NODE_ENV=production node dist/index.js",
+    "start:pm2": "pm2 start ecosystem.config.json --no-daemon",
+    "dev": "cross-env NODE_ENV=development tsup --watch --onSuccess  \"node dist/index.js\"",
+    "build": "cross-env NODE_ENV=production tsup",
+    "build:watch": "tsup --watch",
+    "clean": "rimraf dist",
+    "prebuild": "pnpm run clean",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "tsc --noEmit --watch",
     "watch": "npx concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
     "watch-node": "cross-env NODE_ENV=development nodemon src/index.ts",
     "test": "docker-compose -f docker-compose.only-db-test.yml up -d && yarn db:push && jest -i --colors --verbose --detectOpenHandles && docker-compose -f docker-compose.only-db-test.yml down",
     "test:watch": "docker-compose -f docker-compose.only-db-test.yml up -d && yarn db:push && jest -i --watchAll && docker-compose -f docker-compose.only-db-test.yml down",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
     "prettier": "prettier --check **/*.ts",
     "prettier:fix": "prettier --write **/*.ts",
     "db:push": "prisma db push",
@@ -21,9 +30,7 @@
     "docker:dev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up",
     "docker:test": "docker-compose -f docker-compose.yml -f docker-compose.test.yml up",
     "docker:dev-db:start": "docker-compose -f docker-compose.only-db-dev.yml up -d",
-    "docker:dev-db:stop": "docker-compose -f docker-compose.only-db-dev.yml down",
-    "prepare": "husky install",
-    "build": "rm -rf build && tsc -p tsconfig.json"
+    "docker:dev-db:stop": "docker-compose -f docker-compose.only-db-dev.yml down"
   },
   "keywords": [
     "node",
@@ -45,12 +52,13 @@
     "eslint",
     "prettier"
   ],
-  "author": "Antonio Lázaro",
+  "author": "Aman Jha",
   "license": "ISC",
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
     "@jest/globals": "^29.3.1",
     "@prisma/client": "^5.14.0",
+    "@repo/types": "workspace:*",
     "@swc/core": "1.3.36",
     "@swc/helpers": "0.4.14",
     "@types/body-parser": "^1.19.5",
@@ -67,6 +75,7 @@
     "@types/supertest": "^2.0.12",
     "@types/swagger-jsdoc": "^6.0.1",
     "@types/swagger-ui-express": "^4.1.3",
+    "@types/uuid": "^9.0.7",
     "@types/xss-filters": "^0.0.27",
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
@@ -89,13 +98,12 @@
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.2",
     "tsup": "8.1.0",
-    "typescript": "^4.9.4",
-    "@repo/types": "workspace:*"
+    "typescript": "^4.9.4"
   },
   "dependencies": {
-    "@example/logger": "workspace:*",
-    "@example/tsconfig": "workspace:*",
-    "@example/utils": "workspace:*",
+    "@repo/logger": "workspace:*",
+    "@repo/tsconfig": "workspace:*",
+    "@repo/utils": "workspace:*",
     "@types/bcryptjs": "^2.4.2",
     "@types/express-serve-static-core": "^4.19.5",
     "@types/nodemailer": "^6.4.7",
@@ -113,6 +121,7 @@
     "http-status": "^1.5.3",
     "joi": "^17.7.0",
     "jsonwebtoken": "^9.0.2",
+    "module-alias": "^2.2.3",
     "moment": "^2.29.4",
     "morgan": "^1.10.0",
     "node-cron": "^3.0.3",
@@ -123,6 +132,8 @@
     "qs": "^6.12.3",
     "svix": "^1.24.0",
     "ts-node-dev": "2.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "uuid": "^9.0.1",
     "winston": "^3.8.2",
     "xss-filters": "^1.2.7"
   }
