@@ -1,0 +1,41 @@
+steps:
+  # Install dependencies
+  - name: 'node:18'
+    entrypoint: npm
+    args: ['install']
+    
+  # Build all applications
+  - name: 'node:18'
+    entrypoint: npm
+    args: ['run', 'build']
+    
+  # Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '-t', 'gcr.io/$PROJECT_ID/monorepo-app:$COMMIT_SHA',
+      '.'
+    ]
+    
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/monorepo-app:$COMMIT_SHA']
+    
+  # Deploy to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'monorepo-app'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/monorepo-app:$COMMIT_SHA'
+      - '--region'
+      - 'us-central1'
+      - '--platform'
+      - 'managed'
+      - '--allow-unauthenticated'
+
+images:
+  - 'gcr.io/$PROJECT_ID/monorepo-app:$COMMIT_SHA'
+
+timeout: '1800s'
