@@ -1,14 +1,15 @@
-import { defineConfig } from 'tsup';
+import { resolve } from 'path';
+import { defineConfig, type Options } from 'tsup';
 
 export default defineConfig({
-  entry: ['./src/index.ts'],
-  noExternal: ['@example'], // Bundle any package starting with `@example` and their dependencies
+  entry: ['src/index.ts'],
+  format: ['cjs'],
   splitting: false,
-  bundle: true,
-  outDir: './dist',
+  sourcemap: true,
   clean: true,
-  env: { IS_SERVER_BUILD: 'true' },
-  loader: { '.json': 'copy' },
-  minify: true,
-  sourcemap: true
+  dts: true,
+  env: {
+    NODE_ENV: process.env.NODE_ENV || 'production'
+  },
+  onSuccess: process.env.NODE_ENV === 'development' ? 'node dist/index.js' : undefined
 });

@@ -1,15 +1,61 @@
-FROM node:alpine
+# Use node:20-alpine as base image
+FROM node:20-alpine AS base
 
-RUN mkdir -p /usr/src/node-app && chown -R node:node /usr/src/node-app
+# Install necessary packages and specific pnpm version
+RUN apk add --no-cache libc6-compat
+RUN npm install -g pnpm@9.14.2
 
-WORKDIR /usr/src/node-app
+# Set working directory
+WORKDIR /app
 
-COPY package.json yarn.lock ./
+# Install dependencies only when needed
+FROM base AS deps
+WORKDIR /app
 
-USER node
+# Copy configuration files
+COPY ../../pnpm-lock.yaml ./
+COPY ../../package.json ./
+COPY ../../pnpm-workspace.yaml ./
+COPY ../../.npmrc ./
 
-RUN yarn install --pure-lockfile
+# Copy the source code
+COPY . ./apps/server/
+COPY ../../packages ./packages/
 
-COPY --chown=node:node . .
+# Install dependencies
+RUN pnpm install --frozen-lockfile
 
-EXPOSE 3000
+# Builder stage
+FROM base AS builder
+WORKDIR /app
+
+# Copy files from deps
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app ./
+
+# Generate Prisma Client
+RUN cd apps/server && npx prisma generate
+
+# Build the application
+RUN pnpm build --filter server...
+
+# Runner stage
+FROM base AS runner
+WORKDIR /app
+
+# Create non-root user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 expressjs
+USER expressjs
+
+# Copy necessary files
+COPY --from=builder --chown=expressjs:nodejs /app/apps/server/dist ./dist
+COPY --from=builder --chown=expressjs:nodejs /app/apps/server/package.json ./
+COPY --from=builder --chown=expressjs:nodejs /app/node_modules ./node_modules
+
+ENV NODE_ENV production
+ENV PORT 8000
+
+EXPOSE 8000
+
+CMD ["node", "dist/index.js"]

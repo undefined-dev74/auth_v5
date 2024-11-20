@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./build",
+    "rootDirs": ["./src", "."],
+    "resolveJsonModule": true,
+    "composite": true
+  },
+  "include": ["src/**/*", "package.json"],
+  "exclude": [
+    "node_modules",
+    "tests",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "jest.config.ts",
+    "tsup.config.ts",
+    "build"
+  ]
+}
