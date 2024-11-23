@@ -48,10 +48,46 @@ const deleteWorkspace = {
   })
 };
 
+const inviteUserToWorkspace = {
+  params: Joi.object().keys({
+    workspaceId: Joi.number().integer().required()
+  }),
+  body: Joi.object().keys({
+    email: Joi.string().email().required()
+  })
+};
+
+const acceptWorkspaceInvitation = {
+  body: Joi.object().keys({
+    token: Joi.string().required()
+  })
+};
+
+const joinWorkspace = {
+  body: Joi.object().keys({
+    token: Joi.string().required()
+  }),
+  params: Joi.object().keys({
+    workspaceSlug: Joi.string().required(),
+    invitationId: Joi.string().required()
+  })
+};
+
+const getWorkspaceInvitation = {
+  params: Joi.object().keys({
+    workspaceSlug: Joi.string().required(),
+    invitationId: Joi.string().required()
+  })
+};
+
 export default {
   createWorkspace,
   getWorkspaces,
   getWorkspace,
   updateWorkspace,
-  deleteWorkspace
+  deleteWorkspace,
+  inviteUserToWorkspace,
+  acceptWorkspaceInvitation,
+  joinWorkspace,
+  getWorkspaceInvitation
 };

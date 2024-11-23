@@ -8,6 +8,7 @@ import { FormSuccess } from "../form-success";
 import AuthCard from "@/components/card/auth-card";
 import Link from "next/link";
 import { AuthService } from "@/services/auth.service";
+import { AxiosError } from "axios";
 
 const authService = new AuthService();
 
@@ -41,9 +42,9 @@ const NewVerificationForm = () => {
         const res = await authService.verifyEmail(token);
         setVerificationStatus({
           isLoading: false,
-          success: res?.success || "Email verified successfully!",
+          success: res.message || "Email verified successfully!",
         });
-      } catch (error) {
+      } catch (error : any) {
         setVerificationStatus({
           isLoading: false,
           error: error.message || "An error occurred during verification.",
@@ -77,7 +78,7 @@ const NewVerificationForm = () => {
           Email Verification
         </h2>
         <p className="text-gray-400 text-center text-sm">
-          We're confirming your email verification.
+          We&apos;re confirming your email verification.
         </p>
       </div>
 
