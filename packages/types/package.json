@@ -14,7 +14,7 @@
     "lint": "eslint . --quiet"
   },
   "devDependencies": {
-    "eslint-config-example": "workspace:*"
+    "@repo/eslint-config": "workspace:*"
   },
   "packageManager": "pnpm@9.14.2",
   "engines": {

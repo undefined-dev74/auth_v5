@@ -1,5 +1,5 @@
 {
-  "name": "eslint-config-example",
+  "name": "@repo/eslint-config",
   "main": "index.js",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "5.48.1",

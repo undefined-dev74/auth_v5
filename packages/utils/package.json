@@ -8,10 +8,8 @@
     "lint": "eslint . --quiet"
   },
   "dependencies": {
-    "@repo/logger": "workspace:*"
-  },
-  "devDependencies": {
-    "eslint-config-example": "workspace:*"
+    "@repo/logger": "workspace:*",
+    "@repo/eslint-config": "workspace:*"
   },
   "packageManager": "pnpm@9.14.2",
   "engines": {
