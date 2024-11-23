@@ -1,6 +1,4 @@
-import { Request } from 'express';
 import catchAsync from '../utils/catchAsync';
-import { CreateProjectPayload, ProjectRouteParams } from 'src/types/project';
 import { projectService } from '../services';
 import {
   ForbiddenResponse,

@@ -11,7 +11,7 @@ import { GoogleSignInButton } from "./google-sign-in";
 
 
 type Props = {
-  handleSignInRedirection: () => Promise<void>;
+  handleSignInRedirection?: () => Promise<void>;
 };
 
 // services

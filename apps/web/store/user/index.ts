@@ -19,6 +19,7 @@ export interface IUserRootStore {
   currentUser: IUser | null;
   // fetch actions
   fetchCurrentUser: () => Promise<IUser>;
+  fetchCurrentUserSettings: () => Promise<IUserSettings>;
   fetchCurrentUserInstanceAdminStatus: () => Promise<boolean>;
   signOut: () => Promise<void>;
 }

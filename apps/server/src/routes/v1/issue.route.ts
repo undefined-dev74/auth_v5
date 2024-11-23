@@ -1,5 +1,5 @@
 import express from 'express';
-import { issueController, workspaceController } from '../../controllers';
+import { issueController } from '../../controllers';
 import auth from '../../middlewares/auth';
 import validate from '../../middlewares/validate';
 import { issueValidation } from '../../validations';

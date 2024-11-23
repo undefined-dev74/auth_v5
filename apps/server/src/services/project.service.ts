@@ -1,4 +1,4 @@
-import { PrismaClient, Project, Workspace, User, ProjectRole } from '@prisma/client';
+import { PrismaClient, User, ProjectRole } from '@prisma/client';
 import {
   CreateProjectServiceInput,
   CreateProjectServiceOutput,
@@ -78,7 +78,7 @@ class ProjectService {
   }
 
   getSafeUser(user: User): SafeUser {
-    const { password, ...safeUser } = user;
+    const { ...safeUser } = user;
     return safeUser;
   }
 }

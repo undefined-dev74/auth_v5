@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { issueService } from '../services';
-import { CreateIssuePayload, IssueRouteParams } from '../types/issue';
+
 import catchAsync from '../utils/catchAsync';
 import {
   ForbiddenResponse,

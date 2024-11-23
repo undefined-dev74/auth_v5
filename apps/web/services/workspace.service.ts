@@ -1,6 +1,6 @@
 // services
 import { APIService } from "@/services/api.service";
-import { IWorkspace } from "@repo/types";
+import { IWorkspace, IWorkspaceMemberInvitation } from "@repo/types";
 // helpers
 import { API_BASE_URL } from "@/utils/helpers";
 // types
@@ -34,10 +34,7 @@ export class WorkspaceService extends APIService {
       });
   }
 
-  async updateWorkspace(
-    workspaceSlug: string,
-    data: Partial<IWorkspace>
-  ): Promise<IWorkspace> {
+  async updateWorkspace(workspaceSlug: string, data: Partial<IWorkspace>): Promise<IWorkspace> {
     return this.patch(`/api/workspaces/${workspaceSlug}/`, data)
       .then((response) => response?.data)
       .catch((error) => {
@@ -47,6 +44,24 @@ export class WorkspaceService extends APIService {
 
   async deleteWorkspace(workspaceSlug: string): Promise<any> {
     return this.delete(`/api/workspaces/${workspaceSlug}/`)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async joinWorkspace(workspaceSlug: string, invitationId: string, data: any): Promise<IWorkspaceMemberInvitation> {
+    return this.post(`/workspaces/${workspaceSlug}/invitations/${invitationId}/join`, data, {
+      headers: {},
+    })
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
+  async getWorkspaceInvitation(workspaceSlug: string, invitationId: string): Promise<any> {
+    return this.get(`/workspaces/${workspaceSlug}/invitations/${invitationId}/join`, { headers: {} })
       .then((response) => response?.data)
       .catch((error) => {
         throw error?.response?.data;
