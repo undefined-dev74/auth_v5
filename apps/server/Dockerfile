@@ -10,25 +10,28 @@ WORKDIR /app
 FROM base AS deps
 WORKDIR /app
 
-# Copy configuration files
-COPY ../../pnpm-lock.yaml ./
-COPY ../../package.json ./
-COPY ../../pnpm-workspace.yaml ./
-COPY ../../.npmrc ./
+# First copy only the workspace configuration files
+COPY pnpm-workspace.yaml ./
+COPY pnpm-lock.yaml ./
+COPY package.json ./
+COPY .npmrc ./
 
-# Copy the source code
-COPY . ./apps/server/
-COPY ../../packages ./packages/
+# Copy all package.json files from workspaces
+COPY packages/*/package.json ./packages/
+COPY apps/server/package.json ./apps/server/
 
-# Install dependencies
-RUN pnpm install
+# Now copy the source files
+COPY packages ./packages
+COPY apps/server ./apps/server
+
+# Install dependencies with specific flags to handle lockfile
+RUN pnpm install --frozen-lockfile=false --recursive
 
 # Builder stage
 FROM base AS builder
 WORKDIR /app
 
 # Copy files from deps
-COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app ./
 
 # Generate Prisma Client
@@ -44,12 +47,16 @@ WORKDIR /app
 # Create non-root user
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 expressjs
-USER expressjs
 
 # Copy necessary files
-COPY --from=builder --chown=expressjs:nodejs /app/apps/server/dist ./dist
-COPY --from=builder --chown=expressjs:nodejs /app/apps/server/package.json ./
-COPY --from=builder --chown=expressjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder /app/apps/server/dist ./dist
+COPY --from=builder /app/apps/server/package.json ./
+COPY --from=builder /app/node_modules ./node_modules
+
+# Fix permissions
+RUN chown -R expressjs:nodejs /app
+
+USER expressjs
 
 ENV NODE_ENV production
 ENV PORT 8000
