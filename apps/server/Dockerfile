@@ -1,6 +1,4 @@
-# Use node:20-alpine as base image
-FROM node:20-alpine AS base
-
+FROM node:18-alpine AS base
 # Install necessary packages and specific pnpm version
 RUN apk add --no-cache libc6-compat
 RUN npm install -g pnpm@9.14.2
@@ -23,7 +21,7 @@ COPY . ./apps/server/
 COPY ../../packages ./packages/
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile
+RUN pnpm install
 
 # Builder stage
 FROM base AS builder
@@ -37,7 +35,7 @@ COPY --from=deps /app ./
 RUN cd apps/server && npx prisma generate
 
 # Build the application
-RUN pnpm build --filter server...
+RUN pnpm build --filter=server...
 
 # Runner stage
 FROM base AS runner
