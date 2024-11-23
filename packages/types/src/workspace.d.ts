@@ -17,3 +17,17 @@ export interface IWorkspace {
   organization_size: string
   total_issues: number
 }
+
+export interface IWorkspaceMemberInvitation {
+  accepted: boolean
+  email: string
+  id: string
+  inviter: IUser
+  role: string
+  status: string
+  workspace: {
+    id: string
+    name: string
+    slug: string
+  }
+}
