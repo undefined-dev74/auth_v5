@@ -1,66 +1,75 @@
 FROM node:18-alpine AS base
 
-# Install necessary packages including build dependencies
+# Install necessary dependencies including glibc
 RUN apk add --no-cache \
     libc6-compat \
     python3 \
     make \
     g++ \
     curl \
-    openssl
+    openssl \
+    git
 
-# Install pnpm
+# Install pnpm globally
 RUN npm install -g pnpm@9.14.2
 
-# Set working directory
 WORKDIR /app
 
-# Install dependencies only when needed
+# Dependencies stage
 FROM base AS deps
 WORKDIR /app
 
-# Copy root workspace files
+# Copy workspace files
 COPY pnpm-workspace.yaml ./
 COPY pnpm-lock.yaml ./
 COPY package.json ./
 COPY .npmrc ./
 
-# Create necessary directories for packages
-RUN mkdir -p packages apps/server
+# Set npm config to avoid postinstall issues
+ENV SKIP_POSTINSTALL=1
+ENV NODE_ENV=production
+ENV PRISMA_SKIP_POSTINSTALL_GENERATE=true
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV CI=true
 
-# Copy package.json files
+# Create .npmrc with necessary settings
+RUN echo "node-linker=hoisted\nstrict-peer-dependencies=false\nauto-install-peers=true\nenable-pre-post-scripts=false" > .npmrc
+
+# Copy all package.json files
 COPY packages/*/package.json ./packages/
 COPY apps/server/package.json ./apps/server/
-
-# Copy prisma schema and other necessary files
 COPY apps/server/prisma ./apps/server/prisma
 
-# Copy source files
-COPY packages ./packages
-COPY apps/server ./apps/server
-
-# Set environment variables for Prisma and other build tools
-ENV PRISMA_SKIP_POSTINSTALL_GENERATE=true
-ENV NODE_ENV=development
-ENV PRISMA_CLI_QUERY_ENGINE_TYPE=binary
-ENV PRISMA_CLIENT_ENGINE_TYPE=binary
-
-# Install dependencies with specific flags
-RUN pnpm install --no-frozen-lockfile \
-    --unsafe-perm \
-    --reporter=silent \
-    --ignore-scripts
-
-# Generate Prisma Client separately
-RUN cd apps/server && \
-    npx prisma generate
+# Install dependencies with specific flags to avoid postinstall issues
+RUN pnpm install --frozen-lockfile=false \
+    --ignore-scripts \
+    # Ignore specific problematic packages
+    --ignore-workspace-root-check \
+    --filter="./apps/server..." \
+    # Skip optional dependencies
+    --no-optional
 
 # Builder stage
 FROM base AS builder
 WORKDIR /app
 
-# Copy files from deps
+# Copy files from deps stage
 COPY --from=deps /app ./
+
+# Copy source files
+COPY packages ./packages
+COPY apps/server ./apps/server
+COPY tsconfig.json ./
+
+# Set environment variables for build
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Install necessary build dependencies separately
+RUN cd apps/server && \
+    pnpm add -D esbuild@latest @swc/core@latest --ignore-scripts && \
+    # Generate Prisma client without postinstall
+    npx prisma generate --no-engine
 
 # Build the application
 RUN pnpm build --filter=server...
@@ -76,22 +85,15 @@ RUN apk add --no-cache libc6-compat openssl
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 expressjs
 
-# Set proper environment variables
 ENV NODE_ENV=production
 ENV PORT=8000
-ENV PRISMA_CLI_QUERY_ENGINE_TYPE=binary
-ENV PRISMA_CLIENT_ENGINE_TYPE=binary
 
-# Copy necessary files
-COPY --from=builder /app/apps/server/dist ./dist
-COPY --from=builder /app/apps/server/package.json ./
-COPY --from=builder /app/apps/server/prisma ./prisma
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/apps/server/node_modules/.prisma ./node_modules/.prisma
+# Copy build output and necessary files
+COPY --from=builder --chown=expressjs:nodejs /app/apps/server/dist ./dist
+COPY --from=builder --chown=expressjs:nodejs /app/apps/server/package.json ./
+COPY --from=builder --chown=expressjs:nodejs /app/node_modules ./node_modules
 
-# Fix permissions
-RUN chown -R expressjs:nodejs /app
-
+# Switch to non-root user
 USER expressjs
 
 EXPOSE 8000
