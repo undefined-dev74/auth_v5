@@ -3,13 +3,17 @@ import { defineConfig, type Options } from 'tsup';
 
 export default defineConfig({
   entry: ['src/index.ts'],
-  format: ['cjs'],
+  noExternal: ['@repo'],
+  external: ['swagger-parser'],
+  format: ['cjs', 'esm'], // Adding ESM format
+  clean: true,
+  dts: true, // Generate declaration files
   splitting: false,
   sourcemap: true,
-  clean: true,
-  dts: true,
+  minify: false,
+  shims: true,
+  cjsInterop: true, // Enable better CommonJS interop
   env: {
     NODE_ENV: process.env.NODE_ENV || 'production'
-  },
-  onSuccess: process.env.NODE_ENV === 'development' ? 'node dist/index.js' : undefined
+  }
 });

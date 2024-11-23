@@ -60,7 +60,7 @@ export const OAuthOptions: React.FC<Props> = observer((props) => {
         };
         const response = await authService.socialAuth(socialAuthPayload);
 
-        if (response) handleSignInRedirection();
+        if (response && handleSignInRedirection) handleSignInRedirection();
       } else throw Error("Cant find credentials");
     } catch (err: any) {
       setToastAlert({

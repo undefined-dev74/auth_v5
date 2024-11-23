@@ -13,5 +13,5 @@
     "types": ["node"]
   },
   "include": ["src/**/*", "tests/**/*", "jest.config.ts", "tsup.config.ts"],
-  "exclude": ["node_modules" ,"dist"]
+  "exclude": ["node_modules", "dist"]
 }

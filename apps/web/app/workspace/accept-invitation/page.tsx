@@ -45,6 +45,7 @@ const AcceptInvitation = observer(() => {
     } else if (currentUser && workspaceSlug && invitation_id && !isAccepting) {
       handleAccept();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser, currentUserLoader, workspaceSlug, invitation_id, invitationToken]);
 
   const handleAccept = () => {

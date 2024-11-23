@@ -16,9 +16,7 @@ export class AuthService extends APIService {
     super(API_BASE_URL);
   }
 
-  async passwordSignIn(
-    data: IPasswordSignInData
-  ): Promise<IApiResponse<ILoginTokenResponse>> {
+  async passwordSignIn(data: IPasswordSignInData): Promise<IApiResponse<ILoginTokenResponse>> {
     return this.post("/auth/login", data, { headers: {} })
       .then((response) => {
         console.log(response);
@@ -83,7 +81,7 @@ export class AuthService extends APIService {
   }
 
   async socialAuth(data: any): Promise<IApiResponse<ILoginTokenResponse>> {
-    return this.get("/auth/sessions/oauth/github", data )
+    return this.get("/auth/sessions/oauth/github", data)
       .then((response) => {
         this.setAccessToken(response?.data?.access_token);
         this.setRefreshToken(response?.data?.refresh_token);
@@ -126,7 +124,7 @@ export class AuthService extends APIService {
       });
   }
 
-  async verifyEmail(token: string): Promise<void> {
+  async verifyEmail(token: string): Promise<Promise<IApiResponse<{success: string}>>> {
     return this.get(`/auth/verify-email?token=${token}`, { headers: {} })
       .then((response) => response.data)
       .catch((error) => {
