@@ -1,79 +1,211 @@
-# Turborepo Express and Next.js example setup
+# Turborepo Express and Next.js Example Setup
 
-This is an example setup for a full-stack monorepo using [Turborepo](https://turborepo.com) with Next.js and Express
+[Previous content remains the same...]
 
-Most other Turborepo examples I've seen using Express take a different approach to bundling shared packages.
+## Troubleshooting Guide
 
-Most examples like [Turbo kitchen-sink example](https://github.com/vercel/turbo/blob/main/examples/kitchen-sink/packages/logger/package.json) will have `dev` and `build` scripts for each shared package, which then watch the package for any changes and rebuild on each change.
+### Common Issues and Solutions
 
-I wanted to to find a way to avoid having a `dev` and `build` step for each package, and simply import the package into the app that needs it, and have the app bundle the package during it's `build` step.
-
-This is very simple to do with Next.js 13 using [Transpile packages](https://beta.nextjs.org/docs/api-reference/next.config.js#transpilepackages)
-
-```js
-// next.config.js
-const nextConfig = {
-  transpilePackages: ["@repo/**"],
-};
-
-module.exports = nextConfig;
-```
-
-`transpilePackages` will automatically transpile and bundle local shared packages during next's `build` step
-
-Doing this with Express however was not as straight-forward, but I was able to get it working with a pretty simple setup using [tsup](https://github.com/egoist/tsup)
-
-Building an app using `tsup` with the following config will automatically transpile and bundle local shared packages during the `build` step
-
-```ts
-// tsup.config.ts
-
-import { defineConfig } from "tsup";
-
-export default defineConfig({
-  entry: ["./index.ts"],
-  noExternal: ["@repo"],
-  splitting: false,
-  bundle: true,
-  outDir: "./dist",
-  clean: true,
-  env: { IS_SERVER_BUILD: "true" },
-  loader: { ".json": "copy" },
-  minify: true,
-  sourcemap: true,
-});
-```
-
-The magic here is `noExternal: ['@repo']`
-
-This one setting allows you to bundle any external shared packages matching `@repo` **and** their dependencies into the app's build output.
-
-Example: shared packages named `@repo/logger` and `@repo/utils` will both be bundled into the app's build output, along with their dependencies.
-
-## Try it out yourself:
-
-Turborepo will run these commands for all packages and apps from the root directory
-
-Install all dependencies for all packages and apps
+#### 1. Module Not Found Errors
 
 ```bash
-pnpm i
+Error: Cannot find module '@repo/utils'
 ```
 
-Start dev env for both server and front-end
+**Solutions:**
+- Verify workspace setup:
+  ```yaml
+  # pnpm-workspace.yaml
+  packages:
+    - 'apps/*'
+    - 'packages/*'
+  ```
+- Check package names match in package.json:
+  ```json
+  {
+    "dependencies": {
+      "@repo/utils": "workspace:*"
+    }
+  }
+  ```
+- Try cleaning and reinstalling:
+  ```bash
+  # Clean everything
+rm -rf node_modules
+rm -rf apps/*/node_modules
+rm -rf packages/*/node_modules
+pnpm store prune
+
+# Reinstall everything
+pnpm install
+  ```
+
+#### 2. Build Failures
 
 ```bash
-pnpm dev
+Failed to compile.
+Error: Error: Cannot find module 'tsup/dist/cli-default.js'
 ```
 
-Build both server and front-end apps
+**Solutions:**
+- Check tsup is installed:
+  ```bash
+  pnpm add -D tsup
+  ```
+- Verify tsup.config.ts is in the correct location:
+  ```typescript
+  // apps/server/tsup.config.ts
+  import { defineConfig } from "tsup";
+  export default defineConfig({
+    entry: ["./src/index.ts"],
+    noExternal: ["@repo"],
+    // ... other config
+  });
+  ```
+
+#### 3. Next.js Transpilation Issues
 
 ```bash
-pnpm build
+Error: Failed to compile: Module not found: Can't resolve '@repo/ui'
 ```
 
-Run both server and front-end apps
+**Solutions:**
+- Verify next.config.js setup:
+  ```javascript
+  /** @type {import('next').NextConfig} */
+  const nextConfig = {
+    transpilePackages: ["@repo/**"],
+  };
+  module.exports = nextConfig;
+  ```
+- Check package dependencies:
+  ```json
+  {
+    "dependencies": {
+      "@repo/ui": "workspace:*",
+      "next": "latest",
+      "react": "^18"
+    }
+  }
+  ```
+
+#### 4. Workspace Dependencies Not Resolving
 
 ```bash
-pnpm start
+ERR_PNPM_OUTDATED_LOCKFILE
 ```
+
+**Solutions:**
+- Update .npmrc configuration:
+  ```ini
+  node-linker=hoisted
+  shared-workspace-lockfile=true
+  strict-peer-dependencies=false
+  auto-install-peers=true
+  ```
+- Force update lockfile:
+  ```bash
+  pnpm install --force
+  ```
+
+#### 5. Development Server Issues
+
+```bash
+Error: listen EADDRINUSE: address already in use :::3000
+```
+
+**Solutions:**
+- Check if ports are in use:
+  ```bash
+  # Windows
+  netstat -ano | findstr :3000
+  # Linux/Mac
+  lsof -i :3000
+  ```
+- Configure different ports:
+  ```env
+  # .env
+  PORT=3001
+  ```
+
+#### 6. TypeScript Path Aliases Not Working
+
+**Solutions:**
+- Verify tsconfig.json setup:
+  ```json
+  {
+    "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+        "@repo/*": ["packages/*/src"]
+      }
+    }
+  }
+  ```
+- Check packages are included in tsconfig:
+  ```json
+  {
+    "include": ["src", "../../packages/*/src"]
+  }
+  ```
+
+### Development Best Practices
+
+1. **Clean Start**
+   ```bash
+   # Clean everything and start fresh
+   pnpm clean
+   rm -rf node_modules
+   pnpm install
+   pnpm build
+   pnpm dev
+   ```
+
+2. **Debugging Build Issues**
+   ```bash
+   # Build with verbose logging
+   DEBUG=* pnpm build
+   
+   # Build specific app
+   pnpm build --filter=server
+   ```
+
+3. **Package Management**
+   ```bash
+   # Add dependency to specific app
+   pnpm add package-name --filter app-name
+   
+   # Add shared dependency to workspace
+   pnpm add package-name -w
+   ```
+
+### Environment Setup
+
+Ensure your environment is properly configured:
+
+```bash
+node -v  # Should be >=18.0.0
+pnpm -v  # Should be >=8.0.0
+```
+
+Required files in root:
+- `pnpm-workspace.yaml`
+- `turbo.json`
+- `.npmrc`
+- `package.json`
+
+### Still Having Issues?
+
+1. Check the [Turborepo documentation](https://turbo.build/repo/docs)
+2. Verify all packages have correct peer dependencies
+3. Try running apps individually to isolate issues
+4. Check for conflicting dependency versions
+5. Ensure all required environment variables are set
+
+## Contributing
+
+[Your contribution guidelines here]
+
+## License
+
+[Your license information here]

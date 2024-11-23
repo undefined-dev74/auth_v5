@@ -9,7 +9,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node dist/index.js",
     "start:pm2": "pm2 start ecosystem.config.json --no-daemon",
-    "dev": "cross-env NODE_ENV=development tsup --watch --onSuccess  \"node dist/index.js\"",
+    "dev": "cross-env NODE_ENV=development tsup --watch --onSuccess \"node dist/index.js\"",
     "build": "cross-env NODE_ENV=production tsup",
     "build:watch": "tsup --watch",
     "clean": "rm -rf dist",
@@ -84,6 +84,7 @@
     "@typescript-eslint/eslint-plugin": "^5.46.1",
     "@typescript-eslint/parser": "^5.46.1",
     "cross-env": "^7.0.3",
+    "rimraf": "^5.0.0",
     "dotenv": "16.0.3",
     "eslint": "^8",
     "eslint-config-prettier": "^8.5.0",
