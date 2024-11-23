@@ -28,7 +28,7 @@ Error: Cannot find module '@repo/utils'
     }
   }
   ```
-- Try cleaning and reinstalling:
+# Try cleaning and reinstalling:
   ```bash
   # Clean everything
 rm -rf node_modules
