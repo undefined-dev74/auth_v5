@@ -58,9 +58,41 @@ To verify your email, click on this link: ${verificationEmailUrl}`;
   await sendEmail(to, subject, text);
 };
 
+/**
+ * Send workspace invitation email
+ * @param {string} to
+ * @param {Object} invitationData
+ * @param {string} invitationData.inviterName
+ * @param {string} invitationData.workspaceName
+ * @param {string} invitationData.invitationLink
+ * @returns {Promise}
+ */
+const sendWorkspaceInvitationEmail = async (
+  to: string,
+  invitationData: { inviterName: string; workspaceName: string; invitationLink: string }
+) => {
+  const subject = `Invitation to join ${invitationData.workspaceName} workspace`;
+  const text = `Dear user,
+
+You have been invited by ${invitationData.inviterName} to join the "${invitationData.workspaceName}" workspace.
+
+To accept this invitation and join the workspace, please click on the following link:
+${invitationData.invitationLink}
+
+If you don't have an account yet, you'll be able to create one after clicking the link.
+
+If you believe this invitation was sent to you by mistake, you can safely ignore this email.
+
+Best regards,
+The Streamline Team`;
+
+  await sendEmail(to, subject, text);
+};
+
 export default {
   transport,
   sendEmail,
   sendResetPasswordEmail,
-  sendVerificationEmail
+  sendVerificationEmail,
+  sendWorkspaceInvitationEmail
 };

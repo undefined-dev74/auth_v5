@@ -3,7 +3,7 @@ import httpStatus from 'http-status';
 import prisma from '../client';
 import ApiError from '../utils/ApiError';
 import { encryptPassword } from '../utils/encryption';
-import { GoogleUser, OAuthUser } from '@repo/types';
+import { OAuthUser } from '@repo/types';
 
 /**
  * Create a user

@@ -21,4 +21,19 @@ router
   .patch(auth('UPDATE_WORKSPACE'), workspaceController.updateWorkspace)
   .delete(auth('DELETE_WORKSPACE'), workspaceController.deleteWorkspace);
 
+router
+  .route('/:workspaceId/invite')
+  .post(
+    auth(),
+    validate(workspaceValidation.inviteUserToWorkspace),
+    workspaceController.inviteUserToWorkspace
+  );
+
+router
+  .route('/:workspaceSlug/invitations/:invitationId/join')
+  .get(
+    validate(workspaceValidation.getWorkspaceInvitation),
+    workspaceController.getWorkspaceInvitation
+  )
+  .post(auth(), validate(workspaceValidation.joinWorkspace), workspaceController.joinWorkspace);
 export default router;

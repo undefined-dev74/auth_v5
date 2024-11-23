@@ -5,6 +5,7 @@ import { API_BASE_URL } from "@/utils/helpers";
 
 // types
 import {
+  IApiResponse,
   IInstanceAdminStatus,
   IUser,
   IUserProfileData,
@@ -20,7 +21,7 @@ export class UserService extends APIService {
     return this.get("/users/me")
       .then((response) => response?.data)
       .catch((error) => {
-        throw error?.response;
+        throw error?.response.data;
       });
   }
 

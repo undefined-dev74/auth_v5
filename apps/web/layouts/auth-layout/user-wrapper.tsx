@@ -16,7 +16,7 @@ export interface IUserAuthWrapper {
 
 export const UserAuthWrapper: FC<IUserAuthWrapper> = observer((props) => {
   const { children } = props;
-
+console.log("UserAuthWrapper");
   // store hooks
   const {
     currentUser,
@@ -60,11 +60,12 @@ export const UserAuthWrapper: FC<IUserAuthWrapper> = observer((props) => {
     );
   }
 
-  if (currentUserError) {
-    const redirectTo = pathname;
-    router.push(`/?next_path=${redirectTo}`);
-    return null;
-  }
+  // if (currentUserError) {
+  //   const redirectTo = pathname;
+  //   console.log(pathname)
+  //   router.push(`/?next_path=${redirectTo}`);
+  //   return null;
+  // }
 
   return <>{children}</>;
 });

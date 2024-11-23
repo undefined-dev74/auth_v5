@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "pino": "8.10.0",
-    "eslint-config-example": "workspace:*"
+    "@repo/eslint-config": "workspace:*"
   },
   "devDependencies": {
     "pino-pretty": "9.2.0"

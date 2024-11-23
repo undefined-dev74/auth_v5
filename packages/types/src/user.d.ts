@@ -4,6 +4,7 @@ export interface IUser {
   created_at: Date
   created_location: string
   date_joined: Date
+  name: string
   email: string
   display_name: string
   first_name: string

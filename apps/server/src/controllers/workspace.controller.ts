@@ -3,8 +3,8 @@ import httpStatus from 'http-status';
 import { SuccessMsgResponse, SuccessResponse } from '../core/ApiResponse';
 import { workspaceService } from '../services';
 
-import ApiError from '../utils/ApiError';
-import catchAsync from '../utils/catchAsync';
+import ApiError from '@/utils/ApiError';
+import catchAsync from '@/utils/catchAsync';
 
 export const createWorkspace = catchAsync(async (req: any, res: Response) => {
   const { name, description } = req.body;
@@ -47,10 +47,46 @@ export const deleteWorkspace = catchAsync(async (req: Request, res: Response) =>
   new SuccessMsgResponse('Workspace deleted successfully.').send(res);
 });
 
-export default {
-  createWorkspace,
-  getWorkspaces,
-  getWorkspace,
-  updateWorkspace,
-  deleteWorkspace
-};
+export const inviteUserToWorkspace = catchAsync(async (req: any, res: Response) => {
+  const invitation = await workspaceService.inviteUserToWorkspace(
+    Number(req.params.workspaceId),
+    req.body.email,
+    req.user?.id
+  );
+  new SuccessResponse('Invitation sent successfully.', invitation).send(res);
+});
+
+export const acceptWorkspaceInvitation = catchAsync(async (req: any, res: Response) => {
+  const workspace = await workspaceService.acceptWorkspaceInvitation(req.body.token, req.user?.id);
+  new SuccessResponse('Invitation accepted successfully.', workspace).send(res);
+});
+
+export const joinWorkspace = catchAsync(async (req: any, res: Response) => {
+  const { token } = req.body;
+  const { workspaceSlug, invitationId } = req.params;
+  const userId = req.user.id;
+
+  const workspace = await workspaceService.joinWorkspaceByInvitation(
+    token,
+    workspaceSlug,
+    invitationId,
+    userId
+  );
+
+  if (!workspace) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Workspace or invitation not found');
+  }
+
+  new SuccessResponse('Invitation accepted successfully.', workspace).send(res);
+});
+
+export const getWorkspaceInvitation = catchAsync(async (req: Request, res: Response) => {
+  const { workspaceSlug, invitationId } = req.params;
+
+  const invitationDetails = await workspaceService.getInvitationDetails(
+    workspaceSlug,
+    invitationId
+  );
+
+  res.send(invitationDetails);
+});
