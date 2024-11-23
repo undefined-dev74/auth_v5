@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { defineConfig, type Options } from 'tsup';
 
-export default defineConfig({
+export default defineConfig((options: Options) => ({
   entry: ['src/index.ts'],
   noExternal: ['@repo'],
   external: ['swagger-parser'],
@@ -15,5 +15,7 @@ export default defineConfig({
   cjsInterop: true, // Enable better CommonJS interop
   env: {
     NODE_ENV: process.env.NODE_ENV || 'production'
-  }
-});
+  },
+
+  ...options
+}));
