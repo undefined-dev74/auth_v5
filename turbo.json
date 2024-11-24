@@ -4,7 +4,7 @@
   "globalEnv": ["NODE_ENV", "PORT", "IS_SERVER_BUILD"],
   "tasks": {
     "build": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["^db:generate", "^build"],
       "outputs": [".next/**", "dist/**", "!.next/cache/**"],
       "env": ["NEXT_PUBLIC_*"]
     },
@@ -16,6 +16,7 @@
       "outputs": []
     },
     "dev": {
+      "dependsOn": ["^db:generate"],
       "cache": false,
       "persistent": true
     },
@@ -27,6 +28,9 @@
     },
     "test": {
       "outputs": []
+    },
+    "db:generate": {
+      "cache": false
     }
   }
 }
