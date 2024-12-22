@@ -16,14 +16,15 @@ import { Input } from "@/components/ui/input";
 import { AuthService } from "@/services/auth.service";
 import useToast from "@/hooks/use-toast";
 import { OAuthOptions } from "@/components/auth/oauth-options";
-import { CheckCircle, CircleCheck } from "lucide-react";
 import AuthCard from "@/components/card/auth-card";
 import useSignInRedirection from "@/hooks/use-sign-in-redirection";
+import { Eye, EyeOff } from "lucide-react";
 
 const LoginSchema = z.object({
   email: z.string().email({ message: "Email is required" }),
   password: z.string().min(1, { message: "Password is required" }),
   code: z.optional(z.string()),
+  formSuccess: z.string().optional(),
 });
 
 const authService = new AuthService();
@@ -33,18 +34,17 @@ export default function AuthenticationPage() {
   const searchParams = useSearchParams();
   const urlError =
     searchParams.get("error") === "OAuthAccountNotLinked" ? "Email already in use with different provider!" : "";
-
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   // sign in redirection hook
   const { handleRedirection } = useSignInRedirection();
-  const { setToastAlert } = useToast();
+  
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const form = useForm({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
       password: "",
+      formSuccess: "",
     },
   });
 
@@ -52,33 +52,39 @@ export default function AuthenticationPage() {
     control,
     formState: { errors, isSubmitting, isValid },
     handleSubmit,
+    setError,
+    setValue,
+    clearErrors,
   } = form;
 
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
-    setError("");
-    setSuccess("");
+    clearErrors("root");
+    setValue("formSuccess", "");
+    const { formSuccess, ...data } = values;
 
     try {
-      await authService.passwordSignIn(values);
-      setToastAlert({
-        type: "success",
-        title: "Success!",
-        message: "You have successfully logged in.",
-      });
-      router.refresh();
+      await authService.passwordSignIn(data);
+      // Set form-level success
+      setValue("formSuccess", "You have successfully logged in.");
+      router.push("/home");
     } catch (err: any) {
-      setToastAlert({
-        type: "error",
-        title: "Error!",
-        message: err?.error ?? "Something went wrong. Please try again.",
+      setError("root", {
+        type: "manual",
+        message: err?.message ?? "Something went wrong. Please try again.",
       });
     }
   };
+
+  // Get form-level error and success messages
+  const formError = form.formState.errors.root?.message || urlError;
+  const formSuccess = form.getValues("formSuccess");
 
   return (
     <AuthCard title="Login or Sign Up">
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <FormError message={formError} />
+          <FormSuccess message={formSuccess} />
           <div className="space-y-4">
             <FormField
               control={control}
@@ -110,26 +116,36 @@ export default function AuthenticationPage() {
                 <FormItem>
                   <FormLabel className="text-gray-500">Password</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isSubmitting}
-                      ref={field.ref}
-                      hasError={Boolean(errors.password)}
-                      errorMessage={errors.password?.message ?? ""}
-                      placeholder="Enter your password"
-                      type="password"
-                      className="bg-gray-700 text-white border-gray-600"
-                    />
+                    <div className="relative">
+                      <Input
+                        {...field}
+                        disabled={isSubmitting}
+                        ref={field.ref}
+                        hasError={Boolean(errors.password)}
+                        errorMessage={errors.password?.message ?? ""}
+                        placeholder="Enter your password"
+                        type={showPassword ? "text" : "password"}
+                        className="bg-gray-700 text-white border-gray-600 pr-10"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent text-gray-400 hover:text-gray-300"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </Button>
+                    </div>
                   </FormControl>
-                  <Button size="sm" variant="link" asChild className="px-0 font-normal text-primary">
-                    <Link href="/auth/reset">Forgot password?</Link>
+                  <Button size="sm" variant="link" asChild className="px-0 font-bold text-primary hover:no-underline">
+                    <Link href="/auth/reset">Forgot your password?</Link>
                   </Button>
                 </FormItem>
               )}
             />
           </div>
-          <FormError message={error || urlError} />
-          <FormSuccess message={success} />
+
           <Button type="submit" className="w-full disabled:cursor-not-allowed">
             {isSubmitting ? "Updating..." : "Continue"}
           </Button>
