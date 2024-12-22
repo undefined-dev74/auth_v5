@@ -1,35 +1,168 @@
+# version: '3.8'
+
+# services:
+#   node-app:
+#     build: .
+#     image: node-app
+#     ports:
+#       - '3000:3000'
+#     depends_on:
+#       - postgresdb
+#     volumes:
+#       - .:/usr/src/node-app
+#     networks:
+#       - node-network
+
+#   postgresdb:
+#     image: postgres
+#     restart: always
+#     environment:
+#       - POSTGRES_USER=postgres
+#       - POSTGRES_PASSWORD=secret
+#     ports:
+#       - '5432:5432'
+#     volumes:
+#       - dbdata:/var/lib/postgresql/data
+#     networks:
+#       - node-network
+
+# volumes:
+#   dbdata:
+#     driver: local
+
+# networks:
+#   node-network:
+#     driver: bridge
+
+# version: '3.8'
+
+# services:
+#   server:
+#     build:
+#       context: ../../   # Points to monorepo root
+#       dockerfile: apps/server/Dockerfile
+#     ports:
+#       - "8000:8000"
+#     env_file:
+#       - .env  # This will look for .env file in apps/server directory
+#     environment:
+#       - NODE_ENV=production
+#       - PORT=8000
+#       # JWT Configuration
+#       - JWT_SECRET=${JWT_SECRET}
+#       - JWT_ACCESS_EXPIRATION_MINUTES=${JWT_ACCESS_EXPIRATION_MINUTES}
+#       - JWT_REFRESH_EXPIRATION_DAYS=${JWT_REFRESH_EXPIRATION_DAYS}
+#       - JWT_RESET_PASSWORD_EXPIRATION_MINUTES=${JWT_RESET_PASSWORD_EXPIRATION_MINUTES}
+#       - JWT_VERIFY_EMAIL_EXPIRATION_MINUTES=${JWT_VERIFY_EMAIL_EXPIRATION_MINUTES}
+#       # Clerk
+#       - CLERK_WEBHOOK_SECRET_KEY=${CLERK_WEBHOOK_SECRET_KEY}
+#       # SMTP Configuration
+#       - SMTP_HOST=${SMTP_HOST}
+#       - SMTP_PORT=${SMTP_PORT}
+#       - SMTP_USERNAME=${SMTP_USERNAME}
+#       - SMTP_PASSWORD=${SMTP_PASSWORD}
+#       - EMAIL_FROM=${EMAIL_FROM}
+#       # URLs
+#       - FRONTEND_URL=${FRONTEND_URL}
+#       - OAUTH_CLIENT_URL=${OAUTH_CLIENT_URL}
+#       # OAuth Configuration
+#       - GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID}
+#       - GOOGLE_OAUTH_CLIENT_SECRET=${GOOGLE_OAUTH_CLIENT_SECRET}
+#       - GOOGLE_OAUTH_REDIRECT_URL=${GOOGLE_OAUTH_REDIRECT_URL}
+#       - GOOGLE_OAUTH_BASE_URL=${GOOGLE_OAUTH_BASE_URL}
+#       - GITHUB_OAUTH_CLIENT_ID=${GITHUB_OAUTH_CLIENT_ID}
+#       - GITHUB_OAUTH_CLIENT_SECRET=${GITHUB_OAUTH_CLIENT_SECRET}
+#       - GITHUB_OAUTH_REDIRECT_URL=${GITHUB_OAUTH_REDIRECT_URL}
+#       - GITHUB_OAUTH_ROOT_URI=${GITHUB_OAUTH_ROOT_URI}
+#     restart: unless-stopped
+
+# version: '3.8'
+
+# services:
+#   mysql:
+#     image: mysql:8.0
+#     restart: always
+#     environment:
+#       - MYSQL_DATABASE=streamline
+#       - MYSQL_ROOT_PASSWORD=User@123
+#     ports:
+#       - '3306:3306'
+#     volumes:
+#       - mysql-data:/var/lib/mysql
+
+#   server:
+#     build:
+#       context: ../../   # Points to monorepo root
+#       dockerfile: apps/server/Dockerfile
+#     ports:
+#       - "8000:8000"
+#     depends_on:
+#       - mysql
+#     environment:
+#       - NODE_ENV=production
+#       - PORT=8000
+#       # Database
+#       - DATABASE_URL=mysql://root:User@123@mysql:3306/streamline
+#       # JWT Configuration
+#       - JWT_SECRET=${JWT_SECRET}
+#       - JWT_ACCESS_EXPIRATION_MINUTES=${JWT_ACCESS_EXPIRATION_MINUTES}
+#       - JWT_REFRESH_EXPIRATION_DAYS=${JWT_REFRESH_EXPIRATION_DAYS}
+#       - JWT_RESET_PASSWORD_EXPIRATION_MINUTES=${JWT_RESET_PASSWORD_EXPIRATION_MINUTES}
+#       - JWT_VERIFY_EMAIL_EXPIRATION_MINUTES=${JWT_VERIFY_EMAIL_EXPIRATION_MINUTES}
+#       # Other env variables...
+#     restart: unless-stopped
+
+# volumes:
+#   mysql-data:
+
 version: '3.8'
 
 services:
-  node-app:
-    build: .
-    image: node-app
-    ports:
-      - '3000:3000'
-    depends_on:
-      - postgresdb
-    volumes:
-      - .:/usr/src/node-app
-    networks:
-      - node-network
-
-  postgresdb:
-    image: postgres
+  mysql:
+    image: mysql:8.0
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=secret
+      - MYSQL_DATABASE=streamline
+      - MYSQL_ROOT_PASSWORD=User@123
     ports:
-      - '5432:5432'
+      - '3306:3306'
     volumes:
-      - dbdata:/var/lib/postgresql/data
-    networks:
-      - node-network
+      - mysql-data:/var/lib/mysql
+
+  server:
+    build:
+      context: ../../
+      dockerfile: apps/server/Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+    environment:
+      - NODE_ENV=production
+      - PORT=8000
+      - DATABASE_URL=mysql://root:User@123@mysql:3306/streamline
+      - JWT_SECRET=thisisasamplesecret
+      - JWT_ACCESS_EXPIRATION_MINUTES=30
+      - JWT_REFRESH_EXPIRATION_DAYS=30
+      - JWT_RESET_PASSWORD_EXPIRATION_MINUTES=10
+      - JWT_VERIFY_EMAIL_EXPIRATION_MINUTES=10
+      - CLERK_WEBHOOK_SECRET_KEY=${CLERK_WEBHOOK_SECRET_KEY}
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - EMAIL_FROM=${EMAIL_FROM}
+      - FRONTEND_URL=http://localhost:3000
+      - OAUTH_CLIENT_URL=http://localhost:3000
+      - GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID}
+      - GOOGLE_OAUTH_CLIENT_SECRET=${GOOGLE_OAUTH_CLIENT_SECRET}
+      - GOOGLE_OAUTH_REDIRECT_URL=http://localhost:8000/api/v1/auth/sessions/oauth/google
+      - GOOGLE_OAUTH_BASE_URL=${GOOGLE_OAUTH_BASE_URL}
+      - GITHUB_OAUTH_CLIENT_ID=${GITHUB_OAUTH_CLIENT_ID}
+      - GITHUB_OAUTH_CLIENT_SECRET=${GITHUB_OAUTH_CLIENT_SECRET}
+      - GITHUB_OAUTH_REDIRECT_URL=http://localhost:8000/api/v1/auth/sessions/oauth/github
+      - GITHUB_OAUTH_ROOT_URI=${GITHUB_OAUTH_ROOT_URI}
+    restart: unless-stopped
 
 volumes:
-  dbdata:
-    driver: local
-
-networks:
-  node-network:
-    driver: bridge
+  mysql-data:

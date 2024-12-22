@@ -31,7 +31,7 @@ export const GoogleSignInButton: FC<Props> = (props) => {
           logo_alignment: "center",
           text: "signin_with",
           width: 384,
-        } as GsiButtonConfiguration // customization attributes
+        }// customization attributes
       );
     } catch (err) {
       console.log(err);
