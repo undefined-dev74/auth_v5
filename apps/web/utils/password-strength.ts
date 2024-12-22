@@ -9,15 +9,13 @@ const hasMixed = (number: string): boolean =>
 const hasSpecial = (number: string): boolean => new RegExp(/[!#@$%^&*)(+=._-]/).test(number);
 
 // This function takes a strength count and returns the corresponding label and color
-export const strengthColor = (
-  count: number
-): { label: string; color: string } => {
-  if (count < 2) return { label: "Poor", color: "bg-red-500" };
-  if (count < 3) return { label: "Weak", color: "bg-yellow-500" };
-  if (count < 4) return { label: "Normal", color: "bg-yellow-300" };
-  if (count < 5) return { label: "Good", color: "bg-green-500" };
-  if (count < 6) return { label: "Strong", color: "bg-green-700" };
-  return { label: "Poor", color: "bg-red-500" };
+export const strengthColor = (count: number): { label: string; color: string } => {
+  if (count < 2) return { label: "Poor", color: "#ef4444" }; // red-500
+  if (count < 3) return { label: "Weak", color: "#eab308" }; // yellow-500
+  if (count < 4) return { label: "Normal", color: "#fde047" }; // yellow-300
+  if (count < 5) return { label: "Good", color: "#22c55e" }; // green-500
+  if (count < 6) return { label: "Strong", color: "#15803d" }; // green-700
+  return { label: "Poor", color: "#ef4444" }; // red-500
 };
 
 // This function takes a password string and returns the strength count
