@@ -1,0 +1,42 @@
+{
+  "name": "@app/db",
+  "version": "0.0.1",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./db": "./src/db.ts",
+    "./schema": "./src/schema.ts"
+  },
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "tsx src/migrate.ts",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:reset": "drizzle-kit drop && npm run db:generate && npm run db:migrate",
+    "db:seed": "tsx scripts/seed.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "0.38.3",
+    "drizzle-zod": "^0.6.1",
+    "kysely": "0.27.5",
+    "pg": "^8.13.1",
+    "postgres": "3.4.5",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@app/logger": "workspace:*",
+    "@app/typescript-config": "workspace:*",
+    "@types/node": "^22.15.2",
+    "@types/pg": "^8.11.14",
+    "drizzle-kit": "0.30.1",
+    "tsup": "8.3.5",
+    "tsx": "4.19.2",
+    "typescript": "5.7.2"
+  }
+}

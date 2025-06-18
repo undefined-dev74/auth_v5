@@ -1,0 +1,14 @@
+{
+  "extends": "@app/typescript-config/base.json",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "lib": ["ES2015"],
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "exclude": ["node_modules"],
+  "include": ["."]
+}

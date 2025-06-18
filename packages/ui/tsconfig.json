@@ -1,0 +1,9 @@
+{
+  "extends": "@app/typescript-config/react-library.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "emitDeclarationOnly": true
+  },
+  "include": ["."],
+  "exclude": ["dist", "build", "node_modules"]
+}

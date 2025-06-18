@@ -1,0 +1,38 @@
+{
+  "name": "monorepo",
+  "version": "0.0.1",
+  "description": "A monorepo for applications",
+  "author": "Aman",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo run build --filter=docs^... && changeset publish",
+    "lint": "biome check ./apps ./packages",
+    "format": "biome check --write ./apps ./packages",
+    "prepare": "pnpm add husky -w",
+    "postversion": "git push && git push --tags",
+    "pre-commit": "lint-staged"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@changesets/cli": "^2.27.1",
+    "husky": "^9.1.7",
+    "turbo": "^2.5.2"
+  },
+  "packageManager": "pnpm@8.15.6",
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "biome check --write --no-errors-on-unmatched"
+    ],
+    "*.json": [
+      "prettier --write"
+    ],
+    "packages/prisma/schema.prisma": [
+      "prisma format"
+    ]
+  }
+}
