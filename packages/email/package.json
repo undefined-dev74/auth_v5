@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@app/utils": "workspace:*",
+    "@app/typescript-config": "workspace:*",
     "@react-email/components": "^0.0.22",
     "react-email": "^2.1.6",
     "lucide-react": "^0.462.0",

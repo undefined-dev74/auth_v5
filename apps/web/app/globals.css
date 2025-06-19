@@ -1,0 +1,87 @@
+@import "@app/tailwind-config";
+
+/* Web-specific theme extensions */
+@theme {
+  /* Web-specific animations */
+  --animate-infinite-scroll: infinite-scroll 22s linear infinite;
+  --animate-infinite-scroll-y: infinite-scroll-y 22s linear infinite;
+  --animate-text-appear: text-appear 0.15s ease;
+  --animate-table-pinned-shadow: table-pinned-shadow cubic-bezier(0, 0, 1, 0);
+  --animate-caret-blink: caret-blink 1s ease-out infinite;
+  --animate-pulse-scale: pulse-scale 6s ease-out infinite;
+  --animate-gradient-move: gradient-move 5s linear infinite;
+}
+
+/* Web-specific keyframes */
+@keyframes infinite-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(var(--scroll, -150%));
+  }
+}
+
+@keyframes infinite-scroll-y {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(var(--scroll, -150%));
+  }
+}
+
+@keyframes text-appear {
+  0% {
+    opacity: 0;
+    transform: rotateX(45deg) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateX(0deg) scale(1);
+  }
+}
+
+@keyframes table-pinned-shadow {
+  0% {
+    filter: drop-shadow(rgba(0, 0, 0, 0.1) -2px 10px 6px);
+  }
+  100% {
+    filter: drop-shadow(rgba(0, 0, 0, 0) -2px 10px 6px);
+  }
+}
+
+@keyframes caret-blink {
+  0%,
+  70%,
+  100% {
+    opacity: 0;
+  }
+  20%,
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-scale {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes gradient-move {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}

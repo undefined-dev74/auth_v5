@@ -12,24 +12,28 @@
     "version-packages": "changeset version",
     "release": "turbo run build --filter=docs^... && changeset publish",
     "lint": "biome check ./apps ./packages",
-    "format": "biome check --write ./apps ./packages",
-    "prepare": "pnpm add husky -w",
+    "lint:fix": "biome check --write ./apps ./packages",
+    "format": "biome format --write ./apps ./packages",
+    "check": "biome ci ./apps ./packages",
+    "prepare": "husky",
     "postversion": "git push && git push --tags",
-    "pre-commit": "lint-staged"
+    "pre-commit": "lint-staged",
+    "lint-staged": "lint-staged"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@changesets/cli": "^2.27.1",
     "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
     "turbo": "^2.5.2"
   },
   "packageManager": "pnpm@8.15.6",
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
+    "*.{ts,tsx,js,jsx,json}": [
       "biome check --write --no-errors-on-unmatched"
     ],
-    "*.json": [
-      "prettier --write"
+    "*.{md,yaml,yml}": [
+      "biome format --write --no-errors-on-unmatched"
     ],
     "packages/prisma/schema.prisma": [
       "prisma format"
