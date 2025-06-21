@@ -1,4 +1,4 @@
-import { CreateEmailOptions } from "resend";
+import type { CreateEmailOptions } from "resend";
 
 export interface ResendEmailOptions
   extends Omit<CreateEmailOptions, "to" | "from"> {

@@ -1,12 +1,12 @@
 import { resend } from "./resend";
 import { VARIANT_TO_FROM_MAP } from "./resend/constants";
-import { ResendEmailOptions } from "./resend/types";
+import type { ResendEmailOptions } from "./resend/types";
 
 // Send email using Resend (Recommended for production)
 export const sendEmailViaResend = async (opts: ResendEmailOptions) => {
   if (!resend) {
     console.info(
-      "RESEND_API_KEY is not set in the .env. Skipping sending email.",
+      "RESEND_API_KEY is not set in the .env. Skipping sending email."
     );
     return;
   }

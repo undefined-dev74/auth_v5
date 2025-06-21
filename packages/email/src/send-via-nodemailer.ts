@@ -1,7 +1,7 @@
 import { render } from "@react-email/components";
 import nodemailer from "nodemailer";
-import { ReactElement } from "react";
-import { CreateEmailOptions } from "resend";
+import type { ReactElement } from "react";
+import type { CreateEmailOptions } from "resend";
 
 // Send email using NodeMailer (Recommended for local development)
 export const sendViaNodeMailer = async ({
@@ -27,7 +27,7 @@ export const sendViaNodeMailer = async ({
   });
 
   return await transporter.sendMail({
-    from: "noreply@example.com",
+    from: process.env.EMAIL_FROM || "aman.kumar.jha953@gmail.com",
     to: email,
     subject,
     text,
