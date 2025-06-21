@@ -1,0 +1,35 @@
+import { MainNav } from "@/ui/layout/main-nav";
+import { AppSidebarNav } from "@/ui/layout/sidebar/app-sidebar-nav";
+import { HelpButtonRSC } from "@/ui/layout/sidebar/help-button-rsc";
+
+import Toolbar from "@/ui/layout/toolbar/toolbar";
+import { UpgradeBanner } from "@/ui/layout/upgrade-banner";
+import { constructMetadata } from "@app/utils";
+import type { ReactNode } from "react";
+
+export const dynamic = "force-static";
+export const metadata = constructMetadata();
+
+export default async function Layout({ children }: { children: ReactNode }) {
+  return (
+    <>
+      <div className="min-h-screen w-full bg-white">
+        <UpgradeBanner />
+        <MainNav
+          sidebar={AppSidebarNav}
+          toolContent={
+            <>
+              {/* <ReferButton /> */}
+              <HelpButtonRSC />
+            </>
+          }
+          // newsContent={<NewsRSC />}
+          sidebarWidth={304} // TODO: Move into MainNav once app. and partners. are unified
+        >
+          {children}
+        </MainNav>
+      </div>
+      <Toolbar show={["onboarding"]} />
+    </>
+  );
+}

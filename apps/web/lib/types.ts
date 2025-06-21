@@ -36,3 +36,14 @@ export interface WorkspaceProps extends Project {
   }[];
   store: Record<string, string> | null;
 }
+
+export const plans = [
+  "free",
+  "pro",
+  "business",
+  "business plus",
+  "business extra",
+  "business max",
+  "advanced",
+  "enterprise",
+] as const;

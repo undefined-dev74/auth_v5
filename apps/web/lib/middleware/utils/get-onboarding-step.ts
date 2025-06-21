@@ -1,6 +1,6 @@
+import type { UserProps } from "@/lib/types";
 import { redis } from "@/lib/upstash";
-import type { User } from "@prisma/client";
 
-export async function getOnboardingStep(user: User) {
+export async function getOnboardingStep(user: UserProps) {
   return await redis.get(`onboarding-step:${user.id}`);
 }
