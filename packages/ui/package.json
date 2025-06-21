@@ -2,7 +2,7 @@
   "name": "@app/ui",
   "description": "UI components for Dub",
   "version": "0.2.52",
-  "sideEffects": false,
+  "sideEffects": true,
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
