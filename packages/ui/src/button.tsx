@@ -1,6 +1,6 @@
 import { cn } from "@app/utils";
-import { VariantProps, cva } from "class-variance-authority";
-import { ReactNode, forwardRef } from "react";
+import { type VariantProps, cva } from "class-variance-authority";
+import { type ReactNode, forwardRef } from "react";
 import { LoadingSpinner } from "./icons";
 import { Tooltip } from "./tooltip";
 

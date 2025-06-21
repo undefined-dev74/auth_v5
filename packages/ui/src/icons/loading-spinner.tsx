@@ -13,7 +13,7 @@ export function LoadingSpinner({ className }: { className?: string }) {
       >
         {[...Array(12)].map((_, i) => (
           <div
-            key={i}
+            key={Math.random()}
             style={{
               animationDelay: `${-1.2 + 0.1 * i}s`,
               background: "gray",
