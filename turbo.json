@@ -3,7 +3,7 @@
   "globalDependencies": [".env"],
   "globalEnv": [
     "NODE_ENV",
-    "DATABASE_URL",
+    "NEXT_PUBLIC_DATABASE_URL",
     "REDIS_URL",
     "REDIS_PASSWORD",
     "NEXT_PUBLIC_*"
@@ -21,7 +21,7 @@
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
       "dependsOn": ["^build"],
-      "env": ["DATABASE_URL"]
+      "env": ["NEXT_PUBLIC_DATABASE_URL"]
     },
     "lint": {
       "dependsOn": ["^lint"]
@@ -34,9 +34,27 @@
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "env": ["DATABASE_URL", "NEXTAUTH_SECRET", "NEXTAUTH_URL"]
     },
     "clean": {
+      "cache": false
+    },
+    "db:migrate:dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "db:migrate:deploy": {
+      "cache": false
+    },
+    "db:push": {
+      "cache": false
+    },
+    "db:seed": {
+      "cache": false
+    },
+    "generate": {
+      "dependsOn": ["^generate"],
       "cache": false
     }
   }

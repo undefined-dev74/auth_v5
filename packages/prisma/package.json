@@ -2,29 +2,33 @@
   "name": "@app/prisma",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "./index.ts",
-  "module": "./index.ts",
-  "types": "./index.ts",
+  "exports": {
+    ".": "./src/client.ts"
+  },
   "scripts": {
-    "generate": "npx prisma generate --schema=./schema",
-    "push": "npx prisma db push --schema=./schema",
-    "studio": "npx prisma studio --schema=./schema --browser none",
-    "prebuild": "pnpm run generate",
-    "predev": "pnpm run generate",
-    "format": "npx prisma format --schema=./schema"
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:push": "prisma db push --schema=./schema",
+    "db:generate": "prisma generate --schema=./schema",
+    "db:seed": "tsx src/seed.ts",
+    "dev": "tsup src/* --watch",
+    "format": "prisma format",
+    "generate": "prisma generate --schema=./schema",
+    "prebuild": "npm run generate",
+    "predev": "npm run generate",
+    "studio": "prisma studio"
   },
   "dependencies": {
-    "@prisma/client": "5.18.0"
+    "@app/typescript-config": "workspace:^",
+    "@prisma/client": "5.18.0",
+    "dotenv": "^16.4.7",
+    "tsup": "^8.5.0"
   },
   "devDependencies": {
     "@types/node": "18.11.9",
     "prisma": "5.18.0",
     "tsx": "^4.11.0",
     "typescript": "5.2.2"
-  },
-  "exports": {
-    ".": "./index.ts",
-    "./client": "./client.ts"
   },
   "author": "Steven Tey <stevensteel97@gmail.com>",
   "homepage": "https://dub.co",
@@ -36,10 +40,9 @@
     "url": "https://github.com/dubinc/dub/issues"
   },
   "keywords": [
-    "dub",
-    "dub.co",
-    "prisma",
-    "planetscale"
+    "app",
+    "app.co",
+    "prisma"
   ],
   "publishConfig": {
     "access": "public"

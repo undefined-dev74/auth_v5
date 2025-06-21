@@ -15,7 +15,6 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  isMachine     Boolean   @default(false)
 
   // password data
   passwordHash         String?
