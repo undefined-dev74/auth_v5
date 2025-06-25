@@ -1,5 +1,5 @@
-import { cn } from "@dub/utils";
-import { SVGProps, useEffect, useRef } from "react";
+import { cn } from "@app/utils";
+import { type SVGProps, useEffect, useRef } from "react";
 
 export function CursorRays({
   "data-hovered": hovered,
@@ -23,7 +23,7 @@ export function CursorRays({
         ],
         {
           duration: 300,
-        },
+        }
       );
 
       cursorRef.current.animate(
@@ -34,7 +34,7 @@ export function CursorRays({
         ],
         {
           duration: 300,
-        },
+        }
       );
     }
   }, [hovered]);

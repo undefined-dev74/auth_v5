@@ -1,4 +1,4 @@
-import { SVGProps, useEffect, useRef } from "react";
+import { type SVGProps, useEffect, useRef } from "react";
 
 export function ConnectedDots4({
   "data-hovered": hovered,
@@ -14,7 +14,7 @@ export function ConnectedDots4({
         [{ transform: "rotate(0)" }, { transform: "rotate(180deg)" }],
         {
           duration: 300,
-        },
+        }
       );
     }
   }, [hovered]);

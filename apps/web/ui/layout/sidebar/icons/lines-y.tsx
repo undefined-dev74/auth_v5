@@ -1,5 +1,5 @@
-import { cn } from "@dub/utils";
-import { SVGProps, useEffect, useRef } from "react";
+import { cn } from "@app/utils";
+import { type SVGProps, useEffect, useRef } from "react";
 
 const SCALES = [0.3, 1.5, 1.75, 0.75];
 
@@ -28,7 +28,7 @@ export function LinesY({
         {
           delay: idx * 50,
           duration: 400,
-        },
+        }
       );
     });
   }, [hovered]);
@@ -41,7 +41,7 @@ export function LinesY({
       xmlns="http://www.w3.org/2000/svg"
       className={cn(
         "[&_line]:origin-bottom [&_line]:[transform-box:stroke-box]",
-        className,
+        className
       )}
       {...rest}
     >

@@ -1,4 +1,4 @@
-import { SVGProps, useEffect, useRef } from "react";
+import { type SVGProps, useEffect, useRef } from "react";
 
 export function Gear({
   "data-hovered": hovered,
@@ -14,7 +14,7 @@ export function Gear({
         [{ transform: "rotate(0)" }, { transform: "rotate(180deg)" }],
         {
           duration: 300,
-        },
+        }
       );
     }
   }, [hovered]);

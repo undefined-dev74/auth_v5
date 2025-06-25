@@ -1,4 +1,4 @@
-import { SVGProps, useEffect, useRef } from "react";
+import { type SVGProps, useEffect, useRef } from "react";
 
 export function User({
   "data-hovered": hovered,
@@ -19,7 +19,7 @@ export function User({
         ],
         {
           duration: 300,
-        },
+        }
       );
 
       bodyRef.current.animate(
@@ -30,7 +30,7 @@ export function User({
         ],
         {
           duration: 300,
-        },
+        }
       );
     }
   }, [hovered]);

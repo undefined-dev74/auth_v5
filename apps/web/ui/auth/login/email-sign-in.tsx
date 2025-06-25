@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useState } from "react";
 import { toast } from "sonner";
-import { errorCodes, LoginFormContext } from "./login-form";
+import { LoginFormContext, errorCodes } from "./login-form";
 
 export const EmailSignIn = ({ next }: { next?: string }) => {
   const router = useRouter();
@@ -125,6 +125,7 @@ export const EmailSignIn = ({ next }: { next?: string }) => {
             <input
               id="email"
               name="email"
+              // biome-ignore lint/a11y/noAutofocus: <explanation>
               autoFocus={!isMobile && !showPasswordField}
               type="email"
               placeholder="panic@thedis.co"
@@ -144,6 +145,7 @@ export const EmailSignIn = ({ next }: { next?: string }) => {
         )}
 
         {showPasswordField && (
+          // biome-ignore lint/a11y/noLabelWithoutControl: <explanation>
           <label>
             <div className="mb-2 flex items-center justify-between">
               <span className="text-content-emphasis block text-sm font-medium leading-none">

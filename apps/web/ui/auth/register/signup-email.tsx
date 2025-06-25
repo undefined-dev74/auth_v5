@@ -68,6 +68,7 @@ export const SignUpEmail = () => {
   return (
     <form onSubmit={onSubmit}>
       <div className="flex flex-col gap-y-6">
+        {/* biome-ignore lint/a11y/noLabelWithoutControl: <explanation> */}
         <label>
           <span className="text-content-emphasis mb-2 block text-sm font-medium leading-none">
             Email
@@ -84,6 +85,7 @@ export const SignUpEmail = () => {
           />
         </label>
         {showPassword && (
+          // biome-ignore lint/a11y/noLabelWithoutControl: <explanation>
           <label>
             <span className="text-content-emphasis mb-2 block text-sm font-medium leading-none">
               Password

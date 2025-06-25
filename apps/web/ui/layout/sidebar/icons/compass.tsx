@@ -1,4 +1,4 @@
-import { SVGProps, useEffect, useRef } from "react";
+import { type SVGProps, useEffect, useRef } from "react";
 
 export function Compass({
   "data-hovered": hovered,
@@ -19,7 +19,7 @@ export function Compass({
         ],
         {
           duration: 300,
-        },
+        }
       );
     }
   }, [hovered]);
