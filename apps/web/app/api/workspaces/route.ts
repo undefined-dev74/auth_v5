@@ -128,7 +128,7 @@ export const POST = withSession(async ({ req, session }) => {
     waitUntil(
       Promise.allSettled([
         // if the user has no default workspace, set the new workspace as the default
-        session.user["defaultWorkspace"] === null &&
+        session.user.defaultWorkspace === null &&
           prisma.user.update({
             where: {
               id: session.user.id,

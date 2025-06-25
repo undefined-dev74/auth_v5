@@ -1,7 +1,7 @@
 import { exceededLimitError } from "@/lib/api/errors";
 import { withSession } from "@/lib/auth";
-import { PlanProps } from "@/lib/types";
-import { prisma } from "@dub/prisma";
+import type { PlanProps } from "@/lib/types";
+import { prisma } from "@app/prisma";
 import { NextResponse } from "next/server";
 
 // POST /api/workspaces/[idOrSlug]/invites/accept – accept a workspace invite
@@ -57,7 +57,7 @@ export const POST = withSession(async ({ session, params }) => {
       }),
       {
         status: 403,
-      },
+      }
     );
   }
 
@@ -80,7 +80,7 @@ export const POST = withSession(async ({ session, params }) => {
         },
       },
     }),
-    session.user["defaultWorkspace"] === null &&
+    session.user.defaultWorkspace === null &&
       prisma.user.update({
         where: {
           id: session.user.id,
