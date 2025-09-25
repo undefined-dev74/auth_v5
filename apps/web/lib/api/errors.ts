@@ -1,4 +1,5 @@
 import z from "@/lib/zod";
+import { capitalize } from "@app/utils";
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { generateErrorMessage } from "zod-error";
@@ -239,4 +240,20 @@ export const errorSchemaFactory = (
       },
     },
   };
+};
+
+export const exceededLimitError = ({
+  plan,
+  limit,
+  type,
+}: {
+  plan: "free" | "pro" | "team" | "enterprise";
+  limit: number;
+  type: "clicks" | "links" | "AI" | "domains" | "tags" | "users" | "folders";
+}) => {
+  return `You've reached your ${
+    type === "links" || type === "AI" ? "monthly" : ""
+  } limit of ${limit} ${
+    limit === 1 ? type.slice(0, -1) : type
+  } on the ${capitalize(plan)} plan. Please upgrade to add more ${type}.`;
 };

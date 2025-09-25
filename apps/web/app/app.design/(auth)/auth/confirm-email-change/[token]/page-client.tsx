@@ -11,6 +11,7 @@ export default async function ConfirmEmailChangePageClient() {
   const { update, status } = useSession();
   const hasUpdatedSession = useRef(false);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (status !== "authenticated" || hasUpdatedSession.current) {
       return;

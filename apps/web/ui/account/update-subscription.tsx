@@ -1,5 +1,5 @@
-import { Switch, useOptimisticUpdate } from "@dub/ui";
-import { APP_NAME } from "@dub/utils";
+import { Switch, useOptimisticUpdate } from "@app/ui";
+import { APP_NAME } from "@app/utils";
 
 export default function UpdateSubscription() {
   const { data, isLoading, update } = useOptimisticUpdate<{

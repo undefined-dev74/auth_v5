@@ -9,6 +9,7 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import type { NextAuthOptions, User } from "next-auth";
 import type { AdapterUser } from "next-auth/adapters";
 import type { JWT } from "next-auth/jwt";
+import AzureADProvider from "next-auth/providers/azure-ad";
 import CredentialsProvider from "next-auth/providers/credentials";
 import EmailProvider from "next-auth/providers/email";
 import GithubProvider from "next-auth/providers/github";
@@ -30,6 +31,7 @@ const CustomPrismaAdapter = (p: PrismaClient) => {
   return {
     ...PrismaAdapter(p),
     createUser: async (data: Omit<UserProps, "id">) => {
+      console.log("create user", data);
       return p.user.create({
         data: {
           ...data,
@@ -67,6 +69,27 @@ export const authOptions: NextAuthOptions = {
       allowDangerousEmailAccountLinking: true,
     }),
 
+    // Microsoft Azure AD Provider
+    AzureADProvider({
+      clientId: process.env.AZURE_AD_CLIENT_ID as string,
+      clientSecret: process.env.AZURE_AD_CLIENT_SECRET as string,
+      tenantId: process.env.AZURE_AD_TENANT_ID as string,
+      allowDangerousEmailAccountLinking: true,
+      authorization: {
+        params: {
+          scope: "openid profile email User.Read",
+        },
+      },
+      profile(profile) {
+        console.log("profile", profile);
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email || profile.preferred_username,
+          image: null, // Azure AD doesn't provide avatar URLs by default
+        };
+      },
+    }),
     // Sign in with email and password
     CredentialsProvider({
       id: "credentials",
@@ -184,7 +207,11 @@ export const authOptions: NextAuthOptions = {
         return false;
       }
 
-      if (account?.provider === "google" || account?.provider === "github") {
+      if (
+        account?.provider === "google" ||
+        account?.provider === "github" ||
+        account?.provider === "azure-ad"
+      ) {
         const userExists = await prisma.user.findUnique({
           where: { email: user.email as string },
           select: { id: true, name: true, image: true },

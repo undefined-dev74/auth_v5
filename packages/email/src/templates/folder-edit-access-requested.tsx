@@ -16,7 +16,7 @@ import { Footer } from "../components/footer";
 
 export function FolderEditAccessRequested({
   email = "panic@thedis.co",
-  folderUrl = "http://localhost:8888/acme/settings/library/folders/cm1elre430005nf59czif340u/members",
+  folderUrl = "http://localhost:3000/acme/settings/library/folders/cm1elre430005nf59czif340u/members",
   folder = {
     name: "Social Media",
   },

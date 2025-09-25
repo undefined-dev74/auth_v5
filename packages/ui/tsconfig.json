@@ -4,6 +4,6 @@
     "allowImportingTsExtensions": true,
     "emitDeclarationOnly": true
   },
-  "include": ["."],
+  "include": [".", "../../apps/web/ui/auth/login/microsoft.tsx"],
   "exclude": ["dist", "build", "node_modules"]
 }

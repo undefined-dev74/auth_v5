@@ -35,6 +35,7 @@ export function ChangelogPopupInner() {
       className="group fixed bottom-4 z-40 mx-2 overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-md sm:left-4 sm:mx-auto sm:max-w-sm"
     >
       <button
+        type="button"
         className="absolute right-2.5 top-2.5 z-10 rounded-full p-1 transition-colors hover:bg-neutral-100 active:scale-90"
         onClick={hidePopup}
       >

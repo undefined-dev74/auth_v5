@@ -1,6 +1,6 @@
 "use client";
 
-import { CopyButton } from "@dub/ui";
+import { CopyButton } from "@app/ui";
 import { useSession } from "next-auth/react";
 
 export default function UserId() {

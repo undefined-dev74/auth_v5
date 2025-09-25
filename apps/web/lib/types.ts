@@ -47,3 +47,33 @@ export const plans = [
   "advanced",
   "enterprise",
 ] as const;
+
+export type BetaFeatures = "noDubLink" | "abTesting";
+
+export interface WorkspaceProps extends Project {
+  logo: string | null;
+  domains: {
+    id: string;
+    slug: string;
+    primary: boolean;
+    verified: boolean;
+  }[];
+  users: {
+    role: RoleProps;
+    defaultFolderId: string | null;
+  }[];
+  flags?: {
+    [key in BetaFeatures]: boolean;
+  };
+  store: Record<string, any> | null;
+}
+
+export type WorkspaceWithUsers = Omit<WorkspaceProps, "domains">;
+
+export type PlanProps = (typeof plans)[number];
+
+export interface SimpleLinkProps {
+  domain: string;
+  key: string;
+  url: string;
+}

@@ -16,10 +16,12 @@ import { AuthMethodsSeparator } from "../auth-methods-separator";
 import { EmailSignIn } from "./email-sign-in";
 import { GitHubButton } from "./github-button";
 import { GoogleButton } from "./google-button";
+import { MicrosoftButton } from "./microsoft-button";
 
 export const authMethods = [
   "google",
   "github",
+  "azure-ad",
   "email",
   "saml",
   "password",
@@ -80,9 +82,10 @@ export default function LoginForm({
     undefined
   );
 
-  const [lastUsedAuthMethodLive, setLastUsedAuthMethod] = useLocalStorage<
-    AuthMethod | undefined
-  >("last-used-auth-method", undefined);
+  const [lastUsedAuthMethodLive, setLastUsedAuthMethod] = useLocalStorage(
+    "last-used-auth-method",
+    undefined
+  );
   const { current: lastUsedAuthMethod } = useRef<AuthMethod | undefined>(
     lastUsedAuthMethodLive
   );
@@ -117,6 +120,10 @@ export default function LoginForm({
     {
       method: "github",
       component: GitHubButton,
+    },
+    {
+      method: "azure-ad",
+      component: MicrosoftButton,
     },
     {
       method: "email",

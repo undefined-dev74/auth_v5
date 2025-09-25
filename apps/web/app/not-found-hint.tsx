@@ -25,6 +25,8 @@ function NotFoundHintChild() {
     );
   }
 
+  console.log("session", session);
+
   return (
     <>
       <div className="flex items-center gap-2 text-neutral-600">

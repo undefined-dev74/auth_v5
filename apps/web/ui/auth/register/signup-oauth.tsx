@@ -4,22 +4,25 @@ import { Button, Github, Google } from "@app/ui";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Microsoft } from "../login/microsoft";
 
 export const SignUpOAuth = ({
   methods,
 }: {
-  methods: ("email" | "google" | "github")[];
+  methods: ("email" | "google" | "github" | "azure-ad")[];
 }) => {
   const searchParams = useSearchParams();
   const next = searchParams?.get("next");
   const [clickedGoogle, setClickedGoogle] = useState(false);
   const [clickedGithub, setClickedGithub] = useState(false);
+  const [clickedMicrosoft, setClickedMicrosoft] = useState(false);
 
   useEffect(() => {
     // when leave page, reset state
     return () => {
       setClickedGoogle(false);
       setClickedGithub(false);
+      setClickedMicrosoft(false);
     };
   }, []);
 
@@ -51,6 +54,20 @@ export const SignUpOAuth = ({
           }}
           loading={clickedGithub}
           icon={<Github className="h-4 w-4" />}
+        />
+      )}
+      {methods.includes("azure-ad") && (
+        <Button
+          variant="secondary"
+          text="Continue with Microsoft"
+          onClick={() => {
+            setClickedMicrosoft(true);
+            signIn("azure-ad", {
+              ...(next && next.length > 0 ? { callbackUrl: next } : {}),
+            });
+          }}
+          loading={clickedMicrosoft}
+          icon={<Microsoft className="h-4 w-4" />}
         />
       )}
     </>

@@ -6,9 +6,9 @@ import { SignUpEmail } from "./signup-email";
 import { SignUpOAuth } from "./signup-oauth";
 
 export const SignUpForm = ({
-  methods = ["email", "google", "github"],
+  methods = ["email", "google", "github", "azure-ad"],
 }: {
-  methods?: ("email" | "google" | "github")[];
+  methods?: ("email" | "google" | "github" | "azure-ad")[];
 }) => {
   return (
     <AnimatedSizeContainer height>

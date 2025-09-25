@@ -1,6 +1,10 @@
 import { cn } from "@app/utils";
 
-export function Logo({ className }: { className?: string }) {
+interface LogoProps {
+  className?: string | string[];
+}
+
+export function Logo({ className }: LogoProps) {
   return (
     <svg
       width="64"

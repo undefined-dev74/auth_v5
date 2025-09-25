@@ -43,6 +43,9 @@
         "useForOf": "warn",
         "noNonNullAssertion": "off",
         "noUselessElse": "off"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off"
       }
     }
   },

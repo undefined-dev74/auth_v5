@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, FileUpload, getUserAvatarUrl } from "@dub/ui";
+import { Button, FileUpload, getUserAvatarUrl } from "@app/ui";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
